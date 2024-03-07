@@ -4,13 +4,13 @@ import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.MEMOLINX_APP_FIREBASE_API_KEY,
-  authDomain: import.meta.env.MEMOLINX_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.MEMOLINX_APP_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.MEMOLINX_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.MEMOLINX_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.MEMOLINX_APP_FIREBASE_APP_ID,
-  measurementId: import.meta.env.MEMOLINX_APP_FIREBASE_MEASUREMENT_ID
+  apiKey: "AIzaSyB8DKre8jDwoeC0oIoE7o20wS9W98_INT8",
+  authDomain: "react-note-a4e85.firebaseapp.com",
+  projectId: "react-note-a4e85",
+  storageBucket: "react-note-a4e85.appspot.com",
+  messagingSenderId: "311888497196",
+  appId: "1:311888497196:web:a7c8e81eeab7b7b36b5f89",
+  measurementId: "G-QJGRM6KYBP",
 };
 
 // Initialize Firebase

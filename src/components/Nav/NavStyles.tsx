@@ -2,12 +2,16 @@ import styled from "styled-components";
 
 
 export const Wrapper = styled.div`
+    position : fixed;
+    top : 0;
+    left : 0;
+    z-index : 999;
     width : 100%;
     height : 8vh;
     display : flex;
     padding : 0px 100px;
     align-items : center;
-    margin : 0;
+    margin : 10px 0 0 0;
     box-sizing : border-box;
 
     a {
@@ -64,4 +68,11 @@ export const ProfileItem = styled.div`
     margin : 0 30px 0 0;
 `;
 
-export const LoginItem = styled.div``;
+export const LoginItem = styled.div`
+    color : #03D100;
+    font-weight : 600;
+    font-size : 18px;
+    &:hover {
+        cursor: pointer;
+    }
+`;

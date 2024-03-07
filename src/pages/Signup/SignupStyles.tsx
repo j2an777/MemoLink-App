@@ -24,11 +24,12 @@ export const Wrapper = styled.div`
 export const LoginBox = styled.div`
     width: 30%;
     border-radius : 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
     padding: 50px 0px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin : 100px 0 0 0;
     animation: ${upAnime} 0.6s ease forwards;
 `;
 
@@ -62,6 +63,7 @@ export const Input = styled.input`
         cursor : pointer;
         background-color : #03D100;
         color : white;
+        transition : all 0.3s ease;
         &:hover {
             opacity : 0.8;
         }

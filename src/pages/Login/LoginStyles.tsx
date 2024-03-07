@@ -23,8 +23,9 @@ export const Wrapper = styled.div`
 export const LoginBox = styled.div`
     width: 30%;
     border-radius : 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
     padding: 50px 0px;
+    margin : 100px 0 0 0;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,6 +62,7 @@ export const Input = styled.input`
         cursor : pointer;
         background-color : #03D100;
         color : white;
+        transition : all 0.3s ease;
         &:hover {
             opacity : 0.8;
         }
@@ -88,5 +90,37 @@ export const Switcher = styled.span`
         &:hover {
             opacity : 0.8;
         }
+    }
+`;
+
+export const PlatformItem = styled.div`
+    width : 60%;
+    height : 100%;
+    display : flex;
+    justify-content : space-evenly;
+    align-items : center;
+    margin : 0;
+    padding : 0;
+`;
+
+export const PlatformLogin = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: white;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+
+    svg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &:hover {
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
     }
 `;
