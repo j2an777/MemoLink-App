@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HomeItem, LoginItem, MenuOne, MenuTwo, ProfileItem, Wrapper } from "./NavStyles";
 import { useEffect, useState } from "react";
 import { auth } from "../../firebase";
@@ -7,6 +7,7 @@ import { signOut } from "firebase/auth";
 export default function Nav() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -26,6 +27,7 @@ export default function Nav() {
     if (logoutOk) {
       signOut(auth);
       setIsLoggedIn(false);
+      navigate("/login");
     }
   };
 

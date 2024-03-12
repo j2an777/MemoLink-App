@@ -1,6 +1,6 @@
 import Home from "../pages/Home/Home";
 import Login from "../pages/Login/Login";
-import Script from "../pages/Main/Script";
+import Script from "../pages/Script/Script";
 import MyPage from "../pages/MyPage/MyPage";
 import Signup from "../pages/Signup/Signup";
 

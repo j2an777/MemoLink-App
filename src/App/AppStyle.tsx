@@ -8,7 +8,5 @@ export const AppStyles = createGlobalStyle`
     }
     body {
         font-family : "Poppins", sans-serif;
-        width : 100vw;
-        height : 100vh;
     }
 `;
