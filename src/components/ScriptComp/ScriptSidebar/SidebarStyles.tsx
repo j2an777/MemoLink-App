@@ -77,7 +77,8 @@ export const FpContainer = styled.div`
     flex-grow: 1;
     width: 100%;
     overflow-y: auto;
-    padding: 0;
+    padding: 10px 0;
+    box-sizing: border-box;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -86,6 +87,7 @@ export const FpContainer = styled.div`
 `;
 
 export const FolderItem = styled.div`
+    position : relative;
     width : 80%;
     display : flex;
     align-items : center;
@@ -111,4 +113,21 @@ export const FolderItem = styled.div`
 export const FolderName = styled.p`
     font-size : 24px;
     font-family : 'Poppins';
+`;
+
+export const DeleteFolder = styled.button`
+    position : absolute;
+    top : -10px;
+    right : -10px;
+    padding : 5px 8px;
+    box-sizing : border-box;
+    border-radius : 50%;
+    background-color : red;
+    color : white;
+    border : none;
+
+    &:hover {
+        transform : scale(1.05);
+        cursor : pointer;
+    }
 `;

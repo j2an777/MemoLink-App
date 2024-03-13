@@ -3,7 +3,7 @@ import styled, { keyframes } from "styled-components"
 export const SCompWrapper = styled.div`
     z-index : 300;
     width : 100%;
-    height : 100%;
+    height : 100vh;
     padding : 0;
     margin : 15px 0 0 0;
     display : flex;
@@ -26,7 +26,7 @@ export const BottomContainer = styled.div`
     flex-direction : rows;
 `;
 
-const downAnime = keyframes`
+export const downAnime = keyframes`
     0% {
         opacity : 0;
         transform : translateY(-20px);
@@ -67,8 +67,8 @@ export const FpPopupBox = styled.form`
 `;
 
 export const FpBack = styled.div`
-    width : 20px;
-    height : 20px;
+    width : 30px;
+    height : 30px;
     background-color : transparent;
     margin : 0;
     padding : 0;

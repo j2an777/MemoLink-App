@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Error, Form, Input, LoginBox, OkContents, OkImg, OkPopup, OkTitle, Overlay, Switcher, Title, ToLogin, Wrapper } from "./SignupStyles";
+import { Error, Form, Input, LoginBox, OkContents, OkImg, OkPopup, OkTitle, Switcher, Title, ToLogin, Wrapper } from "./SignupStyles";
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 import { FirebaseError } from "firebase/app";
+import Overlay from "../../components/Overlay/Overlay";
 
 export default function Signup() {
 

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { FPlogo, FPlusTitle, FolderItem, FolderName, FolderPlus, FpContainer, SSTitle, SSWrapper } from "./SidebarStyles";
+import { useEffect, useState, useRef } from "react";
+import { DeleteFolder, FPlogo, FPlusTitle, FolderItem, FolderName, FolderPlus, FpContainer, SSTitle, SSWrapper } from "./SidebarStyles";
 import { auth, db } from "../../../firebase";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useAppDispatch } from "../../../hooks/redux";
@@ -17,6 +17,7 @@ interface Folder {
 export default function ScriptSidebar( { openPopup }: ScriptSidebarProps ) {
   const [folders, setFolders] = useState<Folder[]>([]);
   const dispatch = useAppDispatch();
+  const firstFolderRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const user = auth.currentUser;
@@ -34,6 +35,15 @@ export default function ScriptSidebar( { openPopup }: ScriptSidebarProps ) {
 
     return () => unsubscribe();
   }, []);
+
+  // 로드 시 folders 맨 처음 div를 선택
+  useEffect(() => {
+    if (folders.length > 0) {
+      setTimeout(() => {
+        firstFolderRef.current?.click();
+      }, 0);
+    }
+  }, [folders]);
 
   const handleFolderClick = (fpName: string) => {
     dispatch(setSelectedFolderName(fpName));
@@ -54,9 +64,15 @@ export default function ScriptSidebar( { openPopup }: ScriptSidebarProps ) {
         </FPlusTitle>
       </FolderPlus>
       <FpContainer>
-        {folders.map((folder) => (
-          <FolderItem key={folder.id} onClick={() => handleFolderClick(folder.fpName)}>
-            <FolderName>{folder.fpName}</FolderName>
+        {folders.map((folder, index) => (
+          <FolderItem 
+            key={folder.id}
+            ref={index === 0 ? firstFolderRef : null}
+            onClick={() => handleFolderClick(folder.fpName)}>
+            <FolderName>
+              {folder.fpName}
+              <DeleteFolder>X</DeleteFolder>
+            </FolderName>
           </FolderItem>
         ))}
       </FpContainer>

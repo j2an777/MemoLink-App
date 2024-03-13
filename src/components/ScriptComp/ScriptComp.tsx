@@ -1,12 +1,11 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { BottomContainer, FpBack, FpConfirm, FpInput, FpPopupBox, FpPopupWrapper, SCompWrapper, TopContainer } from "./ScriptCompStyles";
 import ScriptList from "./ScriptList.tsx/ScriptList";
 import ScriptSidebar from "./ScriptSidebar/ScriptSidebar";
 import ScriptTop from "./ScriptTop/ScriptTop";
-import { Overlay } from "../../pages/Signup/SignupStyles";
 import { auth, db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
-
+import Overlay from "../Overlay/Overlay";
 
 export default function ScriptComp() {
 
@@ -23,21 +22,23 @@ export default function ScriptComp() {
     setFpName("");
   };
 
-  const onFolderMaking = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const onFolderMaking = async () => {
     const user = auth.currentUser;
 
     if (!user || folderMaking || fpName === "") return;
+
     try {
       setFolderMaking(true);
       await addDoc(collection(db, "folders"), {
-        fpName,
+        fpName: fpName,
         userId: user.uid,
         username: user.displayName || "Anonymous",
         files: [],
       });
+
     } catch (error) {
       console.error(error);
+      setFolderMaking(false);
     } finally {
       setFolderMaking(false);
       setFpName("");
