@@ -1,12 +1,13 @@
-import { FirstRing, RingBox, SecondRing, ThirdRing, Wrapper } from "./LsStyles";
+import Lottie from "lottie-react";
+import { LottieContainer, Wrapper } from "./LsStyles";
+import { lottie } from '../../assets/loaderJson';
 
 export default function LoadingScreen() {
   return (
     <Wrapper>
-        <FirstRing></FirstRing>
-        <SecondRing></SecondRing>
-        <ThirdRing></ThirdRing>
-        <RingBox></RingBox>
+        <LottieContainer>
+          <Lottie animationData={ lottie } />
+        </LottieContainer>
     </Wrapper>
   )
 }

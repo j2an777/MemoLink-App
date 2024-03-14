@@ -1,43 +1,20 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 
-const ringAnime = keyframes`
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-`;
 
 export const Wrapper = styled.div`
-    position : relatvie;
-    display : inline-block;
-    width : 80px;
-    height : 80px;
-    margin : 56px auto;
+    width : 100vw;
+    height : 100vh;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+    margin : 0;
+    padding : 0;
 `;
 
-export const RingBox = styled.div`
-    position : absolute;
-    display : block;
-    width : 64px;
-    height : 64px;
-    margin : 8px;
-    border : 8px solid #717482;
-    border-color : #717482 transparent transparent;
-    border-radius : 50%;
-    animation : ${ringAnime} 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+export const LottieContainer = styled.div`
+    width : 300px;
+    height : 300px;
+    display : flex;
+    align-items : center;
+    justify-content : center;
 `;
-
-export const FirstRing = styled(RingBox)`
-    animation-delay : -0.45s;
-`;
-
-export const SecondRing = styled(RingBox)`
-    animation-delay : -0.3s;
-`;
-
-export const ThirdRing = styled(RingBox)`
-    animation-delay : -0.15s;
-`;
-

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { DeleteFolder, FPlogo, FPlusTitle, FolderItem, FolderName, FolderPlus, FpContainer, SSTitle, SSWrapper } from "./SidebarStyles";
 import { auth, db } from "../../../firebase";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setSelectedFolderName } from "../../../Store/folderStore/folderSlice";
 
@@ -36,17 +36,30 @@ export default function ScriptSidebar( { openPopup }: ScriptSidebarProps ) {
     return () => unsubscribe();
   }, []);
 
-  // 로드 시 folders 맨 처음 div를 선택
-  useEffect(() => {
-    if (folders.length > 0) {
-      setTimeout(() => {
-        firstFolderRef.current?.click();
-      }, 0);
-    }
-  }, [folders]);
-
   const handleFolderClick = (fpName: string) => {
     dispatch(setSelectedFolderName(fpName));
+  };
+
+  const onHandleDelete = async (folderId: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // 버블링 방지
+  
+    const ok = confirm("정말 삭제하시겠습니까?");
+    if (ok) {
+      const user = auth.currentUser;
+      if (!user) return;
+  
+      try {
+        // Firestore에서 해당 폴더 문서를 찾아 삭제합니다.
+        const docRef = doc(db, "folders", folderId);
+        await deleteDoc(docRef);
+  
+        // UI의 상태를 업데이트합니다.
+        setFolders(prevFolders => prevFolders.filter(folder => folder.id !== folderId));
+        dispatch(setSelectedFolderName(""));
+      } catch (error) {
+        console.error("Error removing document: ", error);
+      }
+    }
   };
 
   return (
@@ -71,7 +84,7 @@ export default function ScriptSidebar( { openPopup }: ScriptSidebarProps ) {
             onClick={() => handleFolderClick(folder.fpName)}>
             <FolderName>
               {folder.fpName}
-              <DeleteFolder>X</DeleteFolder>
+              <DeleteFolder onClick={(e) => onHandleDelete(folder.id, e)}>X</DeleteFolder>
             </FolderName>
           </FolderItem>
         ))}

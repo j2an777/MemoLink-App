@@ -5,9 +5,6 @@ export interface FileData {
     title: string;
     tags: string[];
     content : string;
+    stars: boolean;
     createdAt: Timestamp;
-}
-
-export interface NoteData extends FileData {
-    marking : boolean;
 }

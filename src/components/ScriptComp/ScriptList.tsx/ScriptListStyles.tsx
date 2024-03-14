@@ -21,12 +21,61 @@ export const FolderTop = styled.div`
     justify-content : space-between;
 `;
 
+export const FolderInfo = styled.div`
+    display : flex;
+    justify-content : flex-start;
+    align-items : center;
+    margin : 0;
+    padding : 0;
+`;
+
 export const FolderTitle = styled.h1`
     font-size : 2.5rem;
     font-family : 'Poppins';
     font-weight : 700;
     color : #444;
     margin : 0;
+`;
+
+interface FolderStarsProps {
+    isActive: boolean;
+}
+
+export const FolderStars = styled.div<FolderStarsProps>`
+    width : 100px;
+    height : 40px;
+    margin : 0 0 0 30px;
+    padding : 0;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+    border-radius : 15px;
+    border : 1px solid ${props => props.isActive ? '#03d100' : '#78EE76'};
+    background-color : white;
+    transition : all 0.3s ease;
+
+    p {
+        font-size : 20px;
+        font-family : 'Poppins';
+        font-weight : 500;
+        color : ${props => props.isActive ? '#03d100' : '#78EE76' };
+        padding : 0;
+        margin : 0;
+    }
+
+    img {
+        width : 20px;
+        height : 20px;
+        object-fit : contain;
+    }
+
+    &:hover {
+        cursor : pointer;
+        transform : scale(1.1);
+    }
+    &:active {
+        transform : scale(0.9);
+    }
 `;
 
 const plusAnime = keyframes`
@@ -147,6 +196,10 @@ export const NConfirm = styled.input`
     &:hover {
         cursor : pointer;
         background-color : #00B327;
+    }
+
+    &:active {
+        transform : scale(0.9);
     }
 `;
 

@@ -23,7 +23,10 @@ function App() {
 
   const init = async () => {
     await auth.authStateReady();
-    setIsLoading(false);
+    
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
   };
 
   useEffect(() => {

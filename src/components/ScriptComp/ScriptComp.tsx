@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { BottomContainer, FpBack, FpConfirm, FpInput, FpPopupBox, FpPopupWrapper, SCompWrapper, TopContainer } from "./ScriptCompStyles";
 import ScriptList from "./ScriptList.tsx/ScriptList";
 import ScriptSidebar from "./ScriptSidebar/ScriptSidebar";
@@ -22,7 +22,8 @@ export default function ScriptComp() {
     setFpName("");
   };
 
-  const onFolderMaking = async () => {
+  const onFolderMaking = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const user = auth.currentUser;
 
     if (!user || folderMaking || fpName === "") return;
@@ -65,7 +66,7 @@ export default function ScriptComp() {
                 </svg>
               </FpBack>
               <FpPopupBox onSubmit={onFolderMaking}>
-                <FpInput 
+                <FpInput
                   required
                   type="text"
                   placeholder = "폴더 이름 입력"

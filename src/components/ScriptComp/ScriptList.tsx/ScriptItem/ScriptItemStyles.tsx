@@ -30,6 +30,10 @@ export const ScriptItemContainer = styled.div`
         cursor: pointer;
         transform: scale(1.05);
     }
+
+    &:active {
+        transform: scale(0.9);
+    }
 `;
 
 export const ItemTop = styled.div`
@@ -45,18 +49,29 @@ export const ItemTop = styled.div`
 `;
 
 export const ItemTitle = styled.p`
-    font-size : 20px;
+    font-size : 24px;
     font-weight : bold;
     font-family : 'pretendard';
     color : black;
 `;
 
 export const ItemStar = styled.img`
-    width : 20px;
-    height : 20px;
+    position : relative;
+    width : 30px;
+    height : 30px;
     margin : 0;
     padding : 0;
     object-fit : contain;
+    transition: all 0.3s ease;
+
+    &:hover {
+        cursor : pointer;
+        transform : scale(1.3);
+    }
+
+    &:active {
+        transform : scale(0.9);
+    }
 `;
 
 export const ItemMiddle = styled.div`
@@ -73,7 +88,7 @@ export const ItemScript = styled.p`
     height : 70%;
     margin : 0;
     padding : 0;
-    font-size : 14px;
+    font-size : 16px;
     font-family : 'pretendard';
     font-weight : 500;
     color : black;
@@ -118,4 +133,23 @@ export const ItemDate = styled.p`
     font-family : 'pretendard';
     font-weight : 500;
     color : #ccc;
+`;
+
+export const ItemDelete = styled.div`
+    width : 50px;
+    height : 30px;
+    font-size : 16px;
+    color : #aaa;
+    border : 1px solid #ccc;
+    border-radius : 10px;
+    cursor : pointer;
+    transition : all 0.3s ease;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+
+    &:hover {
+        background-color : #ccc;
+        color : #777;
+    }
 `;

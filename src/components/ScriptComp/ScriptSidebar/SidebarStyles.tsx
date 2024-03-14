@@ -127,7 +127,11 @@ export const DeleteFolder = styled.button`
     border : none;
 
     &:hover {
-        transform : scale(1.05);
+        transform : scale(1.1);
         cursor : pointer;
+    }
+
+    &:active {
+        transform : scale(0.9);
     }
 `;

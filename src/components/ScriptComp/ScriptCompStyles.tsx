@@ -93,7 +93,7 @@ export const FpInput = styled.input`
     box-sizing : border-box;
     outline : none;
     border : 1px solid #ccc;
-    border-radius : 20px;
+    border-radius : 15px;
 `;
 
 export const FpConfirm = styled.input`
@@ -103,13 +103,18 @@ export const FpConfirm = styled.input`
     padding : 0;
     font-size : 20px;
     outline : none;
-    border-radius : 20px;
+    border-radius : 15px;
     border : none;
     background-color : #03D100;
     color : #fff;
     cursor : pointer;
     transition : all 0.3s ease;
+
     &:hover {
         background-color : #00B327;
+    }
+
+    &:active {
+        transform : scale(0.9);
     }
 `;

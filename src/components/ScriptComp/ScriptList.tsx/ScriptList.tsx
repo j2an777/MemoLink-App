@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAppSelector } from "../../../hooks/redux";
-import { FilePlus, FolderTitle, FolderTop, NConfirm, NPopupBox, NTagInput, NTitleInput, NotePopupWrapper, TagBlock, TextContainer, Wrapper } from "./ScriptListStyles";
+import { FilePlus, FolderInfo, FolderStars, FolderTitle, FolderTop, NConfirm, NPopupBox, NTagInput, NTitleInput, NotePopupWrapper, TagBlock, TextContainer, Wrapper } from "./ScriptListStyles";
 import { FpBack } from "../ScriptCompStyles";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
@@ -49,8 +49,9 @@ const ScriptList = () => {
   const [tempTagInput, setTempTagInput] = useState('');
   const [isTagActive, setIsTagActive] = useState(true);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [isStarActive, setIsStarActive] = useState(false);
 
-  const selectedFolderName = useAppSelector((state) => state.folder.selectedFolderName);
+  const selectedFolderName = useAppSelector((state) => state?.folder.selectedFolderName);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target: {name, value} } = e;
@@ -61,7 +62,7 @@ const ScriptList = () => {
     }
   };
   
-  // On input blur, update the tags array
+  // 입력한 문자열을 띄어쓰기 기준으로 나눠서 태그 배열에 저장
   const onBlurTagsInput = () => {
     if (tempTagInput.trim() !== '') {
       const newTagsArray = tempTagInput.split(' ').filter(tag => tag !== '');
@@ -85,8 +86,25 @@ const ScriptList = () => {
   };
 
   // 팝업창 띄우기 위한 + 버튼 함수
-  const onPopupChange = () => {
-    setOnNotePopup(!onNotePopup);
+  const onPopupChange = async () => {
+    const user = auth.currentUser;
+    if (!user) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    const folderRef = collection(db, "folders");
+    const q = query(folderRef, where("fpName", "==", selectedFolderName), where("userId", "==", user.uid));
+
+    setUploadLoading(true);
+    const querySnapshot = await getDocs(q);
+    setUploadLoading(false);
+
+    if (querySnapshot.empty) {
+      alert("등록된 폴더가 없습니다. 먼저 폴더 생성해주세요.");
+    } else {
+      setOnNotePopup(!onNotePopup);
+    }
   };
 
   const togglePopup = () => {
@@ -109,11 +127,14 @@ const ScriptList = () => {
       return;
     }
 
+    const noteStars = false;
+
     const fileData: FileData = {
       id: generateRandomId(),
       title: noteTitle,
       tags: noteTags,
       content: textValue,
+      stars: noteStars,
       createdAt: Timestamp.now(),
     };
     setUploadLoading(true);
@@ -133,32 +154,38 @@ const ScriptList = () => {
           files: arrayUnion(fileData)
         });
 
-        const ok = confirm("등록이 성공적으로 되었습니다!");
-        if (ok) {
-          // 업로드 성공 후 팝업을 닫고 폼의 상태를 초기화합니다.
-          setOnNotePopup(false);
-          setNoteTitle("");
-          setTextValue("");
-          setNoteTags([]);
-          setIsTagActive(true);
-          setUploadLoading(false);
-        }
-
       } else {
         console.error('Selected folder does not exist or does not match fpName');
       }
+
+      setOnNotePopup(false);
+      setNoteTitle("");
+      setTextValue("");
+      setNoteTags([]);
+      setIsTagActive(true);
+      setUploadLoading(false);
     } catch(error) {
       console.error(error);
     }
+  };
+
+  const toggleStar = () => {
+    setIsStarActive(!isStarActive);
   };
   
 
   return (
     <Wrapper>
       <FolderTop>
-        <FolderTitle>
-          {selectedFolderName}
-        </FolderTitle>
+        <FolderInfo>
+          <FolderTitle>
+            { selectedFolderName }
+          </FolderTitle>
+          <FolderStars isActive={ isStarActive } onClick={ toggleStar }>
+            <p>Star</p>
+            <img src={ isStarActive ? "/starFill.svg" : "/star.svg" }/>
+          </FolderStars>
+        </FolderInfo>
         <FilePlus onClick={onPopupChange}>
           <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M36 25.996H26V35.996C26 36.5264 25.7893 37.0351 25.4142 37.4102C25.0391 37.7853 24.5304 37.996 24 37.996C23.4696 37.996 22.9609 37.7853 22.5858 37.4102C22.2107 37.0351 22 36.5264 22 35.996V25.996H12C11.4696 25.996 10.9609 25.7853 10.5858 25.4102C10.2107 25.0351 10 24.5264 10 23.996C10 23.4655 10.2107 22.9568 10.5858 22.5818C10.9609 22.2067 11.4696 21.996 12 21.996H22V11.996C22 11.4655 22.2107 10.9568 22.5858 10.5818C22.9609 10.2067 23.4696 9.99597 24 9.99597C24.5304 9.99597 25.0391 10.2067 25.4142 10.5818C25.7893 10.9568 26 11.4655 26 11.996V21.996H36C36.5304 21.996 37.0391 22.2067 37.4142 22.5818C37.7893 22.9568 38 23.4655 38 23.996C38 24.5264 37.7893 25.0351 37.4142 25.4102C37.0391 25.7853 36.5304 25.996 36 25.996Z" fill="#AAAAAA"/>
