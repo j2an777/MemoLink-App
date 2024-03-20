@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { STWrapper, ScriptImg, ScriptSearch, SearchContainer } from "./ScriptTopStyles";
+import { useAppDispatch } from "../../../hooks/redux";
+import { setSearchFileName } from "../../../Store/searchStore/searchSlice";
+import { useDebounce } from "../../../hooks/useDebounce";
 
 export default function ScriptTop() {
 
   const [value, setValue] = useState("");
+  const dispatch = useAppDispatch();
+  const debouncedValue = useDebounce(value, 500);
+
+  useEffect(() => {
+    dispatch(setSearchFileName(debouncedValue));
+  }, [debouncedValue, dispatch]);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);

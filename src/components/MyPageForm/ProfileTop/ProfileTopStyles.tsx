@@ -1,27 +1,24 @@
 import styled from "styled-components";
 
-
-
 export const Wrapper = styled.div`
-    width : 60%;
+    width : 100%;
+    height : auto;
+    margin : 0;
+    padding : 20px 0;
+    box-sizing : border-box;
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    border-bottom : 1px solid #ddd;
+`;
+
+export const ProFileAvatarContainer = styled.div`
+    width : 30%;
     height : 100%;
     margin : 0;
     padding : 0;
     display : flex;
-    flex-direction : column;
-    align-items : center;
     justify-content : center;
-    border-bottom : 1px solid #ddd;
-`;
-
-export const ProFileTop = styled.div`
-    width : 100%;
-    height : auto;
-    margin : 0;
-    padding : 0;
-    display : flex;
-    justify-content : center;
-    align-items : center;
 `;
 
 export const ProFileImg = styled.div`
@@ -29,13 +26,37 @@ export const ProFileImg = styled.div`
     height : 100px;
     border-radius : 50%;
     border : 0.5px solid #eee;
+    display : flex;
+    justify-content : center;
+    align-items : center;
+    background-color : #eee;
 
     img {
         width : 100%;
         height : 100%;
         border-radius : 50%;
-        object-fit : contain;
+        object-fit : cover;
     }
+`;
+
+export const ProFileUserEditLabel = styled.label`
+    outline : none;
+    width : 20px;
+    height : 20px;
+    border-radius : 50%;
+    border : 0.5px solid #0de100;
+    color : #0de100;
+    display : flex;
+    justify-content : center;
+    align-items : center;
+
+    &:hover {
+        cursor : pointer;
+    }
+`;
+
+export const ProFileUserEdit = styled.input`
+    display : none;
 `;
 
 export const ProFilePreview = styled.div`
@@ -53,6 +74,7 @@ export const ProFileName = styled.h2`
     font-weight : bold;
     font-family : 'pretendard';
     color : black;
+    margin-bottom : 10px;
 `;
 
 export const ProFileEditContainer = styled.div`
@@ -66,24 +88,48 @@ export const ProFileEditContainer = styled.div`
 `;
 
 export const ProFileMessage = styled.p`
-    width : 50%;
-    height : auto;
+    width : 85%;
+    height : 100%;
     font-size : 20px;
     font-family : 'pretendard';
     color : #555;
     font-weight : 500;
     margin : 0;
+    padding : 0;
 `;
 
-export const ProFileEdit = styled.button`
-    padding : 10px 20px;
+export const ProFileEditMessage = styled.input`
+    width : 85%;
+    height : auto;
+    font-size : 20px;
+    font-family : 'pretendard';
+    color : #555;
+    font-weight : 500;
+    border : none;
+    margin : 0;
+    outline : none;
+
+    &::placeholder {
+        color : #ccc;
+    }
+`;
+
+export const ProFileEdit = styled.div`
+    width : 15%;
+    height : 100%;
+    padding : 10px 0;
     outline : none;
     background-color : #03d100;
     border : none;
     border-radius : 15px;
     color : white;
+    font-size : 16px;
+    display : flex;
+    justify-content : center;
+    align-items : center;
 
     &:hover {
         cursor : pointer;
+        background-color : #67DF65;
     }
 `;

@@ -8,3 +8,9 @@ export interface FileData {
     stars: boolean;
     createdAt: Timestamp;
 }
+
+export interface FileState {
+    files: FileData[];
+    status: 'idle' | 'loading' | 'succeeded' | 'failed';
+    error : string | null;
+}

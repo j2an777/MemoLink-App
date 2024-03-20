@@ -1,42 +1,31 @@
 import { useEffect, useState } from "react";
 import { ItemBottom, ItemDate, ItemDelete, ItemMiddle, ItemScript, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
 import { auth, db } from "../../../../firebase";
-import { arrayRemove, collection, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { FileData } from "../../../../types/fileData";
+import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { fetchFiles } from "../../../../Store/fileStore/fileSlice";
+import SelectedNotePopup from "../../../Modal/SelectedNotePopup";
+import Overlay from "../../../Overlay/Overlay";
 
-interface sfName {
+interface ScriptItemProps {
   selectedFolderName: string;
+  isStarActive : boolean;
 }
 
-export default function ScriptItem({ selectedFolderName }: sfName) {
+export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptItemProps) {
 
-  const [notes, setNotes] = useState<FileData[]>([]);
+  const { files } = useAppSelector(state => state.files);
+  const searchFileName = useAppSelector(state => state.search.searchFileName);
+  const dispatch = useAppDispatch();
+  const [isNotePopup, setIsNotePopup] = useState(false);
+  const [selectedNote, setSelectedNote] = useState<FileData | null>(null);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const user = auth.currentUser;
-      if (!user || !selectedFolderName) return;
-
-      const q = query(collection(db, "folders"),
-                      where("userId", "==", user.uid),
-                      where("fpName", "==", selectedFolderName));
-      try {
-        const querySnapshot = await getDocs(q);
-        let files: FileData[] = [];
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          if(Array.isArray(data.files)) {
-            files = [...files, ...data.files];
-          }
-        });
-        setNotes(files);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchData();
-  }, [selectedFolderName]);
+    if (selectedFolderName) {
+      dispatch(fetchFiles(selectedFolderName));
+    }
+  }, [dispatch, selectedFolderName]);
 
   const stripHtml = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -45,6 +34,7 @@ export default function ScriptItem({ selectedFolderName }: sfName) {
 
   const onHandleDoc = async (noteId: string, e: React.MouseEvent) => {
     e.preventDefault();
+    e.stopPropagation();
 
     const user = auth.currentUser;
     if (!user) return;
@@ -58,20 +48,22 @@ export default function ScriptItem({ selectedFolderName }: sfName) {
 
       if (!querySnapshot.empty) {
         const folderDocRef = querySnapshot.docs[0].ref;
-        const noteToDelete = notes.find(note => note.id === noteId);
 
-          if (noteToDelete) {
-            await updateDoc(folderDocRef, {
-              files: arrayRemove(noteToDelete)
-          });
-
-          setNotes(notes.filter(note => note.id !== noteId));
-        }
+        // 필터링으로 선택한 파일 제외 나머지만 새로운 배열에 생성
+        const newFilesArray = files.filter(file => file.id !== noteId);
+        
+        // 새로 생성한 배열을 업데이트
+        await updateDoc(folderDocRef, {
+          files: newFilesArray
+        });
+        
+        dispatch(fetchFiles(selectedFolderName));
       }
     }
   };
 
-  const onHandleStar = async (noteId: string, currentStarValue: boolean) => {
+  const onHandleStar = async (noteId: string, currentStarValue: boolean, e: React.MouseEvent) => {
+    e.stopPropagation();
     // 현재 사용자와 선택된 폴더 이름으로 쿼리를 생성합니다.
     const foldersQuery = query(
       collection(db, "folders"),
@@ -99,13 +91,8 @@ export default function ScriptItem({ selectedFolderName }: sfName) {
   
         // 업데이트된 파일 배열로 폴더 문서를 업데이트합니다.
         await updateDoc(folderDocRef, { files: updatedFiles });
-  
-        // 로컬 상태 업데이트
-        setNotes(prevNotes =>
-          prevNotes.map(note =>
-            note.id === noteId ? { ...note, stars: !currentStarValue } : note
-          )
-        );
+
+        dispatch(fetchFiles(selectedFolderName));
       } else {
         console.log("No such folder!");
       }
@@ -113,23 +100,42 @@ export default function ScriptItem({ selectedFolderName }: sfName) {
       console.error("Error updating stars: ", error);
     }
   };
-  
 
+  const handleNoteClick = (note: FileData) => {
+    setSelectedNote(note);
+    setIsNotePopup(true);
+  };
+
+  const closePopup = () => {
+    setIsNotePopup(false);
+    setSelectedNote(null);
+  };
+
+  const filteredNotes = files
+    .filter(note => !isStarActive || note.stars)
+    .filter(note => note.title.toLowerCase().includes(searchFileName.toLowerCase()));
+  
   return (
     <Wrapper>
-        {notes.map((note, index) => {
+        {filteredNotes.map((note, index) => {
           // 'createdAt'이 유효한 날짜인지 확인합니다.
           const cleanContent = stripHtml(note.content);
-          const date = note.createdAt.toDate();
-          const dateStr = date.toLocaleDateString();
+
+          const dateStr = note.createdAt instanceof Date 
+          ? note.createdAt.toLocaleDateString() 
+          : new Date(note.createdAt.seconds * 1000).toLocaleDateString();
+
+          const truncate = (str: string, n: number) => {
+            return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+          };
 
           return (
-            <ScriptItemContainer key={ index }>
+            <ScriptItemContainer key={ index } onClick={() => handleNoteClick(note)}>
               <ItemTop>
-                <ItemTitle>{ note.title }</ItemTitle>
+                <ItemTitle>{ truncate(note.title, 10) }</ItemTitle>
                 <ItemStar
                   src={ note.stars ? "/starFill.svg" : "/star.svg" }
-                  onClick={() => onHandleStar(note.id, note.stars)} />
+                  onClick={(e) => onHandleStar(note.id, note.stars, e)} />
               </ItemTop>
               <ItemMiddle>
                 <ItemScript>{ cleanContent }</ItemScript>
@@ -146,6 +152,12 @@ export default function ScriptItem({ selectedFolderName }: sfName) {
             </ScriptItemContainer>
           );
         })}
+        {isNotePopup && selectedNote && (
+          <>
+            <Overlay />
+            <SelectedNotePopup note={selectedNote} onClose={closePopup} />
+          </>
+        )}
     </Wrapper>
   );
 }

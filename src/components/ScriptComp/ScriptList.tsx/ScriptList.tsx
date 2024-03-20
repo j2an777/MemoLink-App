@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useAppSelector } from "../../../hooks/redux";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { FilePlus, FolderInfo, FolderStars, FolderTitle, FolderTop, NConfirm, NPopupBox, NTagInput, NTitleInput, NotePopupWrapper, TagBlock, TextContainer, Wrapper } from "./ScriptListStyles";
 import { FpBack } from "../ScriptCompStyles";
 import ReactQuill from "react-quill";
@@ -9,6 +9,8 @@ import { FileData } from "../../../types/fileData";
 import { Timestamp, arrayUnion, collection, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { auth, db } from "../../../firebase";
 import Overlay from "../../Overlay/Overlay";
+import { setSelectedFolderName } from "../../../Store/folderStore/folderSlice";
+import { fetchFiles } from "../../../Store/fileStore/fileSlice";
 
 function generateRandomId() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -52,6 +54,14 @@ const ScriptList = () => {
   const [isStarActive, setIsStarActive] = useState(false);
 
   const selectedFolderName = useAppSelector((state) => state?.folder.selectedFolderName);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const storedFolderName = localStorage.getItem('selectedFolderName');
+    if (storedFolderName) {
+      dispatch(setSelectedFolderName(storedFolderName));
+    }
+  }, []);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target: {name, value} } = e;
@@ -137,6 +147,7 @@ const ScriptList = () => {
       stars: noteStars,
       createdAt: Timestamp.now(),
     };
+
     setUploadLoading(true);
     
     try {
@@ -153,6 +164,8 @@ const ScriptList = () => {
         await updateDoc(folderDocRef, {
           files: arrayUnion(fileData)
         });
+
+        dispatch(fetchFiles(selectedFolderName));
 
       } else {
         console.error('Selected folder does not exist or does not match fpName');
@@ -192,7 +205,7 @@ const ScriptList = () => {
           </svg>
         </FilePlus>
       </FolderTop>
-      <ScriptItem selectedFolderName = { selectedFolderName }/>
+      <ScriptItem selectedFolderName = { selectedFolderName } isStarActive = { isStarActive }/>
       {
         onNotePopup && (
           <>
