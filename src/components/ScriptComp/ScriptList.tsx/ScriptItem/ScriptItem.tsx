@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { ItemBottom, ItemDate, ItemDelete, ItemMiddle, ItemScript, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
+import { ItemBottom, ItemDate, ItemDelete, ItemEdit, ItemMiddle, ItemScript, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ItemUpdateBox, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
 import { auth, db } from "../../../../firebase";
 import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { FileData } from "../../../../types/fileData";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
-import { fetchFiles } from "../../../../Store/fileStore/fileSlice";
-import SelectedNotePopup from "../../../Modal/SelectedNotePopup";
+import { fetchFiles } from "../../../../Store/FileStore/fileSlice";
+import SelectedNotePopup from "../../../Modal/SelectedNotePopup/SelectedNotePopup";
 import Overlay from "../../../Overlay/Overlay";
+import { openPopup } from "../../../../Store/EditStore/editPopupSlice";
 
 interface ScriptItemProps {
   selectedFolderName: string;
@@ -114,16 +115,17 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
   const filteredNotes = files
     .filter(note => !isStarActive || note.stars)
     .filter(note => note.title.toLowerCase().includes(searchFileName.toLowerCase()));
+
+  const handleEditClick = (note: FileData, e: React.MouseEvent) => {
+    e.preventDefault();
+    dispatch(openPopup(note));
+  };
   
   return (
     <Wrapper>
         {filteredNotes.map((note, index) => {
           // 'createdAt'이 유효한 날짜인지 확인합니다.
           const cleanContent = stripHtml(note.content);
-
-          const dateStr = note.createdAt instanceof Date 
-          ? note.createdAt.toLocaleDateString() 
-          : new Date(note.createdAt.seconds * 1000).toLocaleDateString();
 
           const truncate = (str: string, n: number) => {
             return str?.length > n ? str.substr(0, n - 1) + "..." : str;
@@ -146,8 +148,11 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
                 </ItemTagsContainer>
               </ItemMiddle>
               <ItemBottom>
-                <ItemDate>{ dateStr }</ItemDate>
-                <ItemDelete onClick={(e) => onHandleDoc(note.id, e)}>삭제</ItemDelete>
+                <ItemDate>{ note.createdAt }</ItemDate>
+                <ItemUpdateBox>
+                  <ItemEdit onClick={(e) => handleEditClick(note, e)}>수정</ItemEdit>
+                  <ItemDelete onClick={(e) => onHandleDoc(note.id, e)}>삭제</ItemDelete>
+                </ItemUpdateBox>
               </ItemBottom>
             </ScriptItemContainer>
           );

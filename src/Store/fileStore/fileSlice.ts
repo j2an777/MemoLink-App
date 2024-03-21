@@ -12,7 +12,7 @@ const initialState: FileState = {
 
 export const fetchFiles = createAsyncThunk (
     'files/fetchFiles',
-    async (selectedFolderName: string) => {
+    async (selectedFolderName: string): Promise<FileData[]> => {
         const user = auth.currentUser;
         if (!user || !selectedFolderName) throw new Error('User not authenticated or folder name is missing');
 
@@ -24,7 +24,7 @@ export const fetchFiles = createAsyncThunk (
             const data = doc.data();
             if (Array.isArray(data.files)) {
                 files = [...files, ...data.files.map(file => ({
-                    ...file, createdAt: file.createdAt.toDate()
+                    ...file, createdAt: file.createdAt
                 }))];
             }
         });

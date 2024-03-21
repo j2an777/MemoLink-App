@@ -4,6 +4,7 @@ import Script from "../pages/Script/Script";
 import MyPage from "../pages/MyPage/MyPage";
 import Signup from "../pages/Signup/Signup";
 import Linx from "../pages/Linx/Linx";
+import About from "../pages/About/About";
 
 export const routers = [
     {
@@ -29,5 +30,9 @@ export const routers = [
     {
         path:"/linx",
         Element: <Linx />    
+    },
+    {
+        path:"/about",
+        Element: <About />
     }
 ];

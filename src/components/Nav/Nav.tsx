@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { HomeItem, LoginItem, MenuOne, MenuTwo, ProfileItem, Wrapper } from "./NavStyles";
+import { AboutItem, HomeItem, LoginItem, MenuOne, MenuTwo, ProfileItem, Wrapper } from "./NavStyles";
 import { useEffect, useState } from "react";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
@@ -44,8 +44,18 @@ export default function Nav() {
             <span>MemoLinx</span>
           </HomeItem>
         </Link>
+        <Link to="/script">
+          <AboutItem>
+            Script
+          </AboutItem>
+        </Link>
       </MenuOne>
       <MenuTwo>
+        <Link to="/about">
+          <AboutItem>
+            About
+          </AboutItem>
+        </Link>
         <Link to="/profile">
           <ProfileItem>
             MyPage

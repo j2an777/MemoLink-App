@@ -1,5 +1,6 @@
-import styled from 'styled-components'
-import HomeIndex from '../../components/HomeCm/HomeIndex';
+import styled from "styled-components";
+import BannerIndex from "../../components/AboutComp/BannerIndex";
+
 
 const Wrapper = styled.div`
   width : 100%;
@@ -9,10 +10,10 @@ const Wrapper = styled.div`
   justify-content : center;
 `;
 
-export default function Home() {
+export default function About() {
   return (
     <Wrapper>
-      <HomeIndex />
+      <BannerIndex />
     </Wrapper>
   )
 }

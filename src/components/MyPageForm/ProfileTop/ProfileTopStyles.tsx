@@ -30,12 +30,14 @@ export const ProFileImg = styled.div`
     justify-content : center;
     align-items : center;
     background-color : #eee;
+    border : 1px solid #ccc;
 
     img {
         width : 100%;
         height : 100%;
         border-radius : 50%;
         object-fit : cover;
+        object-position : bottom;
     }
 `;
 

@@ -1,6 +1,10 @@
-import { FileData } from '../../types/fileData';
-import { FpBack } from '../ScriptComp/ScriptCompStyles';
-import { EditBtn, PcContentBox, PcTagBox, PcTagContainer, PcTitleBox, PopupContent, SaveBtn, SaveOrEdit, Wrapper } from './SelectedNpStyles';
+import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { FileData } from '../../../types/fileData';
+import { FpBack } from '../../ScriptComp/ScriptCompStyles';
+import { PcContentBox, PcTagBox, PcTagContainer, PcTitleBox, PopupContent, SaveBtn, Wrapper } from './SelectedNpStyles';
+import { auth, db } from '../../../firebase';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
+import { fetchFiles } from '../../../Store/FileStore/fileSlice';
 
 interface SelectedNotePopupProps {
   note: FileData;
@@ -8,10 +12,51 @@ interface SelectedNotePopupProps {
 }
 
 const SelectedNotePopup: React.FC<SelectedNotePopupProps> = ({ note, onClose }) => {
+
+  const dispatch = useAppDispatch();
+
   const stripHtml = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
     return doc.body.textContent || '';
   };
+
+  const selectedFolderName = useAppSelector((state) => state?.folder.selectedFolderName);
+
+  const onHandleLinx = async (noteId: string, currentLinxValue: boolean, e: React.MouseEvent) => {
+    e.preventDefault();
+
+    const foldersQuery = query(
+      collection(db, "folders"),
+      where("userId", "==", auth.currentUser?.uid),
+      where("fpName", "==", selectedFolderName)
+    );
+
+    try {
+      const querySnapshot = await getDocs(foldersQuery);
+
+      if(!querySnapshot.empty) {
+
+        const folderDocRef = querySnapshot.docs[0].ref;
+
+        const updatedFiles = querySnapshot.docs[0].data().files.map((file: FileData) => {
+          if (file.id === noteId) {
+            return { ...file, linx: !currentLinxValue };
+          }
+          return file;
+        });
+
+        await updateDoc(folderDocRef, { files: updatedFiles });
+
+        dispatch(fetchFiles(selectedFolderName));
+
+        onClose();
+      } else {
+        console.log("No such folder!");
+      }
+    } catch (error) {
+      console.error("Error updating stars: ", error);
+    }
+  }
 
   return (
     <Wrapper>
@@ -21,17 +66,14 @@ const SelectedNotePopup: React.FC<SelectedNotePopupProps> = ({ note, onClose }) 
           </svg>
         </FpBack>
         <PopupContent>
-            <PcTitleBox>{note.title}</PcTitleBox>
+            <PcTitleBox>{ note.title }</PcTitleBox>
             <PcTagContainer>
               {note.tags.map((tag, index) => (
                 <PcTagBox key={index}>{tag}</PcTagBox>
               ))}
             </PcTagContainer>
             <PcContentBox>{stripHtml(note.content)}</PcContentBox>
-            <SaveOrEdit>
-              <SaveBtn>저장</SaveBtn>
-              <EditBtn>수정하기</EditBtn>
-            </SaveOrEdit>
+            <SaveBtn onClick={(e) => onHandleLinx(note.id, note.linx, e)}>{note.linx ? "업로드 완료" : "업로드"}</SaveBtn>
         </PopupContent>
     </Wrapper>
   )

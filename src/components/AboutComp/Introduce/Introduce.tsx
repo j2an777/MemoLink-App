@@ -45,7 +45,7 @@ export default function Introduce() {
                             </svg>
                         </InIcon>
                         <InInfo>
-                            피드백
+                            공유
                         </InInfo>
                     </InItem>
                 </InComponents>

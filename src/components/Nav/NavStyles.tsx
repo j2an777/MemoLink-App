@@ -28,6 +28,7 @@ export const MenuOne = styled.div`
     margin : 0;
     padding : 0;
     display : flex;
+    gap : 30px;
     justify-content : flex-center;
     align-items : center;
 `;
@@ -38,9 +39,12 @@ export const MenuTwo = styled.div`
     margin : 0;
     padding : 0;
     display : flex;
+    gap : 30px;
     justify-content : flex-end;
     align-items : center;
 `;
+
+export const AboutItem = styled.div``;
 
 export const HomeItem = styled.div`
     width : 200px;
@@ -64,9 +68,7 @@ export const HomeItem = styled.div`
     }
 `;
 
-export const ProfileItem = styled.div`
-    margin : 0 30px 0 0;
-`;
+export const ProfileItem = styled.div``;
 
 export const LoginItem = styled.div`
     color : #03D100;

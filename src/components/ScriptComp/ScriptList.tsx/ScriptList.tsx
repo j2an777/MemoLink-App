@@ -6,11 +6,11 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import ScriptItem from "./ScriptItem/ScriptItem";
 import { FileData } from "../../../types/fileData";
-import { Timestamp, arrayUnion, collection, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { arrayUnion, collection, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { auth, db } from "../../../firebase";
 import Overlay from "../../Overlay/Overlay";
-import { setSelectedFolderName } from "../../../Store/folderStore/folderSlice";
-import { fetchFiles } from "../../../Store/fileStore/fileSlice";
+import { setSelectedFolderName } from "../../../Store/FolderStore/folderSlice";
+import { fetchFiles } from "../../../Store/FileStore/fileSlice";
 
 function generateRandomId() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -138,6 +138,9 @@ const ScriptList = () => {
     }
 
     const noteStars = false;
+    const noteLinx = false;
+    const currentDate = new Date();
+    const createdAt = currentDate.toISOString().split('T')[0];
 
     const fileData: FileData = {
       id: generateRandomId(),
@@ -145,7 +148,8 @@ const ScriptList = () => {
       tags: noteTags,
       content: textValue,
       stars: noteStars,
-      createdAt: Timestamp.now(),
+      linx: noteLinx,
+      createdAt: createdAt,
     };
 
     setUploadLoading(true);

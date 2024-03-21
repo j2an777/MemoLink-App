@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { downAnime } from "../ScriptComp/ScriptCompStyles";
+import { downAnime } from "../../ScriptComp/ScriptCompStyles";
 
 
 export const Wrapper = styled.div`
@@ -100,9 +100,9 @@ export const SaveOrEdit = styled.div`
 `;
 
 export const SaveBtn = styled.div`
-    width : 100px;
-    height : 40px;
-    margin : 0;
+    width : 100%;
+    height : 10%;
+    margin : 20px 0 0 0;
     padding : 0;
     display : flex;
     align-items : center;
@@ -111,30 +111,17 @@ export const SaveBtn = styled.div`
     border-radius : 15px;
     color : white;
     transition : all 0.3s ease;
+    font-size : 24px;
+    letter-spacing : 2px;
+    font-weight : bold;
 
     &:hover {
         cursor : pointer;
-        background-color : #67DF65;
+        background-color : #00B327;
     }
-`;
 
-export const EditBtn = styled.div`
-    width : 100px;
-    height : 40px;
-    margin : 0;
-    padding : 0;
-    display : flex;
-    align-items : center;
-    justify-content : center;
-    border : 1px solid #ccc;
-    border-radius : 15px;
-    color : #aaa;
-    transition : all 0.3s ease;
-
-    &:hover {
-        cursor : pointer;
-        border : 1px solid #aaa;
-        color : #555;
+    &:active {
+        transform : scale(0.9);
     }
 `;
 

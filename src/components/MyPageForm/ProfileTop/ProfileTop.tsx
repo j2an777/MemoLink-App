@@ -1,11 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProFileAvatarContainer, ProFileEdit, ProFileEditContainer, ProFileEditMessage, ProFileImg, ProFileMessage, ProFileName, ProFilePreview, ProFileUserEdit, ProFileUserEditLabel, Wrapper } from "./ProfileTopStyles";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db, storage } from "../../../firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
 export default function ProfileTop() {
 
     const [isEditing, setIsEditing] = useState(false);
     const [introduceValue, setIntroduceValue] = useState("");
-    const [profileImgUrl, setProfileImgUrl] = useState("/user.svg");
+    const [profileImgUrl, setProfileImgUrl] = useState("");
+    const [userName, setUserName] = useState("");
+
+    useEffect(() => {
+        const user = auth.currentUser;
+        if (!user) return;
+        // Firebase Firestore에서 사용자 데이터 가져오기
+        const fetchUserData = async () => {
+          const userDocRef = doc(db, "users", user.uid); // 'your-user-id'를 현재 사용자의 ID로 교체해야 함
+          const docSnap = await getDoc(userDocRef);
+    
+          if (docSnap.exists()) {
+            const userData = docSnap.data();
+            setProfileImgUrl(userData.avatarUrl || "/user.svg");
+            setIntroduceValue(userData.introduce || "");
+            setUserName(userData.username || "익명의 사용자");
+          }
+        };
+    
+        fetchUserData();
+      }, []);
 
     const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIntroduceValue(e.target.value);
@@ -13,22 +36,57 @@ export default function ProfileTop() {
 
     // 업로드한 이미지에 대한 url를 string으로 보관
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
+        const user = auth.currentUser;
+
+        if (user && e.target.files && e.target.files[0]) {
+
             const file = e.target.files[0];
-            const fileReader = new FileReader();
+            
+            const storageRef = ref(storage, `avatars/${user.uid}/${file.name}`);
+            const uploadTask = uploadBytesResumable(storageRef, file);
 
-            fileReader.onload = (e) => {
-                const result = e.target?.result;
-                if (typeof result === 'string') {
-                    setProfileImgUrl(result);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    // 상태 변화 시 처리, 예를 들어 프로그레스 바 업데이트
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                  },
+                (error) => {
+                  // 업로드 중 에러 처리
+                  console.error("Upload failed", error);
+                },
+                () => {
+                  // 성공적으로 업로드한 후 파일 URL을 가져옴
+                  getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                    setProfileImgUrl(downloadURL);
+                    // Firestore에 이미지 URL 저장
+                    const userDocRef = doc(db, "users", user.uid);
+                    setDoc(userDocRef, { avatarUrl: downloadURL }, { merge: true });
+                  });
                 }
-            };
-
-            fileReader.readAsDataURL(file);
+              );
         }
     };
 
+    const saveIntroduce = async () => {
+        const user = auth.currentUser;
+        if (!user) return;
+        try {
+          // Firestore에 자기소개 저장
+          const userDocRef = doc(db, "users", user.uid);
+          await setDoc(userDocRef, { introduce: introduceValue }, { merge: true });
+          console.log("Introduce updated successfully");
+        } catch (error) {
+          console.error("Error saving introduce:", error);
+        }
+    };
+      
+
     const toggleEdit = () => {
+        if (isEditing) {
+            saveIntroduce();
+        }
         setIsEditing(!isEditing);
     };
 
@@ -49,7 +107,7 @@ export default function ProfileTop() {
                 </ProFileUserEditLabel>
             </ProFileAvatarContainer>
             <ProFilePreview>
-                <ProFileName>하승진</ProFileName>
+                <ProFileName>{userName}</ProFileName>
                 <ProFileEditContainer>
                     {isEditing ? (
                         <ProFileEditMessage

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { STWrapper, ScriptImg, ScriptSearch, SearchContainer } from "./ScriptTopStyles";
 import { useAppDispatch } from "../../../hooks/redux";
-import { setSearchFileName } from "../../../Store/searchStore/searchSlice";
+import { setSearchFileName } from "../../../Store/SearchStore/searchSlice";
 import { useDebounce } from "../../../hooks/useDebounce";
 
 export default function ScriptTop() {

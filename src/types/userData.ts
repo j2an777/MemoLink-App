@@ -1,6 +1,6 @@
-import { FileData } from "./fileData";
 
-export interface UserData extends FileData {
+export interface UserData {
     avatarUrl: string;
     introduce: string;
+    username : string;
 }

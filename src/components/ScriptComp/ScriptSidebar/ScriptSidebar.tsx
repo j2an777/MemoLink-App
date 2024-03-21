@@ -3,7 +3,7 @@ import { DeleteFolder, FPlogo, FPlusTitle, FolderItem, FolderName, FolderPlus, F
 import { auth, db } from "../../../firebase";
 import { collection, deleteDoc, doc, onSnapshot, query, where } from "firebase/firestore";
 import { useAppDispatch } from "../../../hooks/redux";
-import { setSelectedFolderName } from "../../../Store/folderStore/folderSlice";
+import { setSelectedFolderName } from "../../../Store/FolderStore/folderSlice";
 
 interface ScriptSidebarProps {
   openPopup: () => void;

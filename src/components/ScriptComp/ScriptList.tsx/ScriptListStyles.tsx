@@ -192,6 +192,7 @@ export const NConfirm = styled.input`
     border-radius : 15px;
     box-sizing : border-box;
     font-size : 24px;
+    transition : all 0.3s ease;
 
     &:hover {
         cursor : pointer;

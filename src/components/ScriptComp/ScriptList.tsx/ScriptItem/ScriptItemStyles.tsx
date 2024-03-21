@@ -107,7 +107,7 @@ export const ItemTagsContainer = styled.div`
         font-size : 10px;
         font-family : 'pretendard';
         font-weight : 400;
-        margin-right : 3px;
+        margin-right : 5px;
         border-radius : 10px;
         border : 0.5px solid rgba(0, 0, 0, 0.1);
         color : #333;
@@ -133,6 +133,36 @@ export const ItemDate = styled.p`
     font-family : 'pretendard';
     font-weight : 500;
     color : #ccc;
+`;
+
+export const ItemUpdateBox = styled.div`
+    width : auto;
+    height : 100%;
+    margin : 0;
+    padding : 0;
+    gap : 10px;
+    display : flex;
+    align-items : center;
+    justify-content : flex-end;
+`;
+
+export const ItemEdit = styled.div`
+    width : 50px;
+    height : 30px;
+    font-size : 16px;
+    color : #aaa;
+    border : 1px solid #ccc;
+    border-radius : 10px;
+    cursor : pointer;
+    transition : all 0.3s ease;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+
+    &:hover {
+        background-color : #ccc;
+        color : #777;
+    }
 `;
 
 export const ItemDelete = styled.div`

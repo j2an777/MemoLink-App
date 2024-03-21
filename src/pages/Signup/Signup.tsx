@@ -5,6 +5,7 @@ import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 import { FirebaseError } from "firebase/app";
 import Overlay from "../../components/Overlay/Overlay";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 export default function Signup() {
 
@@ -42,6 +43,16 @@ export default function Signup() {
       await updateProfile(credentials.user, {
         displayName: name
       });
+
+      const db = getFirestore();
+
+      // 회원가입 성공과 동시에 users문서 내 avatarUrl, introduce 필드 초기화 생성
+      await setDoc(doc(db, 'users', credentials.user.uid), {
+        avatarUrl: '',
+        introduce: '',
+        username: name,
+      });
+
       setIsOk(true);
     } catch (error) {
       if (error instanceof FirebaseError) {

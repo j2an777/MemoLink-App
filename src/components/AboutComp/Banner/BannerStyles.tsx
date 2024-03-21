@@ -43,13 +43,13 @@ export const BannersubTitle = styled.p`
 `;
 
 export const BannerBtn = styled.button`
-    width : 150px;
-    height : 50px;
+    width : 250px;
+    height : 100px;
     background-color : #69F266;
     border-radius : 20px;
     border : none;
     color : white;
-    font-size : 20px;
+    font-size : 36px;
     box-shadow : 0px 0px 20px rgba(0, 0, 0, 0.1);
     margin-top : 40px;
     transition : all 0.3s ease;
