@@ -198,7 +198,7 @@ const ScriptList = () => {
           <FolderTitle>
             { selectedFolderName }
           </FolderTitle>
-          <FolderStars isActive={ isStarActive } onClick={ toggleStar }>
+          <FolderStars $isActive={ isStarActive } onClick={ toggleStar }>
             <p>Star</p>
             <img src={ isStarActive ? "/starFill.svg" : "/star.svg" }/>
           </FolderStars>

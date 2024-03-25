@@ -1,10 +1,10 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { downAnime } from "../../ScriptComp/ScriptCompStyles";
 
 
 export const Wrapper = styled.div`
     position : fixed;
-    top : 10%;
+    top : 2%;
     left : 25%;
     width : 800px;
     height : 600px;
@@ -99,29 +99,41 @@ export const SaveOrEdit = styled.div`
     justify-content : flex-end;
 `;
 
-export const SaveBtn = styled.div`
-    width : 100%;
-    height : 10%;
-    margin : 20px 0 0 0;
-    padding : 0;
-    display : flex;
-    align-items : center;
-    justify-content : center;
-    background-color : #03D100;
-    border-radius : 15px;
-    color : white;
-    transition : all 0.3s ease;
-    font-size : 24px;
-    letter-spacing : 2px;
-    font-weight : bold;
+interface SaveBtnProps {
+    linx : boolean;
+}
 
+export const SaveBtn = styled.button<SaveBtnProps>`
+    width: 100%;
+    height: 10%;
+    margin: 20px 0 0 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    color: white;
+    transition: all 0.3s ease;
+    font-size: 24px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    border : none;
+    background-color: ${(props) => (props.linx ? "#00B327" : "#03D100")};
+    
     &:hover {
-        cursor : pointer;
-        background-color : #00B327;
+        cursor: ${(props) => (props.linx ? "default" : "pointer")};
+        background-color: ${(props) => (props.linx ? "#00B327" : "#00B327")};
     }
+    
+    ${(props) =>
+        props.linx &&
+        css`
+            pointer-events: none;
+            border : none;
+        `}
 
     &:active {
-        transform : scale(0.9);
+        transform: ${(props) => (props.linx ? "none" : "scale(0.9)")};
     }
 `;
 

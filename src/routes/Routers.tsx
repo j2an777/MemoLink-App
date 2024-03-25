@@ -5,6 +5,7 @@ import MyPage from "../pages/MyPage/MyPage";
 import Signup from "../pages/Signup/Signup";
 import Linx from "../pages/Linx/Linx";
 import About from "../pages/About/About";
+import Review from "../pages/Review/Review";
 
 export const routers = [
     {
@@ -24,7 +25,7 @@ export const routers = [
         Element: <Signup />
     },
     {
-        path:"/profile",
+        path:"/mypage",
         Element: <MyPage />
     },
     {
@@ -34,5 +35,9 @@ export const routers = [
     {
         path:"/about",
         Element: <About />
+    },
+    {
+        path:"/review",
+        Element: <Review />
     }
 ];

@@ -18,7 +18,9 @@ export default function Nav() {
       }
     });
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const handleLogout = () => {
@@ -27,6 +29,14 @@ export default function Nav() {
     if (logoutOk) {
       signOut(auth);
       setIsLoggedIn(false);
+      navigate("/login");
+    }
+  };
+
+  const handleNavigation = (path: string) => {
+    if (isLoggedIn) {
+      navigate(path);
+    } else {
       navigate("/login");
     }
   };
@@ -44,11 +54,11 @@ export default function Nav() {
             <span>MemoLinx</span>
           </HomeItem>
         </Link>
-        <Link to="/script">
+        <div onClick={() => handleNavigation("/script")}>
           <AboutItem>
             Script
           </AboutItem>
-        </Link>
+        </div>
       </MenuOne>
       <MenuTwo>
         <Link to="/about">
@@ -56,11 +66,11 @@ export default function Nav() {
             About
           </AboutItem>
         </Link>
-        <Link to="/profile">
+        <div onClick={() => handleNavigation("/mypage")}>
           <ProfileItem>
             MyPage
           </ProfileItem>
-        </Link>
+        </div>
         {isLoggedIn ? (
           <LoginItem onClick={handleLogout}>Logout</LoginItem>
         ) : (

@@ -1,4 +1,4 @@
-import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDocs, increment, query, updateDoc, where } from 'firebase/firestore';
 import { FileData } from '../../../types/fileData';
 import { FpBack } from '../../ScriptComp/ScriptCompStyles';
 import { PcContentBox, PcTagBox, PcTagContainer, PcTitleBox, PopupContent, SaveBtn, Wrapper } from './SelectedNpStyles';
@@ -25,6 +25,10 @@ const SelectedNotePopup: React.FC<SelectedNotePopupProps> = ({ note, onClose }) 
   const onHandleLinx = async (noteId: string, currentLinxValue: boolean, e: React.MouseEvent) => {
     e.preventDefault();
 
+    const user = auth.currentUser;
+
+    if (!user) return;
+
     const foldersQuery = query(
       collection(db, "folders"),
       where("userId", "==", auth.currentUser?.uid),
@@ -46,6 +50,13 @@ const SelectedNotePopup: React.FC<SelectedNotePopupProps> = ({ note, onClose }) 
         });
 
         await updateDoc(folderDocRef, { files: updatedFiles });
+
+        if (!currentLinxValue) {
+          const userRef = doc(db, "users", user.uid);
+          await updateDoc(userRef, {
+            count: increment(1)
+          });
+        }
 
         dispatch(fetchFiles(selectedFolderName));
 
@@ -73,7 +84,9 @@ const SelectedNotePopup: React.FC<SelectedNotePopupProps> = ({ note, onClose }) 
               ))}
             </PcTagContainer>
             <PcContentBox>{stripHtml(note.content)}</PcContentBox>
-            <SaveBtn onClick={(e) => onHandleLinx(note.id, note.linx, e)}>{note.linx ? "업로드 완료" : "업로드"}</SaveBtn>
+            <SaveBtn linx={ note.linx } onClick={(e) => onHandleLinx(note.id, note.linx, e)}>
+              {note.linx ? "업로드 완료" : "업로드"}
+            </SaveBtn>
         </PopupContent>
     </Wrapper>
   )

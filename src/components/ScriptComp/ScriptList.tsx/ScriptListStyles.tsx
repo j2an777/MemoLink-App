@@ -38,7 +38,7 @@ export const FolderTitle = styled.h1`
 `;
 
 interface FolderStarsProps {
-    isActive: boolean;
+    $isActive: boolean;
 }
 
 export const FolderStars = styled.div<FolderStarsProps>`
@@ -50,7 +50,7 @@ export const FolderStars = styled.div<FolderStarsProps>`
     align-items : center;
     justify-content : center;
     border-radius : 15px;
-    border : 1px solid ${props => props.isActive ? '#03d100' : '#78EE76'};
+    border : 1px solid ${props => props.$isActive ? '#03d100' : '#78EE76'};
     background-color : white;
     transition : all 0.3s ease;
 
@@ -58,7 +58,7 @@ export const FolderStars = styled.div<FolderStarsProps>`
         font-size : 20px;
         font-family : 'Poppins';
         font-weight : 500;
-        color : ${props => props.isActive ? '#03d100' : '#78EE76' };
+        color : ${props => props.$isActive ? '#03d100' : '#78EE76' };
         padding : 0;
         margin : 0;
     }
@@ -122,7 +122,7 @@ export const FilePlus = styled.div`
 
 export const NotePopupWrapper = styled.div`
     position : fixed;
-    top : 10%;
+    top : 2%;
     left : 25%;
     width : 800px;
     height : 600px;

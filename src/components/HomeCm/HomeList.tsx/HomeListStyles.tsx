@@ -21,16 +21,16 @@ export const LinxListContainer = styled.div`
 `;
 
 export const LinxBox = styled.div`
-    width : 100%;
-    height : 200px;
-    margin : 0;
+    width : 450px;
+    min-height : 200px;
+    margin : 0 0 20px 0;
     padding : 20px;
     box-sizing : border-box;
     display : flex;
     flex-direction : column;
     justify-content : center;
     border-radius : 20px;
-    border : 1px solid #eee;
+    box-shadow : 0px 0px 20px rgba(0, 0, 0, 0.15);
 `;
 
 export const LinxUserInfo = styled.div`
@@ -95,8 +95,12 @@ export const LinxTitle = styled.p`
 `;
 
 export const LinxContent = styled.p`
+    width : 100%;
+    height : 100%;
     font-size : 16px;
     font-family : 'pretendard'
     font-weight : medium;
     color : black;
+    word-break : break-word;
+    overflow-wrap : break-word;
 `;

@@ -45,12 +45,14 @@ export default function Signup() {
       });
 
       const db = getFirestore();
+      const count = 0;
 
       // 회원가입 성공과 동시에 users문서 내 avatarUrl, introduce 필드 초기화 생성
       await setDoc(doc(db, 'users', credentials.user.uid), {
         avatarUrl: '',
         introduce: '',
         username: name,
+        count : count,
       });
 
       setIsOk(true);

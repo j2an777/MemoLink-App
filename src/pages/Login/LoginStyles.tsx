@@ -55,7 +55,7 @@ export const Input = styled.input`
     border : 1px solid #ccc;
     outline : none;
     width : 50%;
-    font-size : 16px;
+    font-size : 12px;
     &[type="submit"] {
         margin-top : 20px;
         font-weight : bold;
@@ -63,6 +63,7 @@ export const Input = styled.input`
         background-color : #03D100;
         color : white;
         transition : all 0.3s ease;
+        font-size : 16px;
         &:hover {
             opacity : 0.8;
         }

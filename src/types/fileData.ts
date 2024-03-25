@@ -9,6 +9,11 @@ export interface FileData {
     createdAt: string;
 }
 
+export interface LinxFileData extends FileData {
+    username : string;
+    avatarUrl: string;
+}
+
 export interface LinxData extends FileData {
     import : boolean;
 }

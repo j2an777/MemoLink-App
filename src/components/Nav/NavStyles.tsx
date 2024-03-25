@@ -1,24 +1,27 @@
 import styled from "styled-components";
 
-
 export const Wrapper = styled.div`
-    position : fixed;
-    top : 0;
-    left : 0;
-    z-index : 500;
-    width : 100%;
-    height : 8vh;
-    display : flex;
-    padding : 0px 100px;
-    align-items : center;
-    margin : 10px 0 0 0;
-    box-sizing : border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 500;
+    width: 100%;
+    height: 8vh;
+    display: flex;
+    padding: 0px 100px;
+    align-items: center;
+    margin: 10px 0 0 0;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: #03D100;
+    font-size: 1.2rem;
+    font-weight: 600;
 
     a {
-        text-decoration : none;
-        color : #03D100;
-        font-size : 1.2rem;
-        font-weight : 600;
+        text-decoration: none;
+        color: #03D100;
+        font-size: 1.2rem;
+        font-weight: 600;
     }
 `;
 
@@ -44,7 +47,11 @@ export const MenuTwo = styled.div`
     align-items : center;
 `;
 
-export const AboutItem = styled.div``;
+export const AboutItem = styled.div`
+    &:hover {
+        cursor : pointer;
+    }
+`;
 
 export const HomeItem = styled.div`
     width : 200px;
@@ -66,9 +73,17 @@ export const HomeItem = styled.div`
         margin : 0;
         padding : 0;
     }
+
+    &:hover {
+        cursor : pointer;
+    }
 `;
 
-export const ProfileItem = styled.div``;
+export const ProfileItem = styled.div`
+    &:hover {
+        cursor : pointer;
+    }
+`;
 
 export const LoginItem = styled.div`
     color : #03D100;

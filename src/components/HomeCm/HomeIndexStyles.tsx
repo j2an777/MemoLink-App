@@ -4,9 +4,9 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
     width : 100%;
     height : 100%;
-    padding : 15vh 0 0 0;
+    padding : 0;
     box-sizing : border-box;
-    margin : 0;
+    margin : 15vh 0 0 0;
     display : flex;
     align-items : center;
     justify-content : center;
@@ -39,5 +39,6 @@ export const HomeRightContainer = styled.div`
     margin : 0;
     padding : 0;
     display : flex;
-    justify-content : center;
+    flex-direction : column;
+    align-items : center;
 `;

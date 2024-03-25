@@ -51,7 +51,7 @@ export default function ProfileTop() {
                     // 상태 변화 시 처리, 예를 들어 프로그레스 바 업데이트
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
-                  },
+                },
                 (error) => {
                   // 업로드 중 에러 처리
                   console.error("Upload failed", error);

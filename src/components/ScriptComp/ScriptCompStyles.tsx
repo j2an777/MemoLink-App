@@ -67,14 +67,18 @@ export const FpPopupBox = styled.form`
 `;
 
 export const FpBack = styled.div`
-    width : 30px;
+    width : 100%;
     height : 30px;
     background-color : transparent;
     margin : 0;
     padding : 0;
+    display : flex;
+    align-items : center;
+    justify-content : flex-end;
+
     svg {
-        width : 100%;
-        height : 100%;
+        width : 30px;
+        height : 30px;
     }
 
     &:hover {

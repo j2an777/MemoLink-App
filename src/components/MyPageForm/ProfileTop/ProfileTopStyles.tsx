@@ -132,6 +132,6 @@ export const ProFileEdit = styled.div`
 
     &:hover {
         cursor : pointer;
-        background-color : #67DF65;
+        background-color : #00B327;
     }
 `;

@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { fetchFiles } from "../../../../Store/FileStore/fileSlice";
 import SelectedNotePopup from "../../../Modal/SelectedNotePopup/SelectedNotePopup";
 import Overlay from "../../../Overlay/Overlay";
-import { openPopup } from "../../../../Store/EditStore/editPopupSlice";
+import EditedNotePopup from "../../../Modal/EditedNotePopup/EditedNotePopup";
 
 interface ScriptItemProps {
   selectedFolderName: string;
@@ -21,6 +21,8 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
   const dispatch = useAppDispatch();
   const [isNotePopup, setIsNotePopup] = useState(false);
   const [selectedNote, setSelectedNote] = useState<FileData | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editNote, setEditNote] = useState<FileData | null>(null);
 
   useEffect(() => {
     if (selectedFolderName) {
@@ -118,7 +120,9 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
 
   const handleEditClick = (note: FileData, e: React.MouseEvent) => {
     e.preventDefault();
-    dispatch(openPopup(note));
+    e.stopPropagation();
+    setEditNote(note);
+    setEditOpen(true);
   };
   
   return (
@@ -140,7 +144,7 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
                   onClick={(e) => onHandleStar(note.id, note.stars, e)} />
               </ItemTop>
               <ItemMiddle>
-                <ItemScript>{ cleanContent }</ItemScript>
+                <ItemScript>{ truncate(cleanContent, 100) }</ItemScript>
                 <ItemTagsContainer>
                   { note.tags.map((tag, tagIndex) => (
                     <span key={ tagIndex }>{ tag }</span>
@@ -162,6 +166,12 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
             <Overlay />
             <SelectedNotePopup note={selectedNote} onClose={closePopup} />
           </>
+        )}
+        {editOpen && editNote && (
+          <EditedNotePopup 
+            editNote={editNote} 
+            setEditOpen={setEditOpen}
+          />
         )}
     </Wrapper>
   );

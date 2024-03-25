@@ -84,7 +84,7 @@ export const ItemMiddle = styled.div`
 `;
 
 export const ItemScript = styled.p`
-    width : 100%;
+    width : 250px;
     height : 70%;
     margin : 0;
     padding : 0;
@@ -95,11 +95,12 @@ export const ItemScript = styled.p`
 `;
 
 export const ItemTagsContainer = styled.div`
-    width : 100%;
+    width : 250px;
     height : 30%;
     margin : 0;
     padding : 0;
     display : flex;
+    flex-wrap : wrap;
     align-items : center;
     justify-content : flex-start;
 
