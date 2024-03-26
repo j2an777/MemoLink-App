@@ -42,3 +42,34 @@ export const HomeRightContainer = styled.div`
     flex-direction : column;
     align-items : center;
 `;
+
+export const SurveyBox = styled.div`
+    width : 50px;
+    height : 50px;
+    margin : 0;
+    padding : 0;
+    position : absolute;
+    bottom : 50px;
+    right : 30px;
+    border-radius : 50%;
+    background : #fff;
+    box-shadow : 0 0 10px rgba(0, 0, 0, 0.1);
+    display : none;
+    z-index: 900;
+
+    &:hover {
+        cursor : pointer;
+    }
+
+    @media (max-width : 855px) {
+        display : flex;
+        align-items : center;
+        justify-content : center;
+    }
+`;
+
+export const ToSurvey = styled.img`
+    width : 30px;
+    height : 30px;
+    object-fit : contain;    
+`;

@@ -2,10 +2,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { Error, Form, Input, LoginBox, PlatformItem, PlatformLogin, Switcher, Title, Wrapper } from "./LoginStyles";
 import { useState } from "react";
 import { GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { FirebaseError } from "firebase/app";
 import LoadingScreen from "../../components/Loader/LoadingScreen";
 import { getErrorMessage } from "./LoginErrorData";
+import { doc, setDoc } from "firebase/firestore";
 
 export default function Login() {
 
@@ -50,7 +51,17 @@ export default function Login() {
   const onGithubLogin = async () => {
     try {
       const gitProvider = new GithubAuthProvider();
-      await signInWithPopup(auth, gitProvider);
+      const result = await signInWithPopup(auth, gitProvider);
+
+      const user = result.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: user.displayName,
+        avatarUrl: user.photoURL,
+        introduce: "",
+        count: 0,
+      })
+      
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -63,7 +74,17 @@ export default function Login() {
   const onGoogleLogin = async () => {
     try {
       const googleProvider = new GoogleAuthProvider();
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+
+      const user = result.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        username: user.displayName,
+        avatarUrl: user.photoURL,
+        introduce: "",
+        count: 0,
+      })
+
       navigate("/");
     } catch (error) {
       console.log(error);

@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
-import { AboutItem, HomeItem, LoginItem, MenuOne, MenuTwo, ProfileItem, Wrapper } from "./NavStyles";
-import { useEffect, useState } from "react";
+import { AboutItem, DropdownMenu, HamburgerIcon, HomeItem, LoginItem, MenuOne, MenuTwo, ProfileItem, Wrapper } from "./NavStyles";
+import { useEffect, useRef, useState } from "react";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
 
@@ -8,6 +8,27 @@ export default function Nav() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // 외부 클릭 핸들러 함수를 메모이징합니다.
+  const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+    if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      setMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    // 클릭 이벤트 리스너 등록
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    return () => {
+      // 클린업 함수로 이벤트 리스너 제거
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -31,6 +52,7 @@ export default function Nav() {
       setIsLoggedIn(false);
       navigate("/login");
     }
+    setMenuOpen(false);
   };
 
   const handleNavigation = (path: string) => {
@@ -39,6 +61,11 @@ export default function Nav() {
     } else {
       navigate("/login");
     }
+    setMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
@@ -81,6 +108,23 @@ export default function Nav() {
           </Link>
         )}
       </MenuTwo>
+      <HamburgerIcon onClick={toggleMenu}>
+        <div></div>
+        <div></div>
+        <div></div>
+      </HamburgerIcon>
+      <DropdownMenu ref={menuRef} className={menuOpen ? 'active' : ''}>
+        {/* 드롭다운 메뉴 내용 */}
+        <Link to="/" onClick={() => setMenuOpen(!menuOpen)}>Home</Link>
+        <div onClick={() => handleNavigation("/script")}>Script</div>
+        <Link to="/about" onClick={() => setMenuOpen(!menuOpen)}>About</Link>
+        <div onClick={() => handleNavigation("/mypage")}>MyPage</div>
+        {isLoggedIn ? (
+          <div onClick={handleLogout}>Logout</div>
+        ) : (
+          <Link to="/login" onClick={() => setMenuOpen(!menuOpen)}>Login</Link>
+        )}
+      </DropdownMenu>
     </Wrapper>
   )
 }

@@ -26,12 +26,26 @@ export const BannerContents = styled.div`
     justify-content : center;
     margin : 0;
     padding : 0;
+
+    @media (max-width: 768px) {
+        top : 50%;
+        left : 50%;
+        transform : translate(-50%, 0);
+        display : flex;
+        flex-direction : row;
+        justify-content : center;
+        align-items : center;
+    }
 `;
 
 export const BannerTitle = styled.h1`
     font-size : 3rem;
     font-weight : 800;
     line-height : 60px;
+
+    @media (max-width: 768px) {
+        display : none;
+    }
 `;
 
 export const BannersubTitle = styled.p`
@@ -40,6 +54,10 @@ export const BannersubTitle = styled.p`
     font-weight : 600;
     line-height : 20px;
     color : #444;
+
+    @media (max-width: 768px) {
+        display : none;
+    }
 `;
 
 export const BannerBtn = styled.button`
@@ -57,5 +75,12 @@ export const BannerBtn = styled.button`
     &:hover {
         cursor : pointer;
         background-color : #67DF65;
+    }
+
+    @media (max-width: 1024px) {
+        width : 160px;
+        height : 60px;
+        font-size : 24px;
+        margin-top : 20px;
     }
 `;

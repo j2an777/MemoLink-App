@@ -31,6 +31,12 @@ export const InTitle = styled.h1`
     font-weight : 700;
     color : #444;
     margin-bottom : 20px;
+
+    @media (max-width: 768px) {
+        width : 500px;
+        text-align : center;
+        font-size : 1.5rem;
+    }
 `;
 
 export const InsubTitle = styled.h3`
@@ -38,6 +44,12 @@ export const InsubTitle = styled.h3`
     color : #666;
     font-weight : 600;
     margin-bottom : 50px;
+
+    @media (max-width: 768px) {
+        width : 200px;
+        font-size : 1rem;
+        text-align : center;
+    }
 `;
 
 export const InComponents = styled.div`
@@ -48,6 +60,13 @@ export const InComponents = styled.div`
     display : flex;
     justify-content : space-evenly;
     align-items : center;
+
+    @media (max-width: 768px) {
+        display : grid;
+        grid-template-columns : 1fr 1fr;
+        justify-content : center;
+        align-items : center;
+    }
 `;
 
 export const InItem = styled.div`
@@ -58,6 +77,12 @@ export const InItem = styled.div`
     flex-direction : column;
     align-items : center;
     justify-content : center;
+
+    @media (max-width: 768px) {
+        width : 100%;
+        font-size : 1rem;
+        text-align : center;
+    }
 `;
 
 export const InIcon = styled.div`
@@ -89,10 +114,34 @@ export const InIcon2 = styled.div`
         width : 80%;
         height : 80%;
     }
+
+    @media (max-width: 768px) {
+        width : 150px;
+        height : 150px;
+        svg {
+            width : 100%;
+            height : 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        width : 100px;
+        height : 100px;
+        svg {
+            width : 100%;
+            height : 100%;
+        }
+    }
 `;
 
 export const InInfo = styled.p`
     font-size : 1rem;
     color : #666;
     font-weight : 600;
+
+    @media (max-width: 768px) {
+        width : 200px;
+        font-size : 1rem;
+        text-align : center;
+    }
 `;

@@ -31,6 +31,18 @@ export const LoginBox = styled.div`
     align-items: center;
     margin : 100px 0 0 0;
     animation: ${upAnime} 0.6s ease forwards;
+
+    @media (max-width : 1300px) {
+        width : 40%;
+    }
+
+    @media (max-width : 769px) {
+        width : 80%;
+    }
+
+    @media (max-width : 480px) {
+        width : 100vw;
+    }
 `;
 
 export const Title = styled.h1`
@@ -67,6 +79,10 @@ export const Input = styled.input`
         &:hover {
             opacity : 0.8;
         }
+    }
+
+    @media (max-width : 480px) {
+        width : 70vw;
     }
 `;
 

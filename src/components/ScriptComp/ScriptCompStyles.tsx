@@ -8,6 +8,7 @@ export const SCompWrapper = styled.div`
     margin : 15px 0 0 0;
     display : flex;
     flex-direction : column;
+
 `;
 
 export const TopContainer = styled.div`
@@ -15,32 +16,39 @@ export const TopContainer = styled.div`
     height : 8vh;
     margin : 0;
     padding : 0;
+
+    @media (max-width : 1200px) {
+        display : none;
+    }
 `;
 
 export const BottomContainer = styled.div`
     width : 100%;
-    height : 92vh;
+    height : 87vh;
     margin : 0;
     padding : 0;
     display : flex;
     flex-direction : rows;
+    
+    @media (max-width : 1200px) {
+        min-height : 100vh;
+        flex-direction : column;
+    }
 `;
 
 export const downAnime = keyframes`
     0% {
         opacity : 0;
-        transform : translateY(-20px);
     }
     100% {
         opacity : 1;
-        transform : translateY(0);
     }
 `;
 
 export const FpPopupWrapper = styled.div`
     position : absolute;
-    top : 33%;
-    left : 41%;
+    top : 50%;
+    left : 50%;
     transform : translate(-50%, -50%);
     animation: ${downAnime} 0.5s ease forwards;
     margin : 0;
@@ -86,6 +94,10 @@ export const FpBack = styled.div`
         svg {
             fill : #fff;
         }
+    }
+
+    @media (max-width : 900px) {
+        justify-content : center;
     }
 `;
 

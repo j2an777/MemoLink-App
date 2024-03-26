@@ -6,6 +6,11 @@ const ScriptWrapper = styled.div`
   max-height : 100vh;
   margin : 0;
   padding : 0;
+  overflow : hidden;
+
+  @media (max-width : 1200px) {
+    overflow-y : auto;
+  }
 `;
 
 export default function Script() {

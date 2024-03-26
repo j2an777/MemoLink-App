@@ -53,7 +53,7 @@ const ScriptList = () => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [isStarActive, setIsStarActive] = useState(false);
 
-  const selectedFolderName = useAppSelector((state) => state?.folder.selectedFolderName);
+  const selectedFolderName = useAppSelector((state) => state?.folder.selectedFolderName || '');
   const dispatch = useAppDispatch();
 
   useEffect(() => {

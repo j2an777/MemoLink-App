@@ -3,22 +3,35 @@ import { downAnime } from "../ScriptCompStyles";
 
 export const Wrapper = styled.div`
     width : 100%;
-    height : 100%;
+    min-height : 100%;
     display : flex;
     flex-direction : column;
     background-color : #EBFFEF;
     border-radius : 30px 0 0 30px;
     margin-top : 20px;
-    padding : 30px 50px;
+    padding : 30px 0;
     box-sizing : border-box;
+
+
+    @media (max-width : 1200px) {
+        width : 100vw;
+        min-height : auto;
+        border-radius : 0;
+    }
 `;
 
 export const FolderTop = styled.div`
     width : 100%;
     height : 50px;
     display : flex;
+    padding : 30px 50px;
     align-items : center;
     justify-content : space-between;
+
+    @media (max-width : 768px) {
+        padding : 0 30px;
+        box-sizing : border-box;
+    }
 `;
 
 export const FolderInfo = styled.div`
@@ -122,8 +135,9 @@ export const FilePlus = styled.div`
 
 export const NotePopupWrapper = styled.div`
     position : fixed;
-    top : 2%;
-    left : 25%;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%, -50%);
     width : 800px;
     height : 600px;
     margin : 0;
@@ -136,6 +150,11 @@ export const NotePopupWrapper = styled.div`
     justify-content : center;
     z-index : 502;
     animation : ${downAnime} 0.3s ease-in-out;
+
+    @media (max-width : 900px) {
+        width : 100vw;
+        height : 500px;
+    }
 `;
 
 export const NPopupBox = styled.form`

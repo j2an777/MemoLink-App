@@ -11,6 +11,10 @@ export const Wrapper = styled.div`
     justify-content : center;
     margin : 0;
     padding : 0;
+
+    @media (max-width: 855px) {
+        display : none;
+    }
 `;
 
 export const ExtraContainer = styled.div`

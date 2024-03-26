@@ -8,6 +8,11 @@ export const Wrapper = styled.div`
     display : flex;
     align-items : center;
     justify-content : center;
+
+    @media (max-width : 855px) {
+        min-height : 60vh;
+    }
+
 `;
 
 export const LinxListContainer = styled.div`
@@ -31,6 +36,11 @@ export const LinxBox = styled.div`
     justify-content : center;
     border-radius : 20px;
     box-shadow : 0px 0px 20px rgba(0, 0, 0, 0.15);
+
+    @media (max-width : 855px) {
+        width : 90%;
+        min-height : 150px;
+    }
 `;
 
 export const LinxUserInfo = styled.div`
@@ -103,4 +113,28 @@ export const LinxContent = styled.p`
     color : black;
     word-break : break-word;
     overflow-wrap : break-word;
+`;
+
+export const EmptyDialog = styled.div`
+    width : 100%;
+    height : 100%;
+    display : flex;
+    flex-direction : column;
+    justify-content : center;
+    align-items : center;
+    margin : 0;
+    padding : 0;
+
+    img {
+        width : 100px;
+        height : 100px;
+        object-fit : contain;
+    }
+
+    span {
+        margin-top : 10px;
+        text-align : center;
+        color : #aaa;
+        font-family : 'pretendard';
+    }
 `;

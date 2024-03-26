@@ -4,8 +4,9 @@ import { downAnime } from "../../ScriptComp/ScriptCompStyles";
 
 export const Wrapper = styled.div`
     position : fixed;
-    top : 2%;
-    left : 25%;
+    top : 50%;
+    left : 50%;
+    transform : translate(-50%, -50%);
     width : 800px;
     height : 600px;
     margin : 0;
@@ -18,6 +19,11 @@ export const Wrapper = styled.div`
     justify-content : center;
     z-index : 502;
     animation : ${downAnime} 0.3s ease-in-out;
+
+    @media (max-width : 900px) {
+        width : 100vw;
+        height : 500px;
+    }
 `;
 
 export const PopupContent = styled.div`

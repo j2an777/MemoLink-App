@@ -10,7 +10,25 @@ export const SSWrapper = styled.div`
     display : flex;
     flex-direction : column;
     align-items : center;
-    overflow : hidden;
+
+    @media (max-width : 1200px) {
+        width : 100vw;
+        min-height : 150px;
+        padding-top : 10vh;
+        flex-direction : row;
+        justify-content : flex-start;
+        align-items : flex-start;
+    }
+
+    @media (max-width : 769px) {
+        flex-direction: column;
+        height: auto;
+        justify-content: center;
+        align-items: center;
+        padding: 0;
+        margin-top: 80px;
+        overflow-y : auto;
+    }
 `;
 
 export const SSTitle = styled.h1`
@@ -19,10 +37,14 @@ export const SSTitle = styled.h1`
     font-weight : 700;
     color : #444;
     margin : 20px 0 20px 0;
+
+    @media (max-width : 768px) {
+        display : none;
+    }
 `;
 
 export const FolderPlus = styled.div`
-    width : 80%;
+    width : 170px;
     height : 40px;
     display : flex;
     align-items : center;
@@ -40,6 +62,16 @@ export const FolderPlus = styled.div`
         svg path{
             fill : #555;
         }
+    }
+
+    @media (max-width : 1200px) {
+        width : 200px;
+        height : 40px;
+        margin : 17px 0 0 30px;
+    }
+
+    @media (max-width : 768px) {
+        margin : 0 0 10px 0;
     }
 `;
 
@@ -84,6 +116,19 @@ export const FpContainer = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+
+    @media (max-width : 1200px) {
+        flex-direction : row;
+        justify-content : flex-start;
+        padding-left : 50px;
+        overflow-x : auto;
+    }
+
+    @media (max-width : 768px) {
+        overflow-x : auto;
+        flex-wrap : wrap;
+        overflow-y : auto;
+    }
 `;
 
 export const FolderItem = styled.div`
@@ -108,11 +153,26 @@ export const FolderItem = styled.div`
         background-color : #03D100;
         color : white;
     }
+
+    @media (max-width : 1200px) {
+        width : 120px;
+        height : 50px;
+        margin-right : 20px;
+    }
+
+    @media (max-width : 768px) {
+        width : 80px;
+        height : 40px;
+    }
 `;
 
 export const FolderName = styled.p`
     font-size : 24px;
     font-family : 'Poppins';
+
+    @media (max-width : 768px) {
+        font-size : 18px;
+    }
 `;
 
 export const DeleteFolder = styled.button`

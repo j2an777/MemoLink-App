@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { LinxFileData } from "../../../types/fileData"
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { LinxBox, LinxContent, LinxListContainer, LinxNoteInfo, LinxTitle, LinxUserInfo, UserAvatar, UserCreatedAt, UserMetaInfo, UserName, Wrapper } from "./HomeListStyles";
+import { EmptyDialog, LinxBox, LinxContent, LinxListContainer, LinxNoteInfo, LinxTitle, LinxUserInfo, UserAvatar, UserCreatedAt, UserMetaInfo, UserName, Wrapper } from "./HomeListStyles";
 import { UserData } from "../../../types/userData";
 
 export default function HomeList() {
@@ -70,7 +70,10 @@ export default function HomeList() {
           ))}
         </LinxListContainer>
       ) : (
-        <p>No linx files found.</p>
+        <EmptyDialog>
+          <img src="/face.svg" />
+          <span>로그인 후 이용바랍니다.</span>
+        </EmptyDialog>
       )}
     </Wrapper>
   );

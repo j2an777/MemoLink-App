@@ -13,6 +13,10 @@ export const Wrapper = styled.div`
     border-radius : 8px;
     padding : 30px 0;
     box-sizing : border-box;
+
+    @media (max-width: 855px) {
+        display : none;
+    }
 `;
 
 interface ProgressProps {

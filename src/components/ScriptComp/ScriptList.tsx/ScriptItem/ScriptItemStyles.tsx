@@ -4,13 +4,21 @@ export const Wrapper = styled.div`
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 20px;
+    padding: 20px 50px;
     box-sizing: border-box;
     display: flex;
     flex-wrap: wrap; 
     gap: 30px;
-    overflow-x: auto;
-    overflow-y: auto;
+    overflow-y : auto;
+
+    @media (max-width : 768px) {
+        width : 100vw;
+        height : 100%;
+        display : flex;
+        justify-content : center;
+        padding : 30px 0;
+        box-sizing : border-box;
+    }
 `;
 
 export const ScriptItemContainer = styled.div`
@@ -33,6 +41,11 @@ export const ScriptItemContainer = styled.div`
 
     &:active {
         transform: scale(0.9);
+    }
+
+    @media (max-width : 768px) {
+        width : 200px;
+        height : 300px;
     }
 `;
 
@@ -182,5 +195,43 @@ export const ItemDelete = styled.div`
     &:hover {
         background-color : #ccc;
         color : #777;
+    }
+`;
+
+export const NoFolderName = styled.div`
+    width : 100%;
+    height : 100%;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+
+    @media (max-width : 768px) {
+        flex-direction : column;
+    }
+
+    img {
+        width : 100px;
+        height : 100px;
+        margin : 0;
+        padding : 0;
+        object-fit : contain;
+        transition: all 0.3s ease;
+
+        @media (max-width : 768px) {
+            width : 50px;
+            height : 50px;
+        }
+    }
+    
+    p {
+        text-align : center;
+        font-size : 24px;
+        font-weight : bold;
+        font-family : 'pretendard';
+        color : #ccc;
+
+        @media (max-width : 768px) {
+            font-size : 16px;
+        }
     }
 `;

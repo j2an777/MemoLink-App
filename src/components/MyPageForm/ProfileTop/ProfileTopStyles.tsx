@@ -10,6 +10,11 @@ export const Wrapper = styled.div`
     justify-content : center;
     align-items : center;
     border-bottom : 1px solid #ddd;
+
+    @media (max-width: 850px) {
+        width : 100vw;
+        height : 100%;
+    }
 `;
 
 export const ProFileAvatarContainer = styled.div`
@@ -21,7 +26,7 @@ export const ProFileAvatarContainer = styled.div`
     justify-content : center;
 `;
 
-export const ProFileImg = styled.div`
+export const ProFileImg = styled.circle`
     width : 100px;
     height : 100px;
     border-radius : 50%;
@@ -38,6 +43,19 @@ export const ProFileImg = styled.div`
         border-radius : 50%;
         object-fit : cover;
         object-position : bottom;
+    }
+
+    @media (max-width: 850px) {
+        width : 80px;
+        height : 80px;
+
+        img {
+            width : 100%;
+            height : 100%;
+            border-radius : 50%;
+            object-fit : cover;
+            object-position : bottom;
+        }
     }
 `;
 
@@ -77,6 +95,10 @@ export const ProFileName = styled.h2`
     font-family : 'pretendard';
     color : black;
     margin-bottom : 10px;
+
+    @media (max-width : 500px) {
+        font-size : 20px;
+    }
 `;
 
 export const ProFileEditContainer = styled.div`
@@ -98,6 +120,10 @@ export const ProFileMessage = styled.p`
     font-weight : 500;
     margin : 0;
     padding : 0;
+
+    @media (max-width : 500px) {
+        font-size : 16px;
+    }
 `;
 
 export const ProFileEditMessage = styled.input`
@@ -114,10 +140,14 @@ export const ProFileEditMessage = styled.input`
     &::placeholder {
         color : #ccc;
     }
+
+    @media (max-width : 500px) {
+        font-size : 16px;
+    }
 `;
 
 export const ProFileEdit = styled.div`
-    width : 15%;
+    width : 80px;
     height : 100%;
     padding : 10px 0;
     outline : none;
@@ -133,5 +163,10 @@ export const ProFileEdit = styled.div`
     &:hover {
         cursor : pointer;
         background-color : #00B327;
+    }
+
+    @media (max-width : 500px) {
+        width : 60px;
+        font-size : 14px;
     }
 `;

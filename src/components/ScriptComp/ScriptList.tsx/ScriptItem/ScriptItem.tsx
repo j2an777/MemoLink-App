@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ItemBottom, ItemDate, ItemDelete, ItemEdit, ItemMiddle, ItemScript, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ItemUpdateBox, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
+import { ItemBottom, ItemDate, ItemDelete, ItemEdit, ItemMiddle, ItemScript, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ItemUpdateBox, NoFolderName, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
 import { auth, db } from "../../../../firebase";
 import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { FileData } from "../../../../types/fileData";
@@ -127,40 +127,47 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
   
   return (
     <Wrapper>
-        {filteredNotes.map((note, index) => {
-          // 'createdAt'이 유효한 날짜인지 확인합니다.
-          const cleanContent = stripHtml(note.content);
-
-          const truncate = (str: string, n: number) => {
-            return str?.length > n ? str.substr(0, n - 1) + "..." : str;
-          };
-
-          return (
-            <ScriptItemContainer key={ index } onClick={() => handleNoteClick(note)}>
-              <ItemTop>
-                <ItemTitle>{ truncate(note.title, 10) }</ItemTitle>
-                <ItemStar
-                  src={ note.stars ? "/starFill.svg" : "/star.svg" }
-                  onClick={(e) => onHandleStar(note.id, note.stars, e)} />
-              </ItemTop>
-              <ItemMiddle>
-                <ItemScript>{ truncate(cleanContent, 100) }</ItemScript>
-                <ItemTagsContainer>
-                  { note.tags.map((tag, tagIndex) => (
-                    <span key={ tagIndex }>{ tag }</span>
-                  )) }
-                </ItemTagsContainer>
-              </ItemMiddle>
-              <ItemBottom>
-                <ItemDate>{ note.createdAt }</ItemDate>
-                <ItemUpdateBox>
-                  <ItemEdit onClick={(e) => handleEditClick(note, e)}>수정</ItemEdit>
-                  <ItemDelete onClick={(e) => onHandleDoc(note.id, e)}>삭제</ItemDelete>
-                </ItemUpdateBox>
-              </ItemBottom>
-            </ScriptItemContainer>
-          );
-        })}
+        {selectedFolderName ? (
+          filteredNotes.map((note, index) => {
+            // 'createdAt'이 유효한 날짜인지 확인합니다.
+            const cleanContent = stripHtml(note.content);
+          
+            const truncate = (str: string, n: number) => {
+              return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+            };
+          
+            return (
+              <ScriptItemContainer key={ index } onClick={() => handleNoteClick(note)}>
+                <ItemTop>
+                  <ItemTitle>{ truncate(note.title, 10) }</ItemTitle>
+                  <ItemStar
+                    src={ note.stars ? "/starFill.svg" : "/star.svg" }
+                    onClick={(e) => onHandleStar(note.id, note.stars, e)} />
+                </ItemTop>
+                <ItemMiddle>
+                  <ItemScript>{ truncate(cleanContent, 100) }</ItemScript>
+                  <ItemTagsContainer>
+                    { note.tags.map((tag, tagIndex) => (
+                      <span key={ tagIndex }>{ tag }</span>
+                    )) }
+                  </ItemTagsContainer>
+                </ItemMiddle>
+                <ItemBottom>
+                  <ItemDate>{ note.createdAt }</ItemDate>
+                  <ItemUpdateBox>
+                    <ItemEdit onClick={(e) => handleEditClick(note, e)}>수정</ItemEdit>
+                    <ItemDelete onClick={(e) => onHandleDoc(note.id, e)}>삭제</ItemDelete>
+                  </ItemUpdateBox>
+                </ItemBottom>
+              </ScriptItemContainer>
+            );
+          })
+        ) : (
+          <NoFolderName>
+            <img src="/nofile.svg" />
+            <p>인식된 폴더가 없습니다. <br/>폴더 생성 및 클릭 해주세요.</p>
+          </NoFolderName>
+        )}
         {isNotePopup && selectedNote && (
           <>
             <Overlay />

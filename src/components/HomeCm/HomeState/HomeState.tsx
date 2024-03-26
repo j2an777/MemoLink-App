@@ -37,6 +37,8 @@ export default function HomeState() {
         } else {
           console.log('No such user!');
         }
+      } else {
+        setLinxCount(0);
       }
     }
 
@@ -45,7 +47,11 @@ export default function HomeState() {
   }, [countPoint]);
 
   const toScript = () => {
-    navigate("/script");
+    if (auth.currentUser) {
+      navigate("/script");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
