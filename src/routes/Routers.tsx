@@ -3,41 +3,43 @@ import Login from "../pages/Login/Login";
 import Script from "../pages/Script/Script";
 import MyPage from "../pages/MyPage/MyPage";
 import Signup from "../pages/Signup/Signup";
-import Linx from "../pages/Linx/Linx";
 import About from "../pages/About/About";
 import Review from "../pages/Review/Review";
 
 export const routers = [
     {
         path:"/",
-        Element: <Home />
+        Element: <Home />,
+        isProtected: false,
     },
     {
         path:"/script",
-        Element: <Script />
+        Element: <Script />,
+        isProtected: true,
     },
     {
         path:"/login",
-        Element: <Login />
+        Element: <Login />,
+        isProtected: false,
     },
     {
         path:"/signup",
-        Element: <Signup />
+        Element: <Signup />,
+        isProtected: false,
     },
     {
         path:"/mypage",
-        Element: <MyPage />
-    },
-    {
-        path:"/linx",
-        Element: <Linx />    
+        Element: <MyPage />,
+        isProtected: true,
     },
     {
         path:"/about",
-        Element: <About />
+        Element: <About />,
+        isProtected: false,
     },
     {
         path:"/review",
-        Element: <Review />
+        Element: <Review />,
+        isProtected: false,
     }
 ];

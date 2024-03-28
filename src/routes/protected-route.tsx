@@ -1,15 +1,31 @@
 import { Navigate } from "react-router-dom";
 import { auth } from "../firebase";
+import { ReactElement, useEffect, useState } from "react";
+import LoadingScreen from "../components/Loader/LoadingScreen";
 
-export default function ProtectedRoute({ children } : { children: React.ReactNode; }) {
+interface ProtectedRouteProps {
+  element: ReactElement;
+}
 
-    const user = auth.currentUser;
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
 
-    if (user === null) {
-        return <Navigate to="/login" />;
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        setIsAuthenticated(!!user);
+        setIsLoading(false);
+      });
+
+      return () => unsubscribe();
+    }, []);
+
+    if (isLoading) {
+      return <LoadingScreen />;
     }
 
-    return (
-      children
-    )
+    return isAuthenticated ? element : <Navigate to="/login" replace />;
 }
+
+export default ProtectedRoute;

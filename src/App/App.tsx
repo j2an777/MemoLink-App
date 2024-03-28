@@ -6,6 +6,7 @@ import LoadingScreen from "../components/Loader/LoadingScreen";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "../routes/Layout";
 import { routers } from "../routes/Routers";
+import ProtectedRoute from "../routes/protected-route";
 
 const Wrapper = styled.div`
   width : 100%;
@@ -43,7 +44,11 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               {routers.map((route) => (
-                <Route key={route.path} path={route.path} element={route.Element} />
+                route.isProtected ? (
+                  <Route key={route.path} path={route.path} element={<ProtectedRoute element={route.Element} />} />
+                ) : (
+                  <Route key={route.path} path={route.path} element={route.Element} />
+                )
               ))}
             </Route>
           </Routes>
