@@ -58,6 +58,10 @@ export const FpPopupWrapper = styled.div`
     display : flex;
     flex-direction : column;
     z-index : 502;
+
+    @media (max-width : 900px) {
+        width : 80vw;
+    }
 `;
 
 export const FpPopupBox = styled.form`
@@ -110,6 +114,10 @@ export const FpInput = styled.input`
     outline : none;
     border : 1px solid #ccc;
     border-radius : 15px;
+
+    &::placeholder {
+        font-weight : bold;
+    }
 `;
 
 export const FpConfirm = styled.input`

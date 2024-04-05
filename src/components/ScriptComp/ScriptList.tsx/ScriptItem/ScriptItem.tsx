@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ItemBottom, ItemDate, ItemDelete, ItemEdit, ItemMiddle, ItemScript, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ItemUpdateBox, NoFolderName, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
+import { ItemBottom, ItemDate, ItemDelete, ItemEdit, ItemImgBox, ItemMiddle, ItemScript, ItemScriptBox, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ItemUpdateBox, NoFolderName, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
 import { auth, db } from "../../../../firebase";
 import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { FileData } from "../../../../types/fileData";
@@ -137,16 +137,19 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
             };
           
             return (
-              <ScriptItemContainer key={ index } onClick={() => handleNoteClick(note)}>
+              <ScriptItemContainer bgColor={note.noteColor} key={ index } onClick={() => handleNoteClick(note)}>
                 <ItemTop>
-                  <ItemTitle>{ truncate(note.title, 10) }</ItemTitle>
+                  <ItemTitle textColor={note.textColor}>{ truncate(note.title, 10) }</ItemTitle>
                   <ItemStar
                     src={ note.stars ? "/starFill.svg" : "/star.svg" }
                     onClick={(e) => onHandleStar(note.id, note.stars, e)} />
                 </ItemTop>
                 <ItemMiddle>
-                  <ItemScript>{ truncate(cleanContent, 100) }</ItemScript>
-                  <ItemTagsContainer>
+                  <ItemScriptBox>
+                    <ItemScript textColor={note.textColor}>{ truncate(cleanContent, 30) }</ItemScript>
+                    <ItemImgBox src={note.imageUrl ? note.imageUrl : ''} />
+                  </ItemScriptBox>
+                  <ItemTagsContainer textColor={note.textColor}>
                     { note.tags.map((tag, tagIndex) => (
                       <span key={ tagIndex }>{ tag }</span>
                     )) }

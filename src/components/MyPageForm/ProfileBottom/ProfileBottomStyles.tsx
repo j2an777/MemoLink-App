@@ -2,14 +2,18 @@ import styled from "styled-components";
 
 
 export const Wrapper = styled.div`
-    width : 100%;
-    min-height : 100%;
-    margin : 20px 0 100px 0;
+    width : 50vw;
+    height : auto;
+    margin : 20px 0 0 0;
     padding : 10px;
     box-sizing : border-box;
     display : flex;
     flex-direction : column;
     align-items : center;
+
+    @media (max-width : 1200px) {
+        height : auto;
+    }
 `;
 
 export const LinxTitle = styled.h1`
@@ -21,7 +25,7 @@ export const LinxTitle = styled.h1`
 
 export const LinxFileContainer = styled.div`
     width : 100%;
-    height : auto;
+    height : 100%;
     display : grid;
     grid-template-columns : 1fr 1fr;
     gap : 20px;
@@ -30,6 +34,7 @@ export const LinxFileContainer = styled.div`
 
     @media (max-width : 1000px) {
         grid-template-columns : 1fr;
+        justify-content : center;
     }
 `;
 
@@ -45,6 +50,10 @@ export const LinxFileBox = styled.div`
     background-color : white;
     border-radius : 20px;
     box-shadow : 0px 0px 20px rgba(0, 0, 0, 0.1);
+
+    @media (max-width : 600px) {
+        width : 90vw;
+    }
 `;
 
 export const LinxFileTitle = styled.p`

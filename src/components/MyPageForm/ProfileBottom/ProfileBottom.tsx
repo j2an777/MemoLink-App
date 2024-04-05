@@ -3,6 +3,7 @@ import { FileData } from "../../../types/fileData";
 import { LinxFileBox, LinxFileContainer, LinxFileContent, LinxFileTitle, LinxTitle, NoImport, Wrapper } from "./ProfileBottomStyles";
 import { auth, db } from "../../../firebase";
 import { collection, getDocs } from "firebase/firestore";
+import LoadingScreen from "../../Loader/LoadingScreen";
 
 export default function ProfileBottom() {
 
@@ -57,7 +58,7 @@ export default function ProfileBottom() {
   return (
     <Wrapper>
       {loading ? (
-        <div>Loading...</div>
+        <LoadingScreen />
       ) : userLinxFiles.length === 0 ? (
         <NoImport>업로드한 노트가 없습니다.</NoImport>
       ) : (

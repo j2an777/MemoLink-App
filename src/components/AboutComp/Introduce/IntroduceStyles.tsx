@@ -91,7 +91,6 @@ export const InIcon = styled.div`
     border-radius : 50%;
     border : none;
     background-color : #78EE76;
-    box-shadow : 0px 0px 20px rgba(0, 0, 0, 0.1);
     margin-bottom : 10px;
     display : flex;
     justify-content : center;

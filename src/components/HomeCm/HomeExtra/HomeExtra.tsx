@@ -13,7 +13,7 @@ export default function HomeExtra() {
   
   return (
     <Wrapper>
-      <ExtraContainer onClick={toReview}>
+      <ExtraContainer onClick={ toReview }>
         <Lottie animationData={ lottie } style={{ width: '100%', height: '100%' }}/>
         <SurveyText>앱에 대한 후기를 남겨주세요! <br/> <span>클릭 시 이동합니다.</span></SurveyText>
       </ExtraContainer>

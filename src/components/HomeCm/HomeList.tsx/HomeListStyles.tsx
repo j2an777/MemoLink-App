@@ -29,13 +29,11 @@ export const LinxBox = styled.div`
     width : 450px;
     min-height : 200px;
     margin : 0 0 20px 0;
-    padding : 20px;
+    padding : 10px 0;
     box-sizing : border-box;
     display : flex;
     flex-direction : column;
-    justify-content : center;
-    border-radius : 20px;
-    box-shadow : 0px 0px 20px rgba(0, 0, 0, 0.15);
+    border-bottom : 1px solid #e9e9e9;
 
     @media (max-width : 855px) {
         width : 90%;
@@ -43,15 +41,40 @@ export const LinxBox = styled.div`
     }
 `;
 
+export const LinxTopWrap = styled.div`
+    display : flex;
+    justify-content : space-between;
+    align-items : center;
+`;
+
 export const LinxUserInfo = styled.div`
     width : 100%;
-    height : 30%;
+    height : 50px;
     margin : 0;
     padding : 0;
     display : flex;
     align-items : center;
     justify-content : flex-start;
     gap : 20px;
+`;
+
+export const LinxMore = styled.div`
+    width : auto;
+    height : auto;
+    margin : 0;
+    padding : 0;
+    display : flex;
+    justify-content : center;
+
+    img {
+        width : 20px;
+        height : 20px;
+        object-fit = contain;
+    }
+
+    &:hover {
+        cursor : pointer;
+    }
 `;
 
 export const UserAvatar = styled.img`
@@ -93,26 +116,53 @@ export const LinxNoteInfo = styled.div`
     padding : 0;
     display : flex;
     flex-direction : column;
-    gap : 20px;
     justify-content : flex-start;
 `;
 
-export const LinxTitle = styled.p`
+interface TextColorProps {
+    textColor : string;
+}
+
+export const LinxTitle = styled.p<TextColorProps>`
+    width : 100%;
     font-size : 24px;
     font-weight : bold;
     font-family : 'pretendard';
-    color : black;
+    color : ${props => props.textColor || 'black'};
 `;
 
-export const LinxContent = styled.p`
+export const LinxNoteTag = styled.div`
     width : 100%;
-    height : 100%;
+    height : auto;
+    display : flex;
+    gap : 10px;
+    padding : 0;
+    margin : 5px 0 0 0;
+`;
+
+export const LinxNoteTagItem = styled.p`
+    font-size : 14px;
+    font-weight : 400;
+    font-family : 'pretendard';
+    color : #999;
+`;
+
+export const LinxImg = styled.img`
+    width : 100%;
+    height : 400px;
+    object-fit : contain;
+`;
+
+export const LinxContent = styled.p<TextColorProps>`
+    width : 100%;
+    min-height : 50px;
     font-size : 16px;
     font-family : 'pretendard'
     font-weight : medium;
-    color : black;
+    color : ${props => props.textColor || 'black'};
     word-break : break-word;
     overflow-wrap : break-word;
+    margin : 20px 0 0 0;
 `;
 
 export const EmptyDialog = styled.div`

@@ -1,22 +1,23 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{isscrolled : boolean}>`
     position: fixed;
     top: 0;
     left: 0;
     z-index: 500;
     width: 100%;
-    height: 8vh;
+    height: 10vh;
     display: flex;
-    padding: 0px 100px;
+    padding: 10px 100px;
     align-items: center;
-    margin: 10px 0 0 0;
+    margin: 0;
     box-sizing: border-box;
-    background-color: transparent;
+    background-color: ${props => props.isscrolled ? 'white' : 'transparent'};
     color: #03D100;
     font-size: 1.2rem;
     font-weight: 600;
     justify-content: space-between;
+    transition : all 0.3s ease;
 
     a {
         text-decoration: none;
@@ -26,15 +27,17 @@ export const Wrapper = styled.div`
     }
 
     @media (max-width: 768px) {
+        width : 100vw;
         gap : 30px;
-        padding : 0 50px;
+        padding : 0 30px;
+        box-sizing : border-box;
     }
 `;
 
 export const MenuOne = styled.div`
     width : 50%;
     height : 100%;
-    margin : 0;
+    margin : 10px 0 0 0;
     padding : 0;
     display : flex;
     gap : 30px;
@@ -45,7 +48,7 @@ export const MenuOne = styled.div`
 export const MenuTwo = styled.div`
     width : 50%;
     height : 100%;
-    margin : 0;
+    margin : 10px 0 0 0;
     padding : 0;
     display : flex;
     gap : 30px;
@@ -117,8 +120,8 @@ export const LoginItem = styled.div`
 
 // 햄버거 아이콘 스타일 추가
 export const HamburgerIcon = styled.div`
-    width: 30px;
-    height: 20px;
+    width: 24px;
+    height: 16px;
     display: none;
     flex-direction: column;
     justify-content: space-between;
@@ -137,6 +140,7 @@ export const HamburgerIcon = styled.div`
   
     @media (max-width: 768px) {
       display: flex;
+      margin-top : 10px;
     }
 `;
 
@@ -147,7 +151,7 @@ export const DropdownMenu = styled.div`
     right: 0;
     width: 100%;
     background-color: white;
-    box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.1);
     overflow: hidden;
     max-height: 0;
     visibility: hidden;

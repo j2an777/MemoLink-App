@@ -42,6 +42,7 @@ export const BannerTitle = styled.h1`
     font-size : 3rem;
     font-weight : 800;
     line-height : 60px;
+    color : ##f0f0f0;
 
     @media (max-width: 768px) {
         display : none;

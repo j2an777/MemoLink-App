@@ -44,11 +44,11 @@ export const HomeRightContainer = styled.div`
 `;
 
 export const SurveyBox = styled.div`
-    width : 50px;
-    height : 50px;
+    width : 36px;
+    height : 36px;
     margin : 0;
     padding : 0;
-    position : absolute;
+    position : fixed;
     bottom : 50px;
     right : 30px;
     border-radius : 50%;
@@ -69,7 +69,7 @@ export const SurveyBox = styled.div`
 `;
 
 export const ToSurvey = styled.img`
-    width : 30px;
-    height : 30px;
+    width : 24px;
+    height : 24px;
     object-fit : contain;    
 `;

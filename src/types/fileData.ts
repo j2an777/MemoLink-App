@@ -6,6 +6,9 @@ export interface FileData {
     content : string;
     stars: boolean;
     linx: boolean;
+    textColor : string;
+    noteColor : string;
+    imageUrl : string;
     createdAt: string;
 }
 

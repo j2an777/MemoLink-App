@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { FilePlus, FolderInfo, FolderStars, FolderTitle, FolderTop, NConfirm, NPopupBox, NTagInput, NTitleInput, NotePopupWrapper, TagBlock, TextContainer, Wrapper } from "./ScriptListStyles";
+import { ColorBox, ColorLine, FilePlus, FolderInfo, FolderStars, FolderTitle, FolderTop, NConfirm, NPopupBox, NTagInput, NTitleInput, NotePopupWrapper, RightSettingBox, RightSettingImg, SetColorNote, SetColorPen, SetImgBox, SetImgButton, SetImgFileInput, SettingPopupWrapper, TagBlock, TextContainer, Wrapper } from "./ScriptListStyles";
 import { FpBack } from "../ScriptCompStyles";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import ScriptItem from "./ScriptItem/ScriptItem";
 import { FileData } from "../../../types/fileData";
 import { arrayUnion, collection, getDocs, query, updateDoc, where } from "firebase/firestore";
-import { auth, db } from "../../../firebase";
+import { auth, db, storage } from "../../../firebase";
 import Overlay from "../../Overlay/Overlay";
 import { setSelectedFolderName } from "../../../Store/FolderStore/folderSlice";
 import { fetchFiles } from "../../../Store/FileStore/fileSlice";
+import './ScriptListStyle.scss';
+import { HexColorPicker } from "react-colorful";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 function generateRandomId() {
   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -39,7 +42,7 @@ const modules = {
     [],
     [{ color: [] }, { background: [] }],
     [],
-    ["image", "blockquote", "code-block"],
+    ["blockquote", "code-block"],
   ],
 };
 
@@ -53,8 +56,17 @@ const ScriptList = () => {
   const [uploadLoading, setUploadLoading] = useState(false);
   const [isStarActive, setIsStarActive] = useState(false);
 
+  const [isSettingPopup, setIsSettingPopup] = useState(false);
+  const [noteColor, setNoteColor] = useState('#fff');
+  const [textColor, setTextColor] = useState('#000');
+  const [ncPopup, setNcPopup] = useState(false);
+  const [pcPopup, setPcPopup] = useState(false);
+  const [imageUrl, setImageUrl] = useState('');
+
   const selectedFolderName = useAppSelector((state) => state?.folder.selectedFolderName || '');
   const dispatch = useAppDispatch();
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const storedFolderName = localStorage.getItem('selectedFolderName');
@@ -125,6 +137,10 @@ const ScriptList = () => {
       setTextValue("");
       setNoteTags([]);
       setIsTagActive(true);
+      setNoteColor('#fff');
+      setTextColor('#000');
+      setIsSettingPopup(false);
+      setImageUrl('');
     }
   };
 
@@ -149,6 +165,9 @@ const ScriptList = () => {
       content: textValue,
       stars: noteStars,
       linx: noteLinx,
+      textColor: textColor,
+      noteColor: noteColor,
+      imageUrl: imageUrl,
       createdAt: createdAt,
     };
 
@@ -181,6 +200,9 @@ const ScriptList = () => {
       setNoteTags([]);
       setIsTagActive(true);
       setUploadLoading(false);
+      setImageUrl('');
+      setNoteColor('#fff');
+      setTextColor('#000');
     } catch(error) {
       console.error(error);
     }
@@ -190,6 +212,52 @@ const ScriptList = () => {
     setIsStarActive(!isStarActive);
   };
   
+  const onHandleSetting = () => {
+    setIsSettingPopup(!isSettingPopup);
+  };
+
+  const toggleNoteColor = () => {
+    setNcPopup(!ncPopup);
+  };
+
+  const togglePenColor = () => {
+    setPcPopup(!pcPopup);
+  };
+
+  const onFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {files} = e.target;
+    if (files && files.length > 0) {
+        const file = files[0];
+        const storageRef = ref(storage, `images/${file.name}`);
+        try {
+          const uploadTask = await uploadBytes(storageRef, file);
+          const imageUrl = await getDownloadURL(uploadTask.ref);
+          setImageUrl(imageUrl);
+        } catch (error) {
+          console.error(error);
+        }
+    } else {
+      setImageUrl('');
+    }
+  };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    }
+  }, []);
+
+  const colorPickerStyle: CSSProperties = {
+    position: 'absolute',
+    top: windowWidth > 1400 ? '80px' : '50%',
+    left: windowWidth > 1400 ? '150px' : '-50%',
+  };
 
   return (
     <Wrapper>
@@ -221,6 +289,9 @@ const ScriptList = () => {
                 </svg>
               </FpBack>
               <NPopupBox onSubmit={handleSubmit}>
+                <RightSettingBox>
+                  <RightSettingImg src={isSettingPopup ? "/leftSetting.svg" : "/rightSetting.svg"} onClick={ onHandleSetting }/>
+                </RightSettingBox>
                 <NTitleInput 
                   required
                   type="text"
@@ -233,7 +304,7 @@ const ScriptList = () => {
                 <NTagInput 
                   required
                   type="text"
-                  placeholder="태그를 입력하세요."
+                  placeholder="태그를 입력하세요.(#은 자동완성)"
                   name="tags"
                   value={tempTagInput}
                   onChange={onChange}
@@ -258,6 +329,30 @@ const ScriptList = () => {
                   value={uploadLoading ? "업로드 중..." : "확인"}/>
               </NPopupBox>
             </NotePopupWrapper>
+            <SettingPopupWrapper className={isSettingPopup ? 'active' : ''}>
+              <SetImgBox src={imageUrl || "/Logo2.svg"}/>
+              <SetImgButton htmlFor="file"></SetImgButton>
+              <SetImgFileInput
+                onChange={onFileChange}
+                type="file" 
+                id="file" 
+                accept="image/*"/>
+              <ColorLine></ColorLine>
+              <div className="colorWrap">
+                <SetColorNote stroke={noteColor}/>
+              </div>
+              <ColorBox src="/colorWheel.png" onClick={toggleNoteColor}/>
+              {ncPopup && <HexColorPicker 
+                color={noteColor} 
+                style={colorPickerStyle} 
+                onChange={setNoteColor}/>}
+              <ColorLine></ColorLine>
+              <div className="colorWrap">
+                <SetColorPen stroke={textColor} />
+              </div>
+              <ColorBox src="/colorWheel.png" onClick={togglePenColor}/>
+              {pcPopup && <HexColorPicker color={textColor} style={{ position: 'absolute', top: '350px', left: '150px' }} onChange={setTextColor}/>}
+            </SettingPopupWrapper>
           </>
         )
       }

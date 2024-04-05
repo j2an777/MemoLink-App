@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-    width : 100%;
-    height : auto;
+    width : 50vw;
+    height : 200px;
     margin : 0;
     padding : 20px 0;
     box-sizing : border-box;
@@ -10,20 +10,23 @@ export const Wrapper = styled.div`
     justify-content : center;
     align-items : center;
     border-bottom : 1px solid #ddd;
+    
 
     @media (max-width: 850px) {
-        width : 100vw;
+        width : 95vw;
         height : 100%;
     }
 `;
 
 export const ProFileAvatarContainer = styled.div`
+    position : relative;
     width : 30%;
     height : 100%;
     margin : 0;
     padding : 0;
     display : flex;
     justify-content : center;
+    align-items : center;
 `;
 
 export const ProFileImg = styled.circle`
@@ -45,7 +48,7 @@ export const ProFileImg = styled.circle`
         object-position : bottom;
     }
 
-    @media (max-width: 850px) {
+    @media (max-width: 500px) {
         width : 80px;
         height : 80px;
 
@@ -60,6 +63,9 @@ export const ProFileImg = styled.circle`
 `;
 
 export const ProFileUserEditLabel = styled.label`
+    position : absolute;
+    top : 20px;
+    right : 10px;
     outline : none;
     width : 20px;
     height : 20px;
@@ -73,6 +79,11 @@ export const ProFileUserEditLabel = styled.label`
     &:hover {
         cursor : pointer;
     }
+
+    @media (max-width: 850px) {
+        top : 0;
+        right : 0;
+    }
 `;
 
 export const ProFileUserEdit = styled.input`
@@ -80,7 +91,7 @@ export const ProFileUserEdit = styled.input`
 `;
 
 export const ProFilePreview = styled.div`
-    width : 70%;
+    width : 65%;
     height : auto;
     margin : 0;
     padding : 10px 20px;

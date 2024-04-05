@@ -5,6 +5,7 @@ import MyPage from "../pages/MyPage/MyPage";
 import Signup from "../pages/Signup/Signup";
 import About from "../pages/About/About";
 import Review from "../pages/Review/Review";
+import ListNotePopup from "../components/Modal/ListNotePopup/ListNotePopup";
 
 export const routers = [
     {
@@ -16,6 +17,11 @@ export const routers = [
         path:"/script",
         Element: <Script />,
         isProtected: true,
+    },
+    {
+        path:"/script/:fileId",
+        Element: <ListNotePopup />,
+        isProtected: true,  
     },
     {
         path:"/login",

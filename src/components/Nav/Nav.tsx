@@ -10,6 +10,7 @@ export default function Nav() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [isscrolled, setisscrolled] = useState(false);
 
   // 외부 클릭 핸들러 함수를 메모이징합니다.
   const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -19,12 +20,22 @@ export default function Nav() {
   };
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setisscrolled(true);
+      } else {
+        setisscrolled(false);
+      }
+    };
+
     // 클릭 이벤트 리스너 등록
+    window.addEventListener("scroll", handleScroll);
     document.addEventListener("mousedown", handleClickOutside);
     document.addEventListener("touchstart", handleClickOutside);
 
     return () => {
       // 클린업 함수로 이벤트 리스너 제거
+      window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("touchstart", handleClickOutside);
     };
@@ -64,12 +75,14 @@ export default function Nav() {
     setMenuOpen(false);
   };
 
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
+  const toggleMenu = (e:React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setMenuOpen(prev => !prev);
   };
 
   return (
-    <Wrapper>
+    <Wrapper isscrolled = {isscrolled}>
       <MenuOne>
         <Link to="/">
           <HomeItem>
@@ -108,7 +121,7 @@ export default function Nav() {
           </Link>
         )}
       </MenuTwo>
-      <HamburgerIcon onClick={toggleMenu}>
+      <HamburgerIcon onClick={(e) => toggleMenu(e)}>
         <div></div>
         <div></div>
         <div></div>

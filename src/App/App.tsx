@@ -15,7 +15,6 @@ const Wrapper = styled.div`
   flex-direction : column;
   align-items : center;
   margin : 0;
-  overflow-x : hidden;
 `;
 
 function App() {

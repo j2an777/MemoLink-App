@@ -6,12 +6,16 @@ import ScriptTop from "./ScriptTop/ScriptTop";
 import { auth, db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import Overlay from "../Overlay/Overlay";
+import { useAppDispatch } from "../../hooks/redux";
+import { setSelectedFolderName } from "../../Store/FolderStore/folderSlice";
 
 export default function ScriptComp() {
 
   const [fpPopup, setFpPopup] = useState(false);
   const [fpName, setFpName] = useState("");
   const [folderMaking, setFolderMaking] = useState(false);
+
+  const dispatch = useAppDispatch();
 
   const onFpChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFpName(e.target.value);
@@ -36,6 +40,8 @@ export default function ScriptComp() {
         username: user.displayName || "Anonymous",
         files: [],
       });
+
+      dispatch(setSelectedFolderName(fpName));
 
     } catch (error) {
       console.error(error);

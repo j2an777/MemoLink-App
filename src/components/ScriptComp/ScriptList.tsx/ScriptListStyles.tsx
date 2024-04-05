@@ -12,11 +12,11 @@ export const Wrapper = styled.div`
     padding : 30px 0;
     box-sizing : border-box;
 
-
-    @media (max-width : 1200px) {
+    @media (max-width : 768px) {
         width : 100vw;
         min-height : auto;
         border-radius : 0;
+        margin-top : 20px;
     }
 `;
 
@@ -133,6 +133,25 @@ export const FilePlus = styled.div`
     }
 `;
 
+const updownAnime = keyframes`
+    0%, 100% {
+        transform : translateY(-5px);
+    }
+    50% {
+        transform : translateY(5px);
+    }
+`;
+
+export const GuideImg = styled.img`
+    position : absolute;
+    top : -40px;
+    right : 80px;
+    width : 100px;
+    height : 50px;
+    object-fit : contain;
+    animation : ${updownAnime} 2s ease-in-out infinite;
+`;
+
 export const NotePopupWrapper = styled.div`
     position : fixed;
     top : 50%;
@@ -148,12 +167,31 @@ export const NotePopupWrapper = styled.div`
     display : flex;
     flex-direction : column;
     justify-content : center;
-    z-index : 502;
+    z-index : 503;
     animation : ${downAnime} 0.3s ease-in-out;
 
     @media (max-width : 900px) {
         width : 100vw;
         height : 500px;
+    }
+`;
+
+export const RightSettingBox = styled.div`
+    width : 100%;
+    height : auto;
+    margin : 0 0 10px 0;
+    padding : 0;
+    display : flex;
+    justify-content : flex-end;
+`;
+
+export const RightSettingImg = styled.img`
+    width : 40px;
+    height : 30px;
+    object-fit : contain;
+
+    &:hover {
+        cursor : pointer;
     }
 `;
 
@@ -253,5 +291,123 @@ export const TagBlock = styled.span`
     font-size : 16px;
     &::before {
         content: "#";
+    }
+`;
+
+export const SettingPopupWrapper = styled.div`
+    position : relative;
+    width : 150px;
+    height : 560px;
+    position : absolute;
+    top : 52%;
+    left : 50%;
+    transform : translateY(-50%);
+    background-color : white;
+    box-shadow : -2px 0 5px rgba(0, 0, 0, 0.1);
+    transition : left 0.3s ease;
+    z-index : 502;
+    animation : ${downAnime} 0.3s ease-in-out;
+    border-radius : 0 20px 20px 0;
+    display : flex;
+    flex-direction : column;
+    align-items : center;
+    justify-content : space-between;
+
+    &.active {
+        left : 73.5%;
+    }
+
+    @media (max-width: 1390px) {
+        &.active {
+            left : 78%;
+        }
+        position : none;
+    }
+
+    @media (max-width : 1200px) {
+        &.active {
+            left : 82.5%;
+        }
+    }
+
+    @media (max-width : 1050px) {
+        &.active {
+            left : 84.5%;
+        }
+    }
+`;
+
+export const SetImgBox = styled.img`
+    width : 60px;
+    height : 60px;
+    object-fit : contain;
+    border-radius : 20px;
+    border : 1px solid #c9c9c9;
+    margin : 20px 0 0 30px;
+`;
+
+export const SetImgButton = styled.label`
+    width : 50px;
+    height : 50px;
+    background-color : transparent;
+    border : none;
+    background-image: url('/image.svg');
+    background-size : cover;
+    background-position : center;
+    margin : 20px 0 20px 30px;
+
+    &:hover {
+        cursor : pointer;
+    }
+`;
+
+export const SetImgFileInput = styled.input`
+    display : none;
+`;
+
+export const ColorLine = styled.div`
+    width : 100%;
+    height : 1px;
+    margin : 0;
+    padding : 0;
+    background-color : #c9c9c9;
+`;
+
+interface SvgProps {
+    stroke?: string;
+}
+
+const NoteSvg: React.FC<SvgProps> = (props) => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26 40L40 26M26 40V28C26 27.4696 26.2107 26.9609 26.5858 26.5858C26.9609 26.2107 27.4696 26 28 26H40M26 40H12C10.9391 40 9.92172 39.5786 9.17157 38.8284C8.42143 38.0783 8 37.0609 8 36V12C8 10.9391 8.42143 9.92172 9.17157 9.17157C9.92172 8.42143 10.9391 8 12 8H36C37.0609 8 38.0783 8.42143 38.8284 9.17157C39.5786 9.92172 40 10.9391 40 12V26" stroke={props.stroke || "#AAAAAA"} stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+);
+
+export const SetColorNote = styled(NoteSvg) `
+    width : 50px;
+    height : 50px;
+    object-fit : contain;
+`;
+
+const PenSvg: React.FC<SvgProps> = (props) => (
+    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.55401 39.5659L6.76801 31.2419C6.84201 30.6979 7.09001 30.1919 7.47801 29.8019L31 6.24794C31.305 5.93987 31.6841 5.71536 32.1009 5.59593C32.5177 5.47651 32.9581 5.46618 33.38 5.56594C35.539 6.16379 37.4961 7.33446 39.044 8.95394C40.659 10.5125 41.8216 12.4795 42.408 14.6459C42.5078 15.0678 42.4974 15.5083 42.378 15.9251C42.2586 16.3418 42.0341 16.7209 41.726 17.0259L18.178 40.5499C17.787 40.9363 17.2808 41.1849 16.736 41.2579L8.41401 42.4719C8.0209 42.5293 7.6198 42.4932 7.24326 42.3665C6.86671 42.2399 6.52531 42.0263 6.24674 41.743C5.96817 41.4598 5.76028 41.1149 5.63992 40.7363C5.51957 40.3577 5.49013 39.956 5.55401 39.5639M26.55 10.7279L37.276 21.4539" stroke={props.stroke || "#AAAAAA"} stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+);
+
+export const SetColorPen = styled(PenSvg)`
+    width : 50px;
+    height : 50px;
+    object-fit : contain;
+`;
+
+export const ColorBox = styled.img`
+    width : 40px;
+    height : 40px;
+    object-fit : contain;
+    margin : 20px 0 20px 30px;
+
+    &:hover {
+        cursor : pointer;
     }
 `;

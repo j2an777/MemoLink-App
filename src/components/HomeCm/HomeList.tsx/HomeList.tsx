@@ -2,11 +2,18 @@ import { useEffect, useState } from "react"
 import { LinxFileData } from "../../../types/fileData"
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase";
-import { EmptyDialog, LinxBox, LinxContent, LinxListContainer, LinxNoteInfo, LinxTitle, LinxUserInfo, UserAvatar, UserCreatedAt, UserMetaInfo, UserName, Wrapper } from "./HomeListStyles";
+import { EmptyDialog, LinxBox, LinxContent, LinxImg, LinxListContainer, LinxMore, LinxNoteInfo, LinxNoteTag, LinxNoteTagItem, LinxTitle, LinxTopWrap, LinxUserInfo, UserAvatar, UserCreatedAt, UserMetaInfo, UserName, Wrapper } from "./HomeListStyles";
 import { UserData } from "../../../types/userData";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../../hooks/redux";
+import { setDetail } from "../../../Store/DetailStore/detailSlice";
 
 export default function HomeList() {
   const [linxFiles, setLinxFiles] = useState<LinxFileData[]>([]);
+  const [linxMorePopup, setLinxMorePopup] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const fetchLinxFiles = async () => {
@@ -48,6 +55,12 @@ export default function HomeList() {
   const truncate = (str: string, n: number) => {
     return str?.length > n ? str.substr(0, n - 1) + "..." : str;
   };
+
+  const onToggleMore = (file: LinxFileData, fileId: string) => {
+    setLinxMorePopup(!linxMorePopup);
+    dispatch(setDetail(file));
+    navigate(`/script/${fileId}`);
+  };
   
   return (
     <Wrapper>
@@ -55,16 +68,27 @@ export default function HomeList() {
         <LinxListContainer>
           {[...linxFiles].reverse().map((file, index) => (
             <LinxBox key={index}>
-              <LinxUserInfo>
-                <UserAvatar src={file.avatarUrl || "/user.svg"} />
-                <UserMetaInfo>
-                  <UserName>{file.username || "Unknown"}</UserName>
-                  <UserCreatedAt>{file.createdAt}</UserCreatedAt>
-                </UserMetaInfo>
-              </LinxUserInfo>
+              <LinxTopWrap>
+                <LinxUserInfo>
+                  <UserAvatar src={file.avatarUrl || "/user.svg"} />
+                  <UserMetaInfo>
+                    <UserName>{file.username || "Unknown"}</UserName>
+                    <UserCreatedAt>{file.createdAt}</UserCreatedAt>
+                  </UserMetaInfo>
+                </LinxUserInfo>
+                <LinxMore onClick={() => onToggleMore(file, file.id)}>
+                  <img src="/more.svg" />
+                </LinxMore>
+              </LinxTopWrap>
               <LinxNoteInfo>
-                <LinxTitle>{file.title}</LinxTitle>
-                <LinxContent>{truncate(stripHtml(file.content), 100)}</LinxContent>
+                <LinxTitle textColor={file.textColor}>{file.title}</LinxTitle>
+                <LinxNoteTag>
+                  {file.tags.map((tag, index) => (
+                    <LinxNoteTagItem key={index}>#{tag}</LinxNoteTagItem>
+                  ))}
+                </LinxNoteTag>
+                {file.imageUrl ? <LinxImg src={file.imageUrl} />: null}
+                <LinxContent textColor={file.textColor}>{truncate(stripHtml(file.content), 100)}</LinxContent>
               </LinxNoteInfo>
             </LinxBox>
           ))}

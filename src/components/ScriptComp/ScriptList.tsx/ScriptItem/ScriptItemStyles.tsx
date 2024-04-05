@@ -21,7 +21,15 @@ export const Wrapper = styled.div`
     }
 `;
 
-export const ScriptItemContainer = styled.div`
+interface bgColorProps {
+    bgColor: string;
+}
+
+interface textColorProps {
+    textColor: string;
+}
+
+export const ScriptItemContainer = styled.div<bgColorProps>`
     min-width: 300px;
     height: 350px;
     margin: 0;
@@ -29,7 +37,7 @@ export const ScriptItemContainer = styled.div`
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    background-color: white;
+    background-color: ${props => props.bgColor || 'white'};
     border-radius: 20px;
     box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
@@ -61,11 +69,11 @@ export const ItemTop = styled.div`
     justify-content : space-between;
 `;
 
-export const ItemTitle = styled.p`
+export const ItemTitle = styled.p<textColorProps>`
     font-size : 24px;
     font-weight : bold;
     font-family : 'pretendard';
-    color : black;
+    color : ${props => props.textColor || 'black'};
 `;
 
 export const ItemStar = styled.img`
@@ -96,18 +104,32 @@ export const ItemMiddle = styled.div`
     box-sizing : border-box;
 `;
 
-export const ItemScript = styled.p`
+export const ItemScriptBox = styled.div`
     width : 250px;
     height : 70%;
     margin : 0;
     padding : 0;
+    display : flex;
+    justify-content : space-between;
+`;
+
+export const ItemScript = styled.p<textColorProps>`
+    width : 120px;
+    height : 100%;
     font-size : 16px;
     font-family : 'pretendard';
     font-weight : 500;
-    color : black;
+    color : ${props => props.textColor || 'black'};
 `;
 
-export const ItemTagsContainer = styled.div`
+export const ItemImgBox = styled.img`
+    width : 100px;
+    height : 100px;
+    object-fit : cover;
+    background-color : white;
+`;
+
+export const ItemTagsContainer = styled.div<textColorProps>`
     width : 250px;
     height : 30%;
     margin : 0;
@@ -123,8 +145,8 @@ export const ItemTagsContainer = styled.div`
         font-weight : 400;
         margin-right : 5px;
         border-radius : 10px;
-        border : 0.5px solid rgba(0, 0, 0, 0.1);
-        color : #333;
+        border : 0.5px solid ${props => props.textColor || 'rgba(0, 0, 0, 0.1)'};
+        color : ${props => props.textColor || '#333'};
         padding : 8px 12px;
         box-sizing : border-box;
     }
