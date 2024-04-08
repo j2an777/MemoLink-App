@@ -3,6 +3,8 @@ import { AboutItem, DropdownMenu, HamburgerIcon, HomeItem, LoginItem, MenuOne, M
 import { useEffect, useRef, useState } from "react";
 import { auth } from "../../firebase";
 import { signOut } from "firebase/auth";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { setUserId } from "../../Store/LoginUserStore/loginUser";
 
 export default function Nav() {
 
@@ -11,6 +13,9 @@ export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [isscrolled, setisscrolled] = useState(false);
+
+  const userId = useAppSelector(state => state.loginUser.userId);
+  const dispatch = useAppDispatch();
 
   // 외부 클릭 핸들러 함수를 메모이징합니다.
   const handleClickOutside = (event: MouseEvent | TouchEvent) => {
@@ -42,18 +47,28 @@ export default function Nav() {
   }, []);
 
   useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+
+    if (storedUserId) {
+      dispatch(setUserId(storedUserId));
+      setIsLoggedIn(true);
+    }
+
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        localStorage.setItem('userId', user.uid);
         setIsLoggedIn(true);
+        dispatch(setUserId(user.uid));
       } else {
+        localStorage.removeItem('userId');
         setIsLoggedIn(false);
+        dispatch(setUserId(''));
+        navigate('/login');
       }
     });
 
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+    return () => unsubscribe();
+  }, [dispatch, navigate]);
 
   const handleLogout = () => {
     const logoutOk = confirm("정말로 로그아웃 하시겠습니까?");
@@ -61,6 +76,7 @@ export default function Nav() {
     if (logoutOk) {
       signOut(auth);
       setIsLoggedIn(false);
+      dispatch(setUserId(''));
       navigate("/login");
     }
     setMenuOpen(false);
@@ -73,6 +89,10 @@ export default function Nav() {
       navigate("/login");
     }
     setMenuOpen(false);
+  };
+
+  const myHandleNavigation = (userId: string) => {
+    navigate(`/mp/${userId}`);
   };
 
   const toggleMenu = (e:React.MouseEvent) => {
@@ -106,7 +126,7 @@ export default function Nav() {
             About
           </AboutItem>
         </Link>
-        <div onClick={() => handleNavigation("/mypage")}>
+        <div onClick={() => myHandleNavigation(userId)}>
           <ProfileItem>
             MyPage
           </ProfileItem>
@@ -131,7 +151,7 @@ export default function Nav() {
         <Link to="/" onClick={() => setMenuOpen(!menuOpen)}>Home</Link>
         <div onClick={() => handleNavigation("/script")}>Script</div>
         <Link to="/about" onClick={() => setMenuOpen(!menuOpen)}>About</Link>
-        <div onClick={() => handleNavigation("/mypage")}>MyPage</div>
+        <div onClick={() => myHandleNavigation(userId)}>MyPage</div>
         {isLoggedIn ? (
           <div onClick={handleLogout}>Logout</div>
         ) : (

@@ -21,7 +21,8 @@ export default function HomeList() {
       const usersSnapshot = await getDocs(collection(db, "users"));
 
       const tempUsers: UserData[] = usersSnapshot.docs.map((userDoc) => ({
-        ...userDoc.data() as UserData
+        ...userDoc.data() as UserData,
+        userId: userDoc.id
       }));
 
       const tempLinxFiles: LinxFileData[] = [];
@@ -35,7 +36,8 @@ export default function HomeList() {
               tempLinxFiles.push({
                 ...file,
                 username: userData.username,
-                avatarUrl: userData.avatarUrl
+                avatarUrl: userData.avatarUrl,
+                userId: userData.userId
               });
             }
           }
@@ -61,6 +63,10 @@ export default function HomeList() {
     dispatch(setDetail(file));
     navigate(`/script/${fileId}`);
   };
+
+  const onHandleUser = (userId: string) => {
+    navigate(`/mp/${userId}`);
+  };
   
   return (
     <Wrapper>
@@ -70,9 +76,9 @@ export default function HomeList() {
             <LinxBox key={index}>
               <LinxTopWrap>
                 <LinxUserInfo>
-                  <UserAvatar src={file.avatarUrl || "/user.svg"} />
+                  <UserAvatar src={file.avatarUrl || "/user.svg"} onClick={() => onHandleUser(file.userId)}/>
                   <UserMetaInfo>
-                    <UserName>{file.username || "Unknown"}</UserName>
+                    <UserName onClick={() => onHandleUser(file.userId)}>{file.username || "Unknown"}</UserName>
                     <UserCreatedAt>{file.createdAt}</UserCreatedAt>
                   </UserMetaInfo>
                 </LinxUserInfo>

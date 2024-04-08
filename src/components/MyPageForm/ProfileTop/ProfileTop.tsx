@@ -4,19 +4,27 @@ import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 
-export default function ProfileTop() {
+interface UserIdProps {
+    userId: string;
+}
+
+const ProfileTop: React.FC<UserIdProps> = ({ userId }) => {
 
     const [isEditing, setIsEditing] = useState(false);
     const [introduceValue, setIntroduceValue] = useState("");
     const [profileImgUrl, setProfileImgUrl] = useState("");
     const [userName, setUserName] = useState("");
+    const [isCurrentUser, setIsCurrentUser] = useState(false);
 
     useEffect(() => {
         const user = auth.currentUser;
-        if (!user) return;
+        if (!user || !userId) return;
+
+        setIsCurrentUser(user.uid === userId);
+
         // Firebase Firestore에서 사용자 데이터 가져오기
         const fetchUserData = async () => {
-          const userDocRef = doc(db, "users", user.uid); // 'your-user-id'를 현재 사용자의 ID로 교체해야 함
+          const userDocRef = doc(db, "users", userId);
           const docSnap = await getDoc(userDocRef);
     
           if (docSnap.exists()) {
@@ -28,7 +36,7 @@ export default function ProfileTop() {
         };
     
         fetchUserData();
-      }, []);
+      }, [userId]);
 
     const handleMessageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setIntroduceValue(e.target.value);
@@ -96,15 +104,17 @@ export default function ProfileTop() {
                 <ProFileImg>
                     <img src={profileImgUrl} />
                 </ProFileImg>
-                <ProFileUserEditLabel htmlFor="avatar-upload">
-                    +
-                    <ProFileUserEdit 
-                        type="file" 
-                        id="avatar-upload"
-                        onChange={handleImageChange}
-                        accept="image/*"
-                    />
-                </ProFileUserEditLabel>
+                {isCurrentUser && (
+                    <ProFileUserEditLabel htmlFor="avatar-upload">
+                        +
+                        <ProFileUserEdit 
+                            type="file" 
+                            id="avatar-upload"
+                            onChange={handleImageChange}
+                            accept="image/*"
+                        />
+                    </ProFileUserEditLabel>
+                )}
             </ProFileAvatarContainer>
             <ProFilePreview>
                 <ProFileName>{userName}</ProFileName>
@@ -119,9 +129,11 @@ export default function ProfileTop() {
                     ) : (
                         <ProFileMessage>{introduceValue ? introduceValue : "자기소개 글 넣어주세요."}</ProFileMessage>
                     )}
-                    <ProFileEdit onClick={toggleEdit}>{isEditing ? "확인" : "편집"}</ProFileEdit>
+                    {isCurrentUser && <ProFileEdit onClick={toggleEdit}>{isEditing ? "확인" : "편집"}</ProFileEdit>}
                 </ProFileEditContainer>
             </ProFilePreview>
         </Wrapper>
     )
-}
+};
+
+export default ProfileTop;

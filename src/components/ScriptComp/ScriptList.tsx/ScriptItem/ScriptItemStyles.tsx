@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
     width: 100%;
-    height: 100%;
+    height: 100vw;
     margin: 0;
     padding: 20px 50px;
     box-sizing: border-box;

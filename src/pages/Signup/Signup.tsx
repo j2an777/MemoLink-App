@@ -53,6 +53,7 @@ export default function Signup() {
         introduce: '',
         username: name,
         count : count,
+        userId : credentials.user.uid
       });
 
       setIsOk(true);

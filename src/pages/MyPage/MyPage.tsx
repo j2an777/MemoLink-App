@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import ProfileTop from "../../components/MyPageForm/ProfileTop/ProfileTop";
 import ProfileBottom from "../../components/MyPageForm/ProfileBottom/ProfileBottom";
+import { useParams } from "react-router-dom";
 
 
 const Wrapper = styled.div`
@@ -15,10 +16,17 @@ const Wrapper = styled.div`
 `;
 
 export default function MyPage() {
+
+  const { userId } = useParams<{ userId: string }>();
+
+  if (!userId) {
+    return <div>Loading or not found...</div>;
+  }
+
   return (
     <Wrapper>
-      <ProfileTop />
-      <ProfileBottom />
+      <ProfileTop userId = {userId}/>
+      <ProfileBottom userId = {userId}/>
     </Wrapper>
   )
 }

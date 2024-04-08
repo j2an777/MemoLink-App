@@ -34,7 +34,7 @@ export const routers = [
         isProtected: false,
     },
     {
-        path:"/mypage",
+        path:"/mp/:userId",
         Element: <MyPage />,
         isProtected: true,
     },

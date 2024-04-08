@@ -353,15 +353,22 @@ export const LnpCommentSend = styled.div`
     justify-content : center;
     background-color : white;
     box-shadow : 0px 0px 10px rgba(0, 0, 0, 0.1);
+    transition : all 0.3s ease;
 
     img {
-        width : 90%;
+        width : 75%;
         height : 90%;
+        border-radius : 50%;
         object-fit : contain;
     }
 
     &:hover {
         cursor : pointer;
+        box-shadow : 0px 0px 10px rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+        transform : scale(0.9);
     }
 
     @media (max-width : 1200px) {

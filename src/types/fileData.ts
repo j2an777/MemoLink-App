@@ -15,6 +15,7 @@ export interface FileData {
 export interface LinxFileData extends FileData {
     username : string;
     avatarUrl: string;
+    userId : string;
 }
 
 export interface LinxData extends FileData {

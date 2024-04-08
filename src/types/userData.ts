@@ -4,4 +4,5 @@ export interface UserData {
     introduce: string;
     username : string;
     count : number;
+    userId : string;
 }

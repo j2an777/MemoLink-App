@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { FileData } from "../../../types/fileData";
-import { LinxFileBox, LinxFileContainer, LinxFileContent, LinxFileTitle, LinxTitle, NoImport, Wrapper } from "./ProfileBottomStyles";
-import { auth, db } from "../../../firebase";
+import { LinxFileBox, LinxFileContainer, LinxFileContent, LinxFileImg, LinxFileTagItem, LinxFileTags, LinxFileTitle, LinxTitle, NoImport, Wrapper } from "./ProfileBottomStyles";
+import { db } from "../../../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import LoadingScreen from "../../Loader/LoadingScreen";
 
-export default function ProfileBottom() {
+interface UserIdProps {
+  userId: string;
+}
+
+const ProfileBottom: React.FC<UserIdProps> = ({ userId }) => {
 
   const [userLinxFiles, setUserLinxFiles] = useState<FileData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,42 +17,40 @@ export default function ProfileBottom() {
   useEffect(() => {
     const fetchUserLinxFiles = async () => {
       try {
-        const currentUserUid = auth.currentUser?.uid;
+        if (!userId) return;
         const folderSnapshot = await getDocs(collection(db, "folders"));
 
-        const allLinxFiles = [];
         const userLinxFiles: FileData[] = [];
 
         folderSnapshot.forEach((folderDoc) => {
           const folderData = folderDoc.data();
-          const files = folderData.files || [];
+          if (folderData.userId === userId) {
+            const files = folderData.files || [];
 
-          files.forEach((file: FileData) => {
-            if (file.linx) {
-              const fileWithDate = {
-                ...file,
-                createdAt: file.createdAt,
-              };
-
-              allLinxFiles.push(fileWithDate);
-
-              if (folderData.userId === currentUserUid) {
+            files.forEach((file: FileData) => {
+              if (file.linx) {
+                const fileWithDate = {
+                  ...file,
+                  createdAt: file.createdAt,
+                };
+  
                 userLinxFiles.push(fileWithDate);
               }
-            }
-          });
+            });
+          }
         });
 
         setUserLinxFiles(userLinxFiles);
-        setLoading(false);
       } catch (error) {
         console.error("Error fetching user linx files:", error);
+        setLoading(false);
+      } finally {
         setLoading(false);
       }
     };
 
     fetchUserLinxFiles();
-  }, []);
+  }, [userId]);
 
   const stripHtml = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -66,9 +68,17 @@ export default function ProfileBottom() {
           <LinxTitle>업로드 노트</LinxTitle>
           <LinxFileContainer>
             {userLinxFiles.map((file, index) => (
-              <LinxFileBox key={index}>
-                <LinxFileTitle>{file.title}</LinxFileTitle>
-                <LinxFileContent>{stripHtml(file.content)}</LinxFileContent>
+              <LinxFileBox noteColor={file.noteColor} key={index}>
+                <LinxFileTitle textColor={file.textColor}>{file.title}</LinxFileTitle>
+                <LinxFileTags>
+                  {file.tags.map((tag, index) => (
+                    <LinxFileTagItem key={index}>#{tag}</LinxFileTagItem>
+                  ))}
+                </LinxFileTags>
+                <LinxFileImg>
+                  <img src={file.imageUrl} />
+                </LinxFileImg>
+                <LinxFileContent textColor={file.textColor} >{stripHtml(file.content)}</LinxFileContent>
               </LinxFileBox>
             ))}
           </LinxFileContainer>
@@ -76,4 +86,6 @@ export default function ProfileBottom() {
       )}
     </Wrapper>
   )
-}
+};
+
+export default ProfileBottom;

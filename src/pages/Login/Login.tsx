@@ -7,6 +7,8 @@ import { FirebaseError } from "firebase/app";
 import LoadingScreen from "../../components/Loader/LoadingScreen";
 import { getErrorMessage } from "./LoginErrorData";
 import { doc, setDoc } from "firebase/firestore";
+import { useAppDispatch } from "../../hooks/redux";
+import { setUserId } from "../../Store/LoginUserStore/loginUser";
 
 export default function Login() {
 
@@ -17,6 +19,8 @@ export default function Login() {
   const [logError, setLogError] = useState("");
 
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
 
 
   const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +41,9 @@ export default function Login() {
 
     try {
       setLogLoading(true);
-      await signInWithEmailAndPassword(auth, logEmail, logPassword);
+      const result = await signInWithEmailAndPassword(auth, logEmail, logPassword);
+      const user = result.user;
+      dispatch(setUserId(user.uid));
       navigate("/");
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -60,7 +66,8 @@ export default function Login() {
         avatarUrl: user.photoURL,
         introduce: "",
         count: 0,
-      })
+        userId : user.uid
+      }, { merge : true });
       
       navigate("/");
     } catch (error) {
@@ -83,7 +90,8 @@ export default function Login() {
         avatarUrl: user.photoURL,
         introduce: "",
         count: 0,
-      })
+        userId : user.uid
+      }, { merge : true});
 
       navigate("/");
     } catch (error) {

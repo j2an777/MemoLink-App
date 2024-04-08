@@ -127,7 +127,7 @@ export const ProFileMessage = styled.p`
     height : 100%;
     font-size : 20px;
     font-family : 'pretendard';
-    color : #555;
+    color : #888;
     font-weight : 500;
     margin : 0;
     padding : 0;

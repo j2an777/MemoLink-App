@@ -83,6 +83,10 @@ export const UserAvatar = styled.img`
     border-radius : 50%;
     object-fit : cover;
     border : 0.5px solid #c9c9c9;
+
+    &:hover {
+        cursor : pointer;
+    }
 `;
 
 export const UserMetaInfo = styled.div`
@@ -100,6 +104,10 @@ export const UserName = styled.p`
     font-weight : bold;
     font-family : 'pretendard';
     color : black;
+
+    &:hover {
+        cursor : pointer;
+    }
 `;
 
 export const UserCreatedAt = styled.p`

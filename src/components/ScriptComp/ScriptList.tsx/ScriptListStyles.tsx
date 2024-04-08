@@ -170,9 +170,15 @@ export const NotePopupWrapper = styled.div`
     z-index : 503;
     animation : ${downAnime} 0.3s ease-in-out;
 
+    @media (max-width : 1200px) {
+        width : 70vw;
+        height : 500px;
+        left : 60%;
+    }
+
     @media (max-width : 900px) {
         width : 100vw;
-        height : 500px;
+        left : 50%;
     }
 `;
 
@@ -183,6 +189,10 @@ export const RightSettingBox = styled.div`
     padding : 0;
     display : flex;
     justify-content : flex-end;
+
+    @media (max-width : 1200px) {
+        display : none;
+    }
 `;
 
 export const RightSettingImg = styled.img`
@@ -295,7 +305,6 @@ export const TagBlock = styled.span`
 `;
 
 export const SettingPopupWrapper = styled.div`
-    position : relative;
     width : 150px;
     height : 560px;
     position : absolute;
@@ -325,16 +334,15 @@ export const SettingPopupWrapper = styled.div`
     }
 
     @media (max-width : 1200px) {
-        &.active {
-            left : 82.5%;
-        }
+        position : static;
+        top : auto;
+        left : auto;
     }
 
-    @media (max-width : 1050px) {
-        &.active {
-            left : 84.5%;
-        }
+    @media (max-width : 900px) {
+        display : none;
     }
+
 `;
 
 export const SetImgBox = styled.img`

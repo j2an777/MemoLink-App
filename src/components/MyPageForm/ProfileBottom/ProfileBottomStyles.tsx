@@ -38,16 +38,20 @@ export const LinxFileContainer = styled.div`
     }
 `;
 
-export const LinxFileBox = styled.div`
+interface NoteColorProps {
+    noteColor: string;
+}
+
+export const LinxFileBox = styled.div<NoteColorProps>`
     width : 100%;
-    height : 200px;
+    height : 300px;
     margin : 0;
     padding : 20px;
     box-sizing: border-box;
     display : flex;
     flex-direction : column;
     justify-content : flex-start;
-    background-color : white;
+    background-color : ${props => props.noteColor || 'white'};
     border-radius : 20px;
     box-shadow : 0px 0px 20px rgba(0, 0, 0, 0.1);
 
@@ -56,23 +60,56 @@ export const LinxFileBox = styled.div`
     }
 `;
 
-export const LinxFileTitle = styled.p`
-    width : 100%;
-    height : 30%;
+interface TextColorProps {
+    textColor : string;
+}
+
+export const LinxFileTitle = styled.p<TextColorProps>`
     font-size : 20px;
     font-weight : bold;
     font-family : 'pretendard';
-    color : black;
+    color : ${props => props.textColor || 'black'};
 `;
 
-export const LinxFileContent = styled.p`
+export const LinxFileTags = styled.div`
     width : 100%;
-    height : 70%;
+    height : auto;
+    display : flex;
+    gap : 10px;
+    padding : 0;
+    margin : 10px 0 0 0;
+    align-items : center;
+    justify-content : flex-start;
+`;
+
+export const LinxFileTagItem = styled.p`
+    font-size : 12px;
+    font-family : 'pretendard';
+    color : #999;
+    font-weight : 400;
+`;
+
+export const LinxFileImg = styled.div`
+    width : 100%;
+    height : 150px;
+    display : flex;
+    align-items : center;
+    justify-content : center;
+    margin : 10px 0 0 0;
+
+    img {
+        width : 100%;
+        height : 100%;
+        object-fit : cover;
+    }
+`;
+
+export const LinxFileContent = styled.p<TextColorProps>`
     margin : 10px 0 0 0;
     font-size : 16px;
     font-family : 'pretendard';
     font-weight : medium;
-    color : #555;
+    color : ${props => props.textColor || '#555'};
 
 `;
 
