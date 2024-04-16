@@ -1,11 +1,22 @@
 .colorWrap {
     width : 60px;
     height : 60px;
-    margin : 20px 0 0 30px;
+    margin : 20px 0 0 0;
     padding : 0;
     display : flex;
     align-items : center;
     justify-content : center;
     border-radius : 20px;
     background-color : #f2f2f2;
+
+    @media (max-width: 768px) {
+        width : 40px;
+        height : 40px;
+        margin : 0;
+    }
+
+    @media (max-width : 450px) {
+        width : 35px;
+        height : 35px;
+    }
 }

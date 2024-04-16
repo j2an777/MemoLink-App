@@ -10,12 +10,15 @@ export interface FileData {
     noteColor : string;
     imageUrl : string;
     createdAt: string;
+    uploadedAt?: string;
+    likes?: number;
 }
 
 export interface LinxFileData extends FileData {
     username : string;
     avatarUrl: string;
     userId : string;
+    folderId: string;
 }
 
 export interface LinxData extends FileData {

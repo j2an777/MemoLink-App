@@ -72,7 +72,7 @@ export const ItemTop = styled.div`
 export const ItemTitle = styled.p<textColorProps>`
     font-size : 24px;
     font-weight : bold;
-    font-family : 'pretendard';
+    font-family : 'Pretendard', sans-serif;
     color : ${props => props.textColor || 'black'};
 `;
 

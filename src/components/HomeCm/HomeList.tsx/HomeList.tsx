@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react"
 import { LinxFileData } from "../../../types/fileData"
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../../firebase";
-import { EmptyDialog, LinxBox, LinxContent, LinxImg, LinxListContainer, LinxMore, LinxNoteInfo, LinxNoteTag, LinxNoteTagItem, LinxTitle, LinxTopWrap, LinxUserInfo, UserAvatar, UserCreatedAt, UserMetaInfo, UserName, Wrapper } from "./HomeListStyles";
+import { arrayRemove, arrayUnion, collection, doc, getDocs, onSnapshot, updateDoc } from "firebase/firestore";
+import { auth, db } from "../../../firebase";
+import { EmptyDialog, LinxBox, LinxContent, LinxImg, LinxListContainer, LinxMore, LinxNoteInfo, LinxNoteTag, LinxNoteTagItem, LinxShow, LinxShowBox, LinxTitle, LinxTopWrap, LinxUserInfo, UserAvatar, UserCreatedAt, UserMetaInfo, UserName, Wrapper } from "./HomeListStyles";
 import { UserData } from "../../../types/userData";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setDetail } from "../../../Store/DetailStore/detailSlice";
+import SettingPopup from "../../Modal/SettingPopup/SettingPopup";
 
 export default function HomeList() {
   const [linxFiles, setLinxFiles] = useState<LinxFileData[]>([]);
   const [linxMorePopup, setLinxMorePopup] = useState(false);
+  const [commentCounts, setCommentCounts] = useState<{ [key: string]: number}>({});
+  const [likeToggle, setLikeToggle] = useState<{ [key: string]: boolean }>({});
+  const [jellyAnimation, setJellyAnimation] = useState<{ [key: string]: boolean }>({});
+  const [likesCount, setLikesCount] = useState<{ [key: string]: number }>({});
+  const [settingPopup, setSettingPopup] = useState(false);
+  const [shareFile, setShareFile] = useState<LinxFileData>();
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -19,15 +26,14 @@ export default function HomeList() {
     const fetchLinxFiles = async () => {
       const foldersSnapshot = await getDocs(collection(db, "folders"));
       const usersSnapshot = await getDocs(collection(db, "users"));
-
       const tempUsers: UserData[] = usersSnapshot.docs.map((userDoc) => ({
         ...userDoc.data() as UserData,
         userId: userDoc.id
       }));
-
       const tempLinxFiles: LinxFileData[] = [];
       foldersSnapshot.forEach((folderDoc) => {
         const folderData = folderDoc.data();
+        const folderId = folderDoc.id;
         // files 필드 안에 있는 각 파일 검사
         folderData.files.forEach((file: LinxFileData) => {
           if (file.linx === true) {
@@ -35,19 +41,38 @@ export default function HomeList() {
             if (userData) {
               tempLinxFiles.push({
                 ...file,
+                folderId,
                 username: userData.username,
                 avatarUrl: userData.avatarUrl,
-                userId: userData.userId
+                userId: userData.userId,
               });
             }
           }
         });
       });
-
       setLinxFiles(tempLinxFiles);
-    };
+    }
     fetchLinxFiles();
   }, []);
+
+  useEffect(() => {
+    const unsubscribes: (() => void)[] = [];
+    linxFiles.forEach((file) => {
+      const unsubscribe = onSnapshot(doc(db, "comments", file.id), (doc) => {
+        if (doc.exists()) {
+          const newCount = doc.data().comments.length;
+          setCommentCounts(prevCounts => ({ ...prevCounts, [file.id]: newCount }));
+        }
+      });
+
+      unsubscribes.push(unsubscribe);
+    });
+
+    return () => {
+      unsubscribes.forEach(unsubscribe => unsubscribe());
+    };
+  }, [linxFiles]);
+  
 
   const stripHtml = (html: string): string => {
     const doc = new DOMParser().parseFromString(html, 'text/html');
@@ -67,6 +92,74 @@ export default function HomeList() {
   const onHandleUser = (userId: string) => {
     navigate(`/mp/${userId}`);
   };
+
+  useEffect(() => {
+    const unsubscribes: (() => void)[] = [];
+    linxFiles.forEach((file) => {
+      const unsubscribe = onSnapshot(doc(db, "likes", file.id), (doc) => {
+        if (doc.exists()) {
+          const likesUsers = doc.data().likesUser;
+          setLikesCount(prevLikesCount => ({
+            ...prevLikesCount,
+            [file.id]: likesUsers.length
+          }));
+        }
+      });
+      unsubscribes.push(unsubscribe);
+    });
+  
+    // cleanup function에 각 unsubscribe 함수 호출
+    return () => {
+      unsubscribes.forEach(unsub => unsub());
+    };
+  }, [linxFiles]);
+
+  const onHandleLike = async (fileId: string) => {
+    
+    const user = auth.currentUser;
+    if (!user) return;
+
+    setLikeToggle(prevLikeToggle => ({
+      ...prevLikeToggle,
+      [fileId]: !prevLikeToggle[fileId]
+    }));
+    setJellyAnimation(prevJellyAnimation => ({
+      ...prevJellyAnimation,
+      [fileId]: true
+    }));
+    setTimeout(() => {
+      setJellyAnimation(prevJellyAnimation => ({
+        ...prevJellyAnimation,
+        [fileId]: false
+      }));
+    }, 300);
+
+    // likes 컬렉션 내 해당 id값 가진 문서 찾기
+    const likesDocRef = doc(db,"likes", fileId);
+
+    try {
+      // 이미 좋아요가 되어있는 상태면 클릭시 해당 id값 삭제
+      if (likeToggle[fileId]) {
+        await updateDoc(likesDocRef, {
+          likesUser: arrayRemove(user.uid)
+        });
+      // 좋아요가 안되어있는 상태면 클릭 시 id값 입력
+      } else {
+        await updateDoc(likesDocRef, {
+          likesUser: arrayUnion(user.uid)
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const onHandleSetting = (file: LinxFileData) => {
+    if (file) {
+      setShareFile(file);
+      setSettingPopup(true);
+    }
+  };
   
   return (
     <Wrapper>
@@ -82,7 +175,7 @@ export default function HomeList() {
                     <UserCreatedAt>{file.createdAt}</UserCreatedAt>
                   </UserMetaInfo>
                 </LinxUserInfo>
-                <LinxMore onClick={() => onToggleMore(file, file.id)}>
+                <LinxMore onClick={() => onHandleSetting(file)}>
                   <img src="/more.svg" />
                 </LinxMore>
               </LinxTopWrap>
@@ -95,6 +188,19 @@ export default function HomeList() {
                 </LinxNoteTag>
                 {file.imageUrl ? <LinxImg src={file.imageUrl} />: null}
                 <LinxContent textColor={file.textColor}>{truncate(stripHtml(file.content), 100)}</LinxContent>
+                <LinxShow>
+                  <LinxShowBox>
+                    <img
+                      src={likeToggle[file.id] ? '/yeslike.svg' : '/nolike.svg'} 
+                      onClick={() => onHandleLike(file.id)}
+                      className={jellyAnimation[file.id] ? 'jelly' : ''}/>
+                    <p>{likesCount[file.id] || 0}</p>
+                  </LinxShowBox>
+                  <LinxShowBox>
+                    <img src="/comment.svg" onClick={() => onToggleMore(file, file.id)}/>
+                    <p>{commentCounts[file.id] || 0}</p>
+                  </LinxShowBox>
+                </LinxShow>
               </LinxNoteInfo>
             </LinxBox>
           ))}
@@ -104,6 +210,12 @@ export default function HomeList() {
           <img src="/face.svg" />
           <span>로그인 후 이용바랍니다.</span>
         </EmptyDialog>
+      )}
+      { settingPopup && shareFile && ( 
+        <SettingPopup
+          shareFile={shareFile}
+          setSettingPopup={setSettingPopup}>
+        </SettingPopup> 
       )}
     </Wrapper>
   );

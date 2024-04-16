@@ -3,7 +3,6 @@ import folderReducer from "./FolderStore/folderSlice";
 import fileReducer from "./FileStore/fileSlice";
 import searchReducer from "./SearchStore/searchSlice";
 import detailReducer from "./DetailStore/detailSlice";
-import loginUserReducer from "./LoginUserStore/loginUser";
 
 export const store = configureStore({
     reducer: {
@@ -11,7 +10,6 @@ export const store = configureStore({
         files: fileReducer,
         search: searchReducer,
         detail: detailReducer,
-        loginUser: loginUserReducer
     }
 });
 

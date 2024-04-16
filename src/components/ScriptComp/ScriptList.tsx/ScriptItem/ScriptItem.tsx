@@ -10,11 +10,12 @@ import Overlay from "../../../Overlay/Overlay";
 import EditedNotePopup from "../../../Modal/EditedNotePopup/EditedNotePopup";
 
 interface ScriptItemProps {
+  setItemCount: React.Dispatch<React.SetStateAction<number>>;
   selectedFolderName: string;
   isStarActive : boolean;
 }
 
-export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptItemProps) {
+export default function ScriptItem({ setItemCount, selectedFolderName, isStarActive }: ScriptItemProps) {
 
   const { files } = useAppSelector(state => state.files);
   const searchFileName = useAppSelector(state => state.search.searchFileName);
@@ -23,6 +24,10 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
   const [selectedNote, setSelectedNote] = useState<FileData | null>(null);
   const [editOpen, setEditOpen] = useState(false);
   const [editNote, setEditNote] = useState<FileData | null>(null);
+
+  useEffect(() => {
+    setItemCount(files.length);
+  }, [files, setItemCount]);
 
   useEffect(() => {
     if (selectedFolderName) {
@@ -65,7 +70,8 @@ export default function ScriptItem({ selectedFolderName, isStarActive }: ScriptI
     }
   };
 
-  const onHandleStar = async (noteId: string, currentStarValue: boolean, e: React.MouseEvent) => {
+  const onHandleStar = async (noteId: string, currentStarValue: boolean, e: React.MouseEvent | TouchEvent) => {
+    e.preventDefault();
     e.stopPropagation();
     // 현재 사용자와 선택된 폴더 이름으로 쿼리를 생성합니다.
     const foldersQuery = query(

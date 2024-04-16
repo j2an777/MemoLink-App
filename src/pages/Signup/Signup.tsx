@@ -2,10 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Error, Form, Input, LoginBox, OkContents, OkImg, OkPopup, OkTitle, Switcher, Title, ToLogin, Wrapper } from "./SignupStyles";
 import { useState } from "react";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../firebase";
+import { auth, storage } from "../../firebase";
 import { FirebaseError } from "firebase/app";
 import Overlay from "../../components/Overlay/Overlay";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { getDownloadURL, ref as storageRef } from "firebase/storage";
+import { getErrorMessage } from "./SignupErrorData";
 
 export default function Signup() {
 
@@ -18,6 +20,7 @@ export default function Signup() {
   const navigate = useNavigate();
 
   const [signLoading, setSignLoading] = useState(false);
+
 
   const onSignChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { name, value } } = e;
@@ -44,22 +47,24 @@ export default function Signup() {
         displayName: name
       });
 
+      const avatarRef = storageRef(storage, 'avatars/default/user.svg');
+
+      const avatarUrl = await getDownloadURL(avatarRef);
+
       const db = getFirestore();
-      const count = 0;
 
       // 회원가입 성공과 동시에 users문서 내 avatarUrl, introduce 필드 초기화 생성
       await setDoc(doc(db, 'users', credentials.user.uid), {
-        avatarUrl: '',
+        avatarUrl: avatarUrl,
         introduce: '',
         username: name,
-        count : count,
-        userId : credentials.user.uid
+        count : 0,
       });
 
       setIsOk(true);
     } catch (error) {
       if (error instanceof FirebaseError) {
-        setIsError(error.message);
+        setIsError(getErrorMessage(error.message));
       }
     } finally {
       setSignLoading(false);

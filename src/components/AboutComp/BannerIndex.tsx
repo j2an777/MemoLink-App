@@ -9,6 +9,11 @@ const HCWrapper = styled.div`
     display : flex;
     align-items : center;
     flex-direction : column;
+
+    @media (max-width : 768px) {
+      width : 100vw;
+      overflow-x : hidden;
+    }
 `;
 
 export default function BannerIndex() {

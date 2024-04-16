@@ -75,7 +75,7 @@ export const FpPopupBox = styled.form`
     flex-direction : column;
     align-items : center;
     justify-content : center;
-    z-index : 510;
+    z-index : 590;
 `;
 
 export const FpBack = styled.div`

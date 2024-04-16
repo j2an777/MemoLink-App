@@ -14,16 +14,6 @@ export const routers = [
         isProtected: false,
     },
     {
-        path:"/script",
-        Element: <Script />,
-        isProtected: true,
-    },
-    {
-        path:"/script/:fileId",
-        Element: <ListNotePopup />,
-        isProtected: true,  
-    },
-    {
         path:"/login",
         Element: <Login />,
         isProtected: false,
@@ -31,6 +21,16 @@ export const routers = [
     {
         path:"/signup",
         Element: <Signup />,
+        isProtected: false,
+    },
+    {
+        path:"/script",
+        Element: <Script />,
+        isProtected: true,
+    },
+    {
+        path:"/script/:fileId",
+        Element: <ListNotePopup />,
         isProtected: false,
     },
     {

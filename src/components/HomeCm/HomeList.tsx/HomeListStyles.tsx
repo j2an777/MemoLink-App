@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 export const Wrapper = styled.div`
     width : 100%;
@@ -157,8 +157,9 @@ export const LinxNoteTagItem = styled.p`
 
 export const LinxImg = styled.img`
     width : 100%;
-    height : 400px;
+    max-height : 400px;
     object-fit : contain;
+    margin : 10px 0 0 0;
 `;
 
 export const LinxContent = styled.p<TextColorProps>`
@@ -170,7 +171,7 @@ export const LinxContent = styled.p<TextColorProps>`
     color : ${props => props.textColor || 'black'};
     word-break : break-word;
     overflow-wrap : break-word;
-    margin : 20px 0 0 0;
+    margin : 20px 0 10px 0;
 `;
 
 export const EmptyDialog = styled.div`
@@ -196,3 +197,68 @@ export const EmptyDialog = styled.div`
         font-family : 'pretendard';
     }
 `;
+
+export const LinxShow = styled.div`
+    width : 100%;
+    height : 50px;
+    margin : 0;
+    padding : 0;
+    display : flex;
+    justify-content : flex-start;
+    align-items : center;
+    gap : 10px;
+`;
+
+const jellyAnimation = keyframes`
+    0%,100% {
+      transform: scale(1, 1);
+    }
+    25% {
+      transform: scale(0.9, 1.1);
+    }
+    50% {
+      transform: scale(1.1, 0.9);
+    }
+    75% {
+      transform: scale(0.95, 1.05);
+    }
+`;
+
+export const LinxShowBox = styled.div`
+    width : auto;
+    height : 100%;
+    margin : 0;
+    padding : 0;
+    display : flex;
+    align-items : center;
+    justify-content : flex-start;
+    gap : 10px;
+
+    img {
+        width : 30px;
+        height : 30px;
+        object-fit : contain;
+        transition : all 0.3s ease;
+
+        &:hover {
+            transform : scale(1.1);
+            cursor : pointer;
+        }
+
+        &:active {
+            transform : scale(0.9);
+        }
+
+        &.jelly {
+            animation : ${jellyAnimation} 0.5s infinite;
+        }
+    }
+
+    p {
+        font-size : 16px;
+        font-weight : 400;
+        font-family : 'pretendard';
+        color : #555;
+    }
+`;
+

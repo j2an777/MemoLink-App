@@ -18,7 +18,6 @@ export default function ScriptTop() {
       setValue(e.target.value);
   };
   
-
   return (
     <STWrapper>
         <SearchContainer>

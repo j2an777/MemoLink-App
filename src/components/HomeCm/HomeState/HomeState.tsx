@@ -6,23 +6,29 @@ import { doc, getDoc } from "firebase/firestore";
 
 export default function HomeState() {
 
+  const [target, setTarget] = useState(5);
   const [progress, setProgress] = useState(0);
-  const [linxCount, setLinxCount] = useState(1);
+  const [linxCount, setLinxCount] = useState(0);
   const navigate = useNavigate();
 
-  // linxCount가 5 이상일 때는 countPoint 무조건 100으로 설정
-  const countPoint = Math.min(linxCount * 20, 100);
+  useEffect(() => {
+    if (linxCount >= target) {
+      setTarget(target + 5);
+    }
+  }, [linxCount, target]);
 
   useEffect(() => {
+    const progressIncrement = 100 / target;
+
     const interval = setInterval(() => {
       setProgress((prevProgress) => {
-        // 진행률이 countPoint 또는 100 초과 안되도록 설정
-        const nextProgress = Math.min(prevProgress + 1, countPoint, 100);
-        if (nextProgress >= countPoint) {
+        const maxProgress = linxCount * progressIncrement;
+        const nextProgress = Math.min(prevProgress + 1, maxProgress);
+        if (nextProgress >= maxProgress) {
           clearInterval(interval);
           return nextProgress;
         }
-        return prevProgress + 1;
+        return nextProgress;
       });
     }, 20);
 
@@ -44,7 +50,7 @@ export default function HomeState() {
 
     fetchLinxCount();
     return () => clearInterval(interval);
-  }, [countPoint]);
+  }, [target]);
 
   const toScript = () => {
     if (auth.currentUser) {
@@ -57,9 +63,9 @@ export default function HomeState() {
   return (
     <Wrapper>
       <CircularProgress $progress={progress}>
-        <ProgressValue>{progress}%</ProgressValue>
+        <ProgressValue>{Math.round(progress)}%</ProgressValue>
       </CircularProgress>
-      <ProgressText>Daily Linx : <span>{linxCount}</span> / 5</ProgressText>
+      <ProgressText>Daily Linx : <span>{linxCount}</span> / {target}</ProgressText>
       <ToScriptBtn onClick={toScript}>Linx Up!</ToScriptBtn>
     </Wrapper>
   )

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div<{isscrolled : boolean}>`
+export const Wrapper = styled.div<{$isscrolled : boolean}>`
     position: fixed;
     top: 0;
     left: 0;
@@ -12,7 +12,7 @@ export const Wrapper = styled.div<{isscrolled : boolean}>`
     align-items: center;
     margin: 0;
     box-sizing: border-box;
-    background-color: ${props => props.isscrolled ? 'white' : 'transparent'};
+    background-color: ${props => props.$isscrolled ? 'white' : 'transparent'};
     color: #03D100;
     font-size: 1.2rem;
     font-weight: 600;

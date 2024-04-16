@@ -21,6 +21,7 @@ export const Wrapper = styled.div`
 `;
 
 export const FolderTop = styled.div`
+    position : relative;
     width : 100%;
     height : 50px;
     display : flex;
@@ -152,12 +153,12 @@ export const GuideImg = styled.img`
     animation : ${updownAnime} 2s ease-in-out infinite;
 `;
 
-export const NotePopupWrapper = styled.div`
+export const NotePopupWrapper = styled.div<{isSettingPopup : boolean}>`
     position : fixed;
     top : 50%;
     left : 50%;
     transform : translate(-50%, -50%);
-    width : 800px;
+    width : ${props => props.isSettingPopup ? '900px' : '800px'};
     height : 600px;
     margin : 0;
     padding : 0;
@@ -169,16 +170,19 @@ export const NotePopupWrapper = styled.div`
     justify-content : center;
     z-index : 503;
     animation : ${downAnime} 0.3s ease-in-out;
+    transition : width 0.3s ease, height 0.3s ease;
 
     @media (max-width : 1200px) {
         width : 70vw;
         height : 500px;
-        left : 60%;
     }
 
     @media (max-width : 900px) {
         width : 100vw;
-        left : 50%;
+    }
+
+    @media (max-width : 768px) {
+        height : ${props => props.isSettingPopup ? '600px' : '500px'};
     }
 `;
 
@@ -189,10 +193,6 @@ export const RightSettingBox = styled.div`
     padding : 0;
     display : flex;
     justify-content : flex-end;
-
-    @media (max-width : 1200px) {
-        display : none;
-    }
 `;
 
 export const RightSettingImg = styled.img`
@@ -202,6 +202,27 @@ export const RightSettingImg = styled.img`
 
     &:hover {
         cursor : pointer;
+    }
+
+    @media (max-width : 768px) {
+        transform : rotate(-90deg);
+        transform-origin : top 10px right;
+    }
+`;
+
+export const Wrap = styled.div`
+    width : 100%;
+    height : 100%;
+    margin : 0;
+    padding : 0;
+    display : flex;
+    align-items : center;
+    background-color : white;
+    border-radius : 20px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+
+    @media (max-width : 768px) {
+        flex-direction: column;
     }
 `;
 
@@ -215,9 +236,6 @@ export const NPopupBox = styled.form`
     flex-direction : column;
     justify-content : space-between;
     box-sizing : border-box;
-    background-color : white;
-    border-radius : 20px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
 `;
 
 export const NTitleInput = styled.input`
@@ -306,43 +324,29 @@ export const TagBlock = styled.span`
 
 export const SettingPopupWrapper = styled.div`
     width : 150px;
-    height : 560px;
-    position : absolute;
-    top : 52%;
-    left : 50%;
-    transform : translateY(-50%);
-    background-color : white;
-    box-shadow : -2px 0 5px rgba(0, 0, 0, 0.1);
-    transition : left 0.3s ease;
-    z-index : 502;
-    animation : ${downAnime} 0.3s ease-in-out;
-    border-radius : 0 20px 20px 0;
-    display : flex;
+    height : 100%;
+    animation : ${downAnime} 0.5s ease-in-out;
+    display : none;
     flex-direction : column;
     align-items : center;
     justify-content : space-between;
 
     &.active {
-        left : 73.5%;
+        display : flex;
     }
 
-    @media (max-width: 1390px) {
-        &.active {
-            left : 78%;
-        }
-        position : none;
+    @media (max-width : 768px) {
+        width : 100%;
+        height : 70px;
+        flex-direction : row;
+        padding : 0 20px;
+        box-sizing : border-box;
+        justify-content : space-evenly;
     }
 
-    @media (max-width : 1200px) {
-        position : static;
-        top : auto;
-        left : auto;
+    @media (max-width : 450px) {
+        justify-content : space-between;
     }
-
-    @media (max-width : 900px) {
-        display : none;
-    }
-
 `;
 
 export const SetImgBox = styled.img`
@@ -351,7 +355,19 @@ export const SetImgBox = styled.img`
     object-fit : contain;
     border-radius : 20px;
     border : 1px solid #c9c9c9;
-    margin : 20px 0 0 30px;
+    margin : 20px 0 0 0;
+
+    @media (max-width : 768px) {
+        margin : 0;
+        width : 40px;
+        height : 40px;
+        border-radius : 10px;
+    }
+
+    @media (max-width : 450px) {
+        width : 35px;
+        height : 35px;
+    }
 `;
 
 export const SetImgButton = styled.label`
@@ -362,10 +378,21 @@ export const SetImgButton = styled.label`
     background-image: url('/image.svg');
     background-size : cover;
     background-position : center;
-    margin : 20px 0 20px 30px;
+    margin : 20px 0 20px 0;
 
     &:hover {
         cursor : pointer;
+    }
+
+    @media (max-width : 768px) {
+        width : 40px;
+        height : 40px;
+        margin : 0;
+    }
+
+    @media (max-width : 450px) {
+        width : 35px;
+        height : 35px;
     }
 `;
 
@@ -379,6 +406,10 @@ export const ColorLine = styled.div`
     margin : 0;
     padding : 0;
     background-color : #c9c9c9;
+
+    @media (max-width : 768px) {
+        display : none;
+    }
 `;
 
 interface SvgProps {
@@ -410,12 +441,22 @@ export const SetColorPen = styled(PenSvg)`
 `;
 
 export const ColorBox = styled.img`
-    width : 40px;
-    height : 40px;
+    width : 50px;
+    height : 50px;
     object-fit : contain;
-    margin : 20px 0 20px 30px;
+    margin : 20px 0 20px 0;
 
     &:hover {
         cursor : pointer;
+    }
+
+    @media (max-width : 768px) {
+        width : 40px;
+        height : 40px;
+    }
+
+    @media (max-width : 450px) {
+        width : 35px;
+        height : 35px;
     }
 `;

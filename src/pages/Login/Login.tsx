@@ -7,8 +7,6 @@ import { FirebaseError } from "firebase/app";
 import LoadingScreen from "../../components/Loader/LoadingScreen";
 import { getErrorMessage } from "./LoginErrorData";
 import { doc, setDoc } from "firebase/firestore";
-import { useAppDispatch } from "../../hooks/redux";
-import { setUserId } from "../../Store/LoginUserStore/loginUser";
 
 export default function Login() {
 
@@ -19,9 +17,6 @@ export default function Login() {
   const [logError, setLogError] = useState("");
 
   const navigate = useNavigate();
-
-  const dispatch = useAppDispatch();
-
 
   const onLogChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target: {name, value} } = e;
@@ -41,9 +36,7 @@ export default function Login() {
 
     try {
       setLogLoading(true);
-      const result = await signInWithEmailAndPassword(auth, logEmail, logPassword);
-      const user = result.user;
-      dispatch(setUserId(user.uid));
+      await signInWithEmailAndPassword(auth, logEmail, logPassword);
       navigate("/");
     } catch (error) {
       if (error instanceof FirebaseError) {
@@ -116,6 +109,8 @@ export default function Login() {
               placeholder="이메일 입력"
               value={logEmail}
               onChange={onLogChange}
+              autoComplete="email"
+              required
             />
             <Input
               name="password"
@@ -123,6 +118,8 @@ export default function Login() {
               placeholder="비밀번호 입력"
               value={logPassword}
               onChange={onLogChange}
+              autoComplete="currentUser.password"
+              required
             />
             <Input
               type="submit"
@@ -131,7 +128,7 @@ export default function Login() {
           </Form>
         {logError !== "" ? <Error>{logError}</Error> : null}
         <Switcher>
-          가입하신 계정이 없으신가요? <Link to = "/signup">회원가입 &rarr;</Link>
+          가입하신 계정이 없으신가요? <Link to="/signup">회원가입 &rarr;</Link>
         </Switcher>
         <PlatformItem>
           <PlatformLogin onClick={onGoogleLogin}>
