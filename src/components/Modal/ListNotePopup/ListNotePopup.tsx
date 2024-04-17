@@ -144,12 +144,12 @@ const ListNotePopup = () => {
             </LnpUserBox>
             <LnpContentBox>
               <LnpTitle>{file?.title}</LnpTitle>
-              <LnpContent>{file?.content ? stripHtml(file.content) : ''}</LnpContent>
               <LnpTags>
                 {file?.tags.map((tag, index) => (
                     <LnpTagItem key={index}>#{tag}</LnpTagItem>
                 ))}
               </LnpTags>
+              <LnpContent>{file?.content ? stripHtml(file.content) : ''}</LnpContent>
               <LnpComment>
               {comments.map((comment, index) => (
                 <UserCommentBox key={index}>

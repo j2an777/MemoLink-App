@@ -75,7 +75,13 @@ export const FpPopupBox = styled.form`
     flex-direction : column;
     align-items : center;
     justify-content : center;
+    gap : 10px;
     z-index : 590;
+
+    p {
+        color : red;
+        font-size : 14px;
+    }
 `;
 
 export const FpBack = styled.div`
@@ -108,12 +114,13 @@ export const FpBack = styled.div`
 export const FpInput = styled.input`
     width : 100%;
     height : 40px;
-    margin : 0 0 20px 0;
+    margin : 0 0 0 0;
     padding : 10px 20px;
     box-sizing : border-box;
     outline : none;
     border : 1px solid #ccc;
     border-radius : 15px;
+    font-size : 14px;
 
     &::placeholder {
         font-weight : bold;

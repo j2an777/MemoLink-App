@@ -101,7 +101,7 @@ export const LnpInfo = styled.div`
 
     @media (max-width : 920px) {
         width : 100%;
-        height : 200px;
+        min-height : 200px;
         border-top : 1px solid #c9c9c9;
     }
 `;
@@ -299,6 +299,28 @@ export const CommentContent = styled.p`
     font-weight : 500;
     font-family : 'pretendard';
     color : black;
+`;
+
+export const LnpLikesBox = styled.div`
+    width : 100%;
+    height : auto;
+    margin : 0 0 0 0;
+    padding : 0;
+    box-sizing : border-box;
+    display : flex;
+    align-items : center;
+    justify-content : flex-start;
+    gap : 10px;
+
+    img {
+        width : 30px;
+        height : 30px;
+        object-fit : contain;
+    }
+
+    &:hover {
+        cursor : pointer;
+    }
 `;
 
 export const LnpCommentPlus = styled.div`

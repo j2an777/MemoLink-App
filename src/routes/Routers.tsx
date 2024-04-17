@@ -6,6 +6,7 @@ import Signup from "../pages/Signup/Signup";
 import About from "../pages/About/About";
 import Review from "../pages/Review/Review";
 import ListNotePopup from "../components/Modal/ListNotePopup/ListNotePopup";
+import Error from "../pages/Error/Error";
 
 export const routers = [
     {
@@ -46,6 +47,11 @@ export const routers = [
     {
         path:"/review",
         Element: <Review />,
+        isProtected: false,
+    },
+    {
+        path:"*",
+        Element: <Error />,
         isProtected: false,
     }
 ];

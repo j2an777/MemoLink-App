@@ -52,15 +52,28 @@ const SettingPopup: React.FC<SettingPopupProps> = ({ shareFile, setSettingPopup 
     };
 
     const sharePost = async () => {
-        try {
-            await navigator.share({
-                title: shareFile.title,
-                text: shareFile.content,
-                url: `https://react-note-a4e85.web.app/script/${shareFile.id}`,
-            });
-        } catch (error) {
-            console.error(error);
+        const url = `https://react-note-a4e85.web.app/script/${shareFile.id}`;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: shareFile.title,
+                    text: shareFile.content,
+                    url: url,
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        } else if (navigator.clipboard) {
+            try {
+                await navigator.clipboard.writeText(url);
+                alert('URL을 클립보드에 복사했습니다.');
+            } catch (error) {
+                console.error(error);
+            }
+        } else {
+            alert('URL을 클립보드에 복사할 수 없습니다.');
         }
+        
     };
 
     // 업로드한 글 삭제 시 좋아요와 댓글에 대한 데이터도 다 삭제

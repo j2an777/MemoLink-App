@@ -201,7 +201,7 @@ export const EmptyDialog = styled.div`
 export const LinxShow = styled.div`
     width : 100%;
     height : 50px;
-    margin : 0;
+    margin : 10px 0 0 0;
     padding : 0;
     display : flex;
     justify-content : flex-start;
