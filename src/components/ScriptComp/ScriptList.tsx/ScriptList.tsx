@@ -125,7 +125,7 @@ const ScriptList = () => {
     setUploadLoading(false);
 
     if (querySnapshot.empty) {
-      alert("등록된 폴더가 없습니다. 먼저 폴더 생성해주세요.");
+      alert("등록된 폴더가 없습니다. 먼저 폴더를 생성해주세요.");
     } else {
       setOnNotePopup(!onNotePopup);
     }

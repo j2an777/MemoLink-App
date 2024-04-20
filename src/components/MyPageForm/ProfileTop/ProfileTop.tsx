@@ -3,6 +3,7 @@ import { ProFileAvatarContainer, ProFileEdit, ProFileEditContainer, ProFileEditM
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "../../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import LoadingScreen from "../../Loader/LoadingScreen";
 
 interface UserIdProps {
     userId: string;
@@ -15,6 +16,7 @@ const ProfileTop: React.FC<UserIdProps> = ({ userId }) => {
     const [profileImgUrl, setProfileImgUrl] = useState("");
     const [userName, setUserName] = useState("");
     const [isCurrentUser, setIsCurrentUser] = useState(false);
+    const [uploadProgress, setUploadProgress] = useState(0);
 
     useEffect(() => {
         const user = auth.currentUser;
@@ -58,7 +60,7 @@ const ProfileTop: React.FC<UserIdProps> = ({ userId }) => {
                 (snapshot) => {
                     // 상태 변화 시 처리, 예를 들어 프로그레스 바 업데이트
                     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                    console.log('Upload is ' + progress + '% done');
+                    setUploadProgress(progress);
                 },
                 (error) => {
                   // 업로드 중 에러 처리
@@ -102,7 +104,11 @@ const ProfileTop: React.FC<UserIdProps> = ({ userId }) => {
         <Wrapper>
             <ProFileAvatarContainer>
                 <ProFileImg>
+                {(uploadProgress > 0 && uploadProgress < 100) ? (
+                    <LoadingScreen />
+                ) : (
                     <img src={profileImgUrl} />
+                )}
                 </ProFileImg>
                 {isCurrentUser && (
                     <ProFileUserEditLabel htmlFor="avatar-upload">

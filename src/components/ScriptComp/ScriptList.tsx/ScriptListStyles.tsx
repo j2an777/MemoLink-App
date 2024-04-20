@@ -291,21 +291,20 @@ export const NConfirm = styled.input`
 
 export const TextContainer = styled.div`
     width : 100%;
+    height : 300px;
     flex-grow : 1;
-    margin : auto;
+    margin : 0;
     padding : 0;
     display : flex;
     justify-content : center;
-    align-items : center;
-    overflow : auto;
 
     .quill {
+        width : 100%;
+        height : 250px;
         img {
             width : 300px;
             height : auto;
         }
-        height : 100%;
-        width : 100%;
     }
 `;
 

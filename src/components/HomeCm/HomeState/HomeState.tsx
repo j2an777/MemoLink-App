@@ -42,6 +42,7 @@ export default function HomeState() {
           setLinxCount(userSnapshot.data().count);
         } else {
           console.log('No such user!');
+          setLinxCount(0);
         }
       } else {
         setLinxCount(0);
@@ -50,7 +51,7 @@ export default function HomeState() {
 
     fetchLinxCount();
     return () => clearInterval(interval);
-  }, [target]);
+  }, [linxCount, target]);
 
   const toScript = () => {
     if (auth.currentUser) {

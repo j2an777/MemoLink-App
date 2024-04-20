@@ -1,4 +1,4 @@
-import { collection, doc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, setDoc, updateDoc, where } from 'firebase/firestore';
 import { FileData } from '../../../types/fileData';
 import { FpBack } from '../../ScriptComp/ScriptCompStyles';
 import { PcContentBox, PcTagBox, PcTagContainer, PcTitleBox, PopupContent, SaveBtn, Wrapper } from './SelectedNpStyles';
@@ -50,52 +50,67 @@ const SelectedNotePopup: React.FC<SelectedNotePopupProps> = ({ note, onClose }) 
 
     if (!user) return;
 
-    const foldersQuery = query(
-      collection(db, "folders"),
-      where("userId", "==", auth.currentUser?.uid),
-      where("fpName", "==", selectedFolderName)
-    );
+    const ok = confirm('업로드 하시면 이 글은 더이상 수정은 불가능합니다. 업로드 하시겠습니까?');
 
-    try {
-      const querySnapshot = await getDocs(foldersQuery);
-
-      if(!querySnapshot.empty) {
-
-        const folderDocRef = querySnapshot.docs[0].ref;
-        const files = querySnapshot.docs[0].data().files;
-        let shouldAddLike = false;
-      
-
-        const updatedFiles = files.map((file: FileData) => {
-          if (file.id === noteId) {
-            const updatedLinx = !currentLinxValue;
-
-            if (!currentLinxValue && !file.linx) {
-              shouldAddLike = true;
+    if (ok) {
+      const foldersQuery = query(
+        collection(db, "folders"),
+        where("userId", "==", auth.currentUser?.uid),
+        where("fpName", "==", selectedFolderName)
+      );
+  
+      try {
+        const querySnapshot = await getDocs(foldersQuery);
+  
+        if(!querySnapshot.empty) {
+  
+          const folderDocRef = querySnapshot.docs[0].ref;
+          const files = querySnapshot.docs[0].data().files;
+          let shouldAddLike = false;
+        
+  
+          const updatedFiles = files.map((file: FileData) => {
+            if (file.id === noteId) {
+              const updatedLinx = !currentLinxValue;
+  
+              if (!currentLinxValue && !file.linx) {
+                shouldAddLike = true;
+              }
+  
+              return { ...file, linx: updatedLinx };
             }
-
-            return { ...file, linx: updatedLinx };
-          }
-          return file;
-        });
-
-        await updateDoc(folderDocRef, { files: updatedFiles });
-
-        if (shouldAddLike) {
-          const likesDocRef = doc(db, "likes", noteId);
-          await setDoc(likesDocRef, {
-            likesUser: []
+            return file;
           });
+  
+          await updateDoc(folderDocRef, { files: updatedFiles });
+  
+          if (shouldAddLike) {
+            const likesDocRef = doc(db, "likes", noteId);
+            const userDocRef = doc(db, "users", user.uid);
+
+            await setDoc(likesDocRef, {
+              likesUser: []
+            });
+
+            const userDocSnap = await getDoc(userDocRef);
+
+            if (userDocSnap.exists()) {
+              const currentCount = userDocSnap.data().count || 0;
+              await updateDoc(userDocRef, {
+                count: currentCount + 1
+              });
+            }
+          }
+  
+          dispatch(fetchFiles(selectedFolderName));
+  
+          onClose();
+        } else {
+          console.log("No such folder!");
         }
-
-        dispatch(fetchFiles(selectedFolderName));
-
-        onClose();
-      } else {
-        console.log("No such folder!");
+      } catch (error) {
+        console.error("Error updating stars: ", error);
       }
-    } catch (error) {
-      console.error("Error updating stars: ", error);
     }
   }
 

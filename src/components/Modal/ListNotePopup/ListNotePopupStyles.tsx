@@ -84,7 +84,6 @@ export const LnpImg = styled.div`
     }
 
     @media (max-width : 920px) {
-        width : 100%;
         border : none;
     }
 `;
@@ -181,6 +180,8 @@ export const LnpTitle = styled.p`
 `;
 
 export const LnpContent = styled.p`
+    height : 120px;
+    overflow-y : auto;
     font-size : 16px;
     font-weight : 500;
     font-family : 'pretendard';
@@ -215,7 +216,7 @@ export const LnpTagItem = styled.p`
 
 export const LnpComment = styled.div`
     width : 100%;
-    height : 300px;
+    height : 250px;
     margin : 0;
     padding : 10px 0;
     box-sizing : border-box;
@@ -228,6 +229,10 @@ export const LnpComment = styled.div`
     border-bottom : 1px solid #c9c9c9;
 
     @media (max-width : 920px) {
+        display : none;
+    }
+
+    ::-webkit-scrollbar {
         display : none;
     }
 `;
@@ -281,7 +286,7 @@ export const CommentUserSubInfo = styled.div`
 `;
 
 export const CommentUserName = styled.p`
-    font-size : 16px;
+    font-size : 14px;
     font-weight : 600;
     font-family : 'pretendard';
     color : black;
@@ -295,7 +300,7 @@ export const CommentCreatedAt = styled.p`
 `;
 
 export const CommentContent = styled.p`
-    font-size : 18px;
+    font-size : 16px;
     font-weight : 500;
     font-family : 'pretendard';
     color : black;

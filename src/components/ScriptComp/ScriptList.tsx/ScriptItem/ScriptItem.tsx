@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { ItemBottom, ItemDate, ItemDelete, ItemEdit, ItemImgBox, ItemMiddle, ItemScript, ItemScriptBox, ItemStar, ItemTagsContainer, ItemTitle, ItemTop, ItemUpdateBox, NoFolderName, ScriptItemContainer, Wrapper } from "./ScriptItemStyles";
 import { auth, db } from "../../../../firebase";
-import { collection, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { FileData } from "../../../../types/fileData";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
 import { fetchFiles } from "../../../../Store/FileStore/fileSlice";
@@ -47,12 +47,21 @@ export default function ScriptItem({ setItemCount, selectedFolderName, isStarAct
     const user = auth.currentUser;
     if (!user) return;
 
-    const ok = confirm("정말로 해당 파일을 삭제하시겠습니까?");
+    const ok = confirm("정말로 해당 파일을 삭제하시겠습니까? 모든 내용이 다 삭제가 됩니다.");
+
     if (ok) {
       const q = query(collection(db, "folders"),
                     where("userId", "==", user.uid),
                     where("fpName", "==", selectedFolderName));
       const querySnapshot = await getDocs(q);
+      const likesDocRef = doc(db, "likes", noteId);
+      const commentsDocRef = doc(db, "comments", noteId);
+
+      await deleteDoc(likesDocRef);
+
+      if (commentsDocRef) {
+        await deleteDoc(commentsDocRef);
+      }
 
       if (!querySnapshot.empty) {
         const folderDocRef = querySnapshot.docs[0].ref;
@@ -152,8 +161,8 @@ export default function ScriptItem({ setItemCount, selectedFolderName, isStarAct
                 </ItemTop>
                 <ItemMiddle>
                   <ItemScriptBox>
-                    <ItemScript textColor={note.textColor}>{ truncate(cleanContent, 30) }</ItemScript>
-                    <ItemImgBox src={note.imageUrl ? note.imageUrl : ''} />
+                    <ItemScript textColor={note.textColor}>{ truncate(cleanContent, 50) }</ItemScript>
+                    <ItemImgBox src={note.imageUrl ? note.imageUrl : '/noImage.svg'} />
                   </ItemScriptBox>
                   <ItemTagsContainer textColor={note.textColor}>
                     { note.tags.map((tag, tagIndex) => (
@@ -164,7 +173,7 @@ export default function ScriptItem({ setItemCount, selectedFolderName, isStarAct
                 <ItemBottom>
                   <ItemDate>{ note.createdAt }</ItemDate>
                   <ItemUpdateBox>
-                    <ItemEdit onClick={(e) => handleEditClick(note, e)}>수정</ItemEdit>
+                    {note.linx === true ? null : <ItemEdit onClick={(e) => handleEditClick(note, e)}>수정</ItemEdit>}
                     <ItemDelete onClick={(e) => onHandleDoc(note.id, e)}>삭제</ItemDelete>
                   </ItemUpdateBox>
                 </ItemBottom>

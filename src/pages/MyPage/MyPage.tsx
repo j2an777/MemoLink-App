@@ -7,7 +7,6 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import LoadingScreen from "../../components/Loader/LoadingScreen";
 
-
 const Wrapper = styled.div`
   width : 90vw;
   height : auto;

@@ -21,7 +21,6 @@ export default function Signup() {
 
   const [signLoading, setSignLoading] = useState(false);
 
-
   const onSignChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { name, value } } = e;
     if (name === "name") {
@@ -71,7 +70,6 @@ export default function Signup() {
     }
   };
 
-
   return (
     <Wrapper>
       <LoginBox>
@@ -118,7 +116,7 @@ export default function Signup() {
               </svg>
             </OkImg>
             <OkContents>
-              <OkTitle>회원가입이 완료되었습니다!</OkTitle>
+              <OkTitle>회원가입이 완료되었습니다!<br/>바로 로그인 처리되어 이용 가능합니다.</OkTitle>
               <ToLogin
                 onClick={() => {navigate("/login")}}>
                 확인

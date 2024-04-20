@@ -101,47 +101,51 @@ const formats = [
       e.preventDefault();
       setUploadLoading(true);
   
-      try {
-        const user = auth.currentUser;
-        if (!user) {
-          alert("로그인이 필요합니다.");
-          return;
+      const ok = confirm("내용 수정을 완료하시겠습니까?");
+
+      if (ok) {
+        try {
+          const user = auth.currentUser;
+          if (!user) {
+            alert("로그인이 필요합니다.");
+            return;
+          }
+  
+          const folderRef = collection(db, "folders");
+          const q = query(folderRef, where("fpName", "==", selectedFolderName), where("userId", "==", user.uid));
+          const querySnapshot = await getDocs(q);
+  
+          if (!querySnapshot.empty) {
+              const folderDocRef = querySnapshot.docs[0].ref;
+              const updatedFiles = querySnapshot.docs[0].data().files.map((file: FileData) => {
+                  if (file.id === editNote.id) {
+                      return {
+                         ...file,
+                          title: noteTitle,
+                          tags: noteTags,
+                          content: noteContent,
+                          textColor: textColor,
+                          noteColor : noteColor,
+                          imageUrl: imageUrl,
+                          createdAt: new Date().toISOString().split('T')[0],
+                      };
+                  }
+                  return file;
+              });
+  
+              await updateDoc(folderDocRef, { files: updatedFiles });
+  
+              dispatch(fetchFiles(selectedFolderName));
+          } else {
+              console.log('selected folder does not exist.');
+          }
+        } catch (error) {
+          console.log(error);
         }
-
-        const folderRef = collection(db, "folders");
-        const q = query(folderRef, where("fpName", "==", selectedFolderName), where("userId", "==", user.uid));
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-            const folderDocRef = querySnapshot.docs[0].ref;
-            const updatedFiles = querySnapshot.docs[0].data().files.map((file: FileData) => {
-                if (file.id === editNote.id) {
-                    return {
-                       ...file,
-                        title: noteTitle,
-                        tags: noteTags,
-                        content: noteContent,
-                        textColor: textColor,
-                        noteColor : noteColor,
-                        imageUrl: imageUrl,
-                        createdAt: new Date().toISOString().split('T')[0],
-                    };
-                }
-                return file;
-            });
-
-            await updateDoc(folderDocRef, { files: updatedFiles });
-
-            dispatch(fetchFiles(selectedFolderName));
-        } else {
-            console.log('selected folder does not exist.');
-        }
-      } catch (error) {
-        console.log(error);
       }
   
       setUploadLoading(false);
-      togglePopup();
+      setEditOpen(false);
     };
 
     const toggleNoteColor = () => {

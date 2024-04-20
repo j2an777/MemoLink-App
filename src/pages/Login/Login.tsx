@@ -51,11 +51,12 @@ export default function Login() {
     try {
       const gitProvider = new GithubAuthProvider();
       const result = await signInWithPopup(auth, gitProvider);
+      const randomNum = Math.floor(Math.random() * 1000) + 1;
 
       const user = result.user;
 
       await setDoc(doc(db, "users", user.uid), {
-        username: user.displayName,
+        username: user.displayName || `user${randomNum}`,
         avatarUrl: user.photoURL,
         introduce: "",
         count: 0,
@@ -84,7 +85,7 @@ export default function Login() {
         introduce: "",
         count: 0,
         userId : user.uid
-      }, { merge : true});
+      }, { merge : true });
 
       navigate("/");
     } catch (error) {

@@ -13,14 +13,6 @@ export default function Nav() {
   const [isscrolled, setisscrolled] = useState(false);
   const [userId, setUserId] = useState('');
 
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    setUserId(user.uid);
-  }, [userId]);
-
-
   // 외부 클릭 핸들러 함수를 메모이징합니다.
   const handleClickOutside = (event: MouseEvent | TouchEvent) => {
     if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -53,8 +45,10 @@ export default function Nav() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
+        setUserId(user.uid);
         setIsLoggedIn(true);
       } else {
+        setUserId('');
         setIsLoggedIn(false);
       }
     });
@@ -70,6 +64,7 @@ export default function Nav() {
     if (logoutOk) {
       signOut(auth);
       setIsLoggedIn(false);
+      setUserId('');
       navigate("/login");
     }
     setMenuOpen(false);
@@ -85,7 +80,12 @@ export default function Nav() {
   };
 
   const myHandleNavigation = (userId: string) => {
-    navigate(`/mp/${userId}`);
+    console.log(userId);
+    if (userId === '') {
+      navigate("/login");
+    } else {
+      navigate(`/mp/${userId}`);
+    }
   };
 
   const toggleMenu = (e:React.MouseEvent) => {

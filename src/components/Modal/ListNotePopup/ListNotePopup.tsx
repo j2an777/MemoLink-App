@@ -132,7 +132,7 @@ const ListNotePopup = () => {
         </LnpBack>
         <LnpBox ref={boxRef}>
           <LnpImg>
-            <img src={file?.imageUrl} />
+            <img src={file?.imageUrl ? file?.imageUrl : '/noImage.svg'} />
           </LnpImg>
           <LnpInfo>
             <LnpUserBox>

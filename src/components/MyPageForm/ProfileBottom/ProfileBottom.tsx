@@ -67,20 +67,28 @@ const ProfileBottom: React.FC<UserIdProps> = ({ userId }) => {
         <>
           <LinxTitle>업로드 노트</LinxTitle>
           <LinxFileContainer>
-            {userLinxFiles.map((file, index) => (
-              <LinxFileBox noteColor={file.noteColor} key={index}>
-                <LinxFileTitle textColor={file.textColor}>{file.title}</LinxFileTitle>
-                <LinxFileTags>
-                  {file.tags.map((tag, index) => (
-                    <LinxFileTagItem key={index}>#{tag}</LinxFileTagItem>
-                  ))}
-                </LinxFileTags>
-                <LinxFileImg>
-                  <img src={file.imageUrl} />
-                </LinxFileImg>
-                <LinxFileContent textColor={file.textColor} >{stripHtml(file.content)}</LinxFileContent>
-              </LinxFileBox>
-            ))}
+            {userLinxFiles.map((file, index) => {
+              const cleanContent = stripHtml(file.content);
+
+              const truncate = (str: string, n: number) => {
+                return str?.length > n ? str.substr(0, n - 1) + "..." : str;
+              };
+
+              return (
+                <LinxFileBox noteColor={file.noteColor} key={index}>
+                  <LinxFileTitle textColor={file.textColor}>{file.title}</LinxFileTitle>
+                  <LinxFileTags>
+                    {file.tags.map((tag, index) => (
+                      <LinxFileTagItem key={index}>#{tag}</LinxFileTagItem>
+                    ))}
+                  </LinxFileTags>
+                  <LinxFileImg>
+                    <img src={file.imageUrl ? file.imageUrl : '/noImage.svg'} />
+                  </LinxFileImg>
+                  <LinxFileContent textColor={file.textColor} >{truncate(cleanContent, 70)}</LinxFileContent>
+                </LinxFileBox>
+              )
+            })}
           </LinxFileContainer>
         </>
       )}

@@ -36,8 +36,9 @@ export default function HomeList() {
         const folderId = folderDoc.id;
         // files 필드 안에 있는 각 파일 검사
         folderData.files.forEach((file: LinxFileData) => {
-          if (file.linx === true) {
+          if (file.linx) {
             const userData = tempUsers.find((user) => user.username === folderData.username);
+            
             if (userData) {
               tempLinxFiles.push({
                 ...file,
@@ -55,6 +56,7 @@ export default function HomeList() {
     fetchLinxFiles();
   }, []);
 
+  // 댓글 상태 변화에 대한 감지로 업데이트
   useEffect(() => {
     const unsubscribes: (() => void)[] = [];
     linxFiles.forEach((file) => {
@@ -93,6 +95,7 @@ export default function HomeList() {
     navigate(`/mp/${userId}`);
   };
 
+  // 좋아요 변화 상태 감지에 대한 업데이트
   useEffect(() => {
     const unsubscribes: (() => void)[] = [];
     linxFiles.forEach((file) => {

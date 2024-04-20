@@ -171,6 +171,7 @@ export const OkTitle = styled.h1`
     font-weight : 700;
     color : black;
     margin-bottom : 20px;
+    text-align : center;
 `;
 
 export const ToLogin = styled.button`
