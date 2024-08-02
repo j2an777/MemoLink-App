@@ -80,7 +80,6 @@ export default function Nav() {
   };
 
   const myHandleNavigation = (userId: string) => {
-    console.log(userId);
     if (userId === '') {
       navigate("/login");
     } else {

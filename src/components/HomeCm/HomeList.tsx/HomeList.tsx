@@ -101,10 +101,14 @@ export default function HomeList() {
     linxFiles.forEach((file) => {
       const unsubscribe = onSnapshot(doc(db, "likes", file.id), (doc) => {
         if (doc.exists()) {
-          const likesUsers = doc.data().likesUser;
+          const likesUsers = Array.isArray(doc.data().likesUser) ? doc.data().likesUser : [];
           setLikesCount(prevLikesCount => ({
             ...prevLikesCount,
             [file.id]: likesUsers.length
+          }));
+          setLikeToggle(prevLikeToggle => ({
+            ...prevLikeToggle,
+            [file.id]: likesUsers.includes(auth.currentUser?.uid)
           }));
         }
       });

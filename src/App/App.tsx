@@ -28,7 +28,7 @@ function App() {
       setIsLoading(false);
     }, 500);
   };
-
+  
   useEffect(() => {
     init();
   }, []);
@@ -57,4 +57,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

@@ -12,8 +12,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
-    console.log(isAuthenticated);
-
     useEffect(() => {
       const unsubscribe = auth.onAuthStateChanged((user) => {
         setIsAuthenticated(!!user);
